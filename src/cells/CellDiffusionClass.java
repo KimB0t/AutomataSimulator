@@ -59,6 +59,15 @@ public class CellDiffusionClass extends Cell{
         this.reserved = r;
     }
     
+    public CellDiffusionClass(Color co, int i, int j, boolean wall){
+        super(co, i, j, wall);
+        this.state = null;
+        this.di = -1;
+        this.dj = -1;
+        this.classe = -1;
+        this.reserved = false;
+    }
+    
 //    public CellDiffusionClass(int nbA, Color c, int i, int j, boolean w, 
 //            int[] s, int cl) {
 //        super(nbA, c, i, j, w);
@@ -287,4 +296,9 @@ public class CellDiffusionClass extends Cell{
         //setting color
         this.setCouleur(param.getCOLOR_at(cl));
     }
+
+//    @Override
+//    public CellDiffusionClass setWall(Color co, int i, int j, boolean wall) {
+//        return new CellDiffusionClass(co, i, j, wall);
+//    }
 }

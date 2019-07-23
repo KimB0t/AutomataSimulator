@@ -23,7 +23,7 @@ public class Params {
     public static Color MAIN_COLOR_AGENT1;
     
     
-//    public static int MAIN_WALL;
+    public static int MAIN_WALL;
     
     
     public static int MAIN_MATRIX_LENGTH;

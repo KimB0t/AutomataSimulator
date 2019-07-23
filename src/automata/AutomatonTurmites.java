@@ -75,6 +75,8 @@ public class AutomatonTurmites extends Automaton{
                         new CellTurmites(0, getCOLOR_DEFAULT(), i, j, false, 0, j + i*getMATRIX_LENGTH());
             }
         }
+        //applay boundaries if they are enabled
+        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
         this._ag = new ArrayList<>();
         this.nghbrs = new Neighbours(new HashMap<>());
         this.idCounter = 0;
@@ -93,8 +95,8 @@ public class AutomatonTurmites extends Automaton{
         for(int i=0; i<nbr_cell; i++){
             
             // Calcul des coordonnées
-            rn_x = RAND.nextInt(getMATRIX_LENGTH());
-            rn_y = RAND.nextInt(getMATRIX_LENGTH());
+            rn_x = getRANDcoordinate();
+            rn_y = getRANDcoordinate();
             
             // Créer l'agent (cet n'agent n'a pas de classe mais a un id)
             this.setAgent(rn_x, rn_y, 1, getCOLOR_AGENT1(), false);
@@ -196,5 +198,21 @@ public class AutomatonTurmites extends Automaton{
     @Override
     public Neighbours countNeighbours(Cell c, int k) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public void makeBoundaries(){
+        
+        for (int k = 0; k < getMATRIX_LENGTH(); k++) {
+            this.matrix[k][0] = makeWall(k, 0);
+            this.matrix[k][getMATRIX_LENGTH()-1] = makeWall(k, getMATRIX_LENGTH()-1);
+            this.matrix[0][k] = makeWall(0, k);
+            this.matrix[getMATRIX_LENGTH()-1][k] = makeWall(getMATRIX_LENGTH()-1, k);
+        }
+    }
+
+    @Override
+    public CellTurmites makeWall(int i, int j) {
+        return new CellTurmites(getCOLOR_OBSTACLE(), i, j, true);
     }
 }

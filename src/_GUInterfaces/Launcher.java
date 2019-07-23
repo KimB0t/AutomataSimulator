@@ -437,8 +437,8 @@ public class Launcher extends javax.swing.JFrame {
         this.getjComboBox_boundaries().addActionListener((ActionEvent e) -> {
             MAIN_BOUNDARIES = getjComboBox_boundaries().getSelectedItem().toString();
             System.out.println("NEED TO BE IMPLEMENTED");
-//            if(MAIN_BOUNDARIES.equals("Free")) MAIN_WALL = 1;
-//            else MAIN_WALL = 0;
+            if(MAIN_BOUNDARIES.equals("Free")) MAIN_WALL = 1;
+            else MAIN_WALL = 0;
         });
         
         //When Grid is checked

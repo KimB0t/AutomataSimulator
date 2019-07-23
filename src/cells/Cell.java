@@ -69,6 +69,19 @@ public abstract class Cell {
         this.wall = false;
     }
     
+    /**
+     * This is for creating walls
+     * @param i
+     * @param j
+     */
+    public Cell(Color co, int i, int j, boolean wall) {
+        this.couleur = co;
+        this.nbAgents = 0;
+        this.i = i;
+        this.j = j;
+        this.wall = wall;
+    }
+    
     //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
 
     /**
@@ -176,4 +189,6 @@ public abstract class Cell {
     public abstract Cell nextState(Prm param, Neighbours nghbrs);
     
 //    public abstract CellDiffusionGathering nextState(Prm param, Neighbours nghbrs, int PA, int MLEVEL);
+    
+//    public abstract void setWall(Color co, int i, int j, boolean wall);
 }

@@ -42,34 +42,40 @@ public class Painter extends JPanel{
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //if shape oval draw circles
         if(ac.shapeIs("Oval")) {
-            for(int i=0; i<ac.getMATRIX_LENGTH(); i++) {
-                for(int j=0; j<ac.getMATRIX_LENGTH(); j++){
+            for(int i=ac.getWALL(); i<ac.getRelativeLength(); i++) {
+                for(int j=ac.getWALL(); j<ac.getRelativeLength(); j++){
                     g2.setColor(ac.getCellColor(i, j));
-                    g2.fillOval((i)*ac.getCELL_DIM(), (j)*ac.getCELL_DIM(), ac.getCELL_DIM(), ac.getCELL_DIM());
+                    int x = (i-ac.getWALL())*ac.getCELL_DIM();
+                    int y = (j-ac.getWALL())*ac.getCELL_DIM();
+                    int dim = ac.getCELL_DIM();
+                    g2.fillOval(x, y, dim, dim);
                 }
             }
         }
         //if shape square draw squares
         else if(ac.shapeIs("Square")){
-            for(int i=0; i<ac.getMATRIX_LENGTH(); i++) {
-                for(int j=0; j<ac.getMATRIX_LENGTH(); j++){
+            for(int i=ac.getWALL(); i<ac.getRelativeLength(); i++) {
+                for(int j=ac.getWALL(); j<ac.getRelativeLength(); j++){
                     g2.setColor(ac.getCellColor(i, j));
-                    g2.fillRect((i)*ac.getCELL_DIM(), (j)*ac.getCELL_DIM(), ac.getCELL_DIM(), ac.getCELL_DIM());
+                    int x = (i-ac.getWALL())*ac.getCELL_DIM();
+                    int y = (j-ac.getWALL())*ac.getCELL_DIM();
+                    int dim = ac.getCELL_DIM();
+                    g2.fillRect(x, y, dim, dim);
                 }
             }
         }
         //if shape square draw squares
-        else if(ac.shapeIs("Triangle")){
-            for(int i=0; i<ac.getMATRIX_LENGTH(); i++) {
-                for(int j=0; j<ac.getMATRIX_LENGTH(); j++){
-                    g2.setColor(ac.getCellColor(i, j));
-                    Polygon poly = new Polygon(new int[] { (i)*ac.getCELL_DIM(), (i)*ac.getCELL_DIM(), (i)*ac.getCELL_DIM() + ac.getCELL_DIM() }, 
-                            new int[] { (j)*ac.getCELL_DIM(), (j)*ac.getCELL_DIM() + ac.getCELL_DIM(), (j)*ac.getCELL_DIM() + (ac.getCELL_DIM()/2) }, 
-                            3);
-                    g2.fill(poly);
-                }
-            }
-        }
+//        else if(ac.shapeIs("Triangle")){
+//            for(int i=0+ac.getWALL(); i<ac.getMATRIX_LENGTH()-ac.getWALL(); i++) {
+//                for(int j=0+ac.getWALL(); j<ac.getMATRIX_LENGTH()-ac.getWALL(); j++){
+//                    g2.setColor(ac.getCellColor(i, j));
+//                    Polygon poly = new Polygon(new int[] { (i-ac.getWALL())*ac.getCELL_DIM(), (i-ac.getWALL())*ac.getCELL_DIM(), (i-ac.getWALL())*ac.getCELL_DIM() + ac.getCELL_DIM() }, 
+//                            new int[] { (j-ac.getWALL())*ac.getCELL_DIM(), (j-ac.getWALL())*ac.getCELL_DIM() + ac.getCELL_DIM(), (j-ac.getWALL())*ac.getCELL_DIM() + (ac.getCELL_DIM()/2) }, 
+//                            3);
+//                    g2.fill(poly);
+//                }
+//            }
+//        }
         
         if(ac.isGRID()){
             // draw horizontal & vertical rows for grid
@@ -97,8 +103,8 @@ public class Painter extends JPanel{
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                int i = e.getX()/ac.getCELL_DIM();
-                int j = e.getY()/ac.getCELL_DIM();
+                int i = e.getX()/ac.getCELL_DIM()+ac.getWALL();
+                int j = e.getY()/ac.getCELL_DIM()+ac.getWALL();
                 if(e.getX()>=0 && e.getX()<ac.getPANEL_LENGTH() && 
                         e.getY()>=0 && e.getY()<ac.getPANEL_LENGTH()){
                     
@@ -117,8 +123,8 @@ public class Painter extends JPanel{
         addMouseListener(new MouseAdapter() {
              @Override
             public void mousePressed(MouseEvent e) {
-                int i = e.getX()/ac.getCELL_DIM();
-                int j = e.getY()/ac.getCELL_DIM();
+                int i = e.getX()/ac.getCELL_DIM()+ac.getWALL();
+                int j = e.getY()/ac.getCELL_DIM()+ac.getWALL();
                 if(e.getX()>=0 && e.getX()<ac.getPANEL_LENGTH() && 
                         e.getY()>=0 && e.getY()<ac.getPANEL_LENGTH()){
                     

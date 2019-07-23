@@ -74,8 +74,8 @@ public class CellInfluenceClass extends Cell{
         this.stateInitializer(param);
         this.agentInitializer(param);
         this.position = -1;
-        this.state = new int[param.NB_CLASSES];
-        this.nb_agents = new int[param.NB_CLASSES];
+//        this.state = new int[param.NB_CLASSES];
+//        this.nb_agents = new int[param.NB_CLASSES];
     }
 
     public CellInfluenceClass(Prm param, int nbA, Color c, int i, int j, boolean w, int pos) {
@@ -91,6 +91,13 @@ public class CellInfluenceClass extends Cell{
             System.arraycopy(state, 0, this.state, 0, param.NB_CLASSES);
     }
 
+    public CellInfluenceClass(Color c, int i, int j, boolean w) {
+        super(c, i, j, w);
+        this.state = null;
+        this.nb_agents = null;
+        this.position = -1;
+    }
+    
 //    public void setNb_agents(int[] nb_agents) {
 //        this.nb_agents = new int[NB_CLASSES];
 //        if(nb_agents!=null)
@@ -242,5 +249,10 @@ public class CellInfluenceClass extends Cell{
     public int minLevel(int MLEVEL, int k){
         return k * (MLEVEL+1);
     }
+
+//    @Override
+//    public Cell setWall(Color co, int i, int j, boolean wall) {
+//        return new CellInfluenceClass(co, i, j, wall);
+//    }
     
 }

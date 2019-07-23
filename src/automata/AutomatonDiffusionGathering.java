@@ -49,6 +49,9 @@ public class AutomatonDiffusionGathering extends Automaton{
                 this.matrix[i][j] = new CellDiffusionGathering(i, j);
             }
         }
+        //applay boundaries if they are enabled
+        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
+        
     }
 
     @Override
@@ -64,8 +67,8 @@ public class AutomatonDiffusionGathering extends Automaton{
         for(int i=0; i<nbr_cell; i++){
 
             // Calcul des coordonnées
-            rn_x = RAND.nextInt(getMATRIX_LENGTH());
-            rn_y = RAND.nextInt(getMATRIX_LENGTH());
+            rn_x = getRANDcoordinate();
+            rn_y = getRANDcoordinate();
             
             // Créer l'agent
             this.setAgent(rn_x, rn_y, 1, getCOLOR_AGENT1(), false);
@@ -80,9 +83,12 @@ public class AutomatonDiffusionGathering extends Automaton{
         //For every cell calculate the next state
         for(int i=0; i<getMATRIX_LENGTH(); i++) {
             for(int j=0; j<getMATRIX_LENGTH(); j++){
-                Neighbours nghbrs = this.countNeighbours(this.matrix[i][j], -1);
-                new_matrix_gathr[i][j] = this.matrix[i][j].nextState(getP(), nghbrs);
+                if (!this.matrix[i][j].isWall()) {
+                    Neighbours nghbrs = this.countNeighbours(this.matrix[i][j], -1);
+                    new_matrix_gathr[i][j] = this.matrix[i][j].nextState(getP(), nghbrs);
 //                new_matrix_gathr[i][j].printCell();
+                }
+                else new_matrix_gathr[i][j] = makeWall(i, j);
             }
         }
             
@@ -133,5 +139,21 @@ public class AutomatonDiffusionGathering extends Automaton{
             }
         }
         return nb;
+    }
+    
+    @Override
+    public void makeBoundaries(){
+        
+        for (int k = 0; k < getMATRIX_LENGTH(); k++) {
+            this.matrix[k][0] = makeWall(k, 0);
+            this.matrix[k][getMATRIX_LENGTH()-1] = makeWall(k, getMATRIX_LENGTH()-1);
+            this.matrix[0][k] = makeWall(0, k);
+            this.matrix[getMATRIX_LENGTH()-1][k] = makeWall(getMATRIX_LENGTH()-1, k);
+        }
+    }
+
+    @Override
+    public CellDiffusionGathering makeWall(int i, int j) {
+        return new CellDiffusionGathering(getCOLOR_OBSTACLE(), i, j, true);
     }
 }

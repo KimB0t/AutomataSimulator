@@ -20,6 +20,7 @@ import static _diverse.Params.MAIN_PA;
 import static _diverse.Params.MAIN_PANEL_LENGTH;
 import static _diverse.Params.MAIN_REPULSION;
 import static _diverse.Params.MAIN_SHAPE;
+import static _diverse.Params.MAIN_WALL;
 //import static _diverse.Params.MAIN_WALL;
 import _diverse.Params.Policy;
 import java.awt.Color;
@@ -59,7 +60,7 @@ public class Prm {
      * 1: the cell is a wall
      * 0: othewise
      */
-//    public int WALL;
+    public int WALL;
         
     /**
      * The matrix length = PANEL_LENGTH / CELL_DIM
@@ -160,7 +161,7 @@ public class Prm {
         
         this.CELL_DIM = MAIN_CELL_DIM;
         this.SHAPE = MAIN_SHAPE;
-//        this.WALL = MAIN_WALL;
+        this.WALL = MAIN_WALL;
         this.BOUNDARIES = MAIN_BOUNDARIES;
         this.NB_CLASSES = MAIN_NB_CLASSES;
         this.GRID = MAIN_GRID;
@@ -176,7 +177,7 @@ public class Prm {
         this.COEF_SPEED = MAIN_COEF_SPEED;
         
         this.PANEL_LENGTH = MAIN_PANEL_LENGTH;
-        this.MATRIX_LENGTH = (MAIN_PANEL_LENGTH/CELL_DIM); //+ 2*WALL;
+        this.MATRIX_LENGTH = (MAIN_PANEL_LENGTH/CELL_DIM) + 2*WALL;
         
         this.LAMBDA = MAIN_LAMBDA;
         this.DENSITY = MAIN_DENSITY;

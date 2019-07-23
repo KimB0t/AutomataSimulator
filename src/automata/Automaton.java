@@ -7,6 +7,7 @@ package automata;
 
 import _diverse.Neighbours;
 import _diverse.Params.Policy;
+import static _diverse.Params.RAND;
 import _diverse.Prm;
 import cells.Cell;
 import java.awt.Color;
@@ -20,6 +21,8 @@ public abstract class Automaton {
      
     private Prm p;
 
+//    private Cell[][] matrix;
+    
     public Automaton() {
         this.p = new Prm();
         p.initParamsGlobal();
@@ -235,4 +238,48 @@ public abstract class Automaton {
     public boolean getFIRST_TO_FIRE(){
         return p.FIRST_TO_FIRE;
     }
+    
+    public String getBOUNDARIES(){
+        return p.BOUNDARIES;
+    }
+    
+    public void setBOUNDARIES(String str){
+        p.BOUNDARIES = str;
+    }
+    
+    public boolean isBOUNDARIESequalTo(String str){
+        return p.BOUNDARIES.equals(str);
+    }
+    
+    public int getWALL(){
+        return p.WALL;
+    }
+    
+    public void setWALL(int val){
+        p.WALL = val;
+    }
+    
+    public int getAbsoluteLength(){
+        return p.MATRIX_LENGTH;
+    }
+    
+    public int getRelativeLength(){
+        return p.MATRIX_LENGTH - p.WALL;
+    }
+    
+    public int getAbsoluteStarter(){
+        return 0;
+    }
+    
+    public int getRelativeStarter(){
+        return p.WALL;
+    }
+    
+    public int getRANDcoordinate(){
+        return RAND.nextInt(p.MATRIX_LENGTH-2 * p.WALL) + p.WALL;
+    }
+    
+    public abstract Cell makeWall(int i, int j);
+    
+    public abstract void makeBoundaries();
 }

@@ -20,7 +20,7 @@ public class Neighbours {
      *  nb of neighbours of cell c 
      */
     private int excited_free_cells_count;
-
+    
     /**
      *  list of excited neighbouring free cells of cell c 
      *  to where the agent of cell c can possibly move  

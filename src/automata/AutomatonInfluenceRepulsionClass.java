@@ -83,6 +83,8 @@ public class AutomatonInfluenceRepulsionClass extends Automaton{
                 this.matrix[i][j] = new CellInfluenceRepulsionClass(getP(), 0, getCOLOR_DEFAULT(), i, j, false, j + i*getMATRIX_LENGTH());
             }
         }
+        //applay boundaries if they are enabled
+        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
         //REstart the others too
         this._ag = new ArrayList<>();
         this.nghbrs = new Neighbours(new HashMap<>());
@@ -102,8 +104,8 @@ public class AutomatonInfluenceRepulsionClass extends Automaton{
         for(int i=0; i<nbr_cell; i++){
             
             // Calcul des coordonnées
-            rn_x = RAND.nextInt(getMATRIX_LENGTH());
-            rn_y = RAND.nextInt(getMATRIX_LENGTH());
+            rn_x = getRANDcoordinate();
+            rn_y = getRANDcoordinate();
             
             //Créer l'agent (couleur null car je la calculerai plutard)
             this.setAgent(rn_x, rn_y, 1, null, false);
@@ -178,7 +180,7 @@ public class AutomatonInfluenceRepulsionClass extends Automaton{
 //                    this.nextState(nghbrs, new_matrix_fier[i][j].getPosition());
                 }
                 else {
-                    new_matrix_fier[i][j] = new CellInfluenceRepulsionClass(getP(), 0, getCOLOR_OBSTACLE(), i, j, true, null, null, -1);
+                    new_matrix_fier[i][j] = makeWall(i, j);
                 }
             }
         }
@@ -311,5 +313,21 @@ public class AutomatonInfluenceRepulsionClass extends Automaton{
             }
         }
         return null;
+    }
+    
+    @Override
+    public void makeBoundaries(){
+        
+        for (int k = 0; k < getMATRIX_LENGTH(); k++) {
+            this.matrix[k][0] = makeWall(k, 0);
+            this.matrix[k][getMATRIX_LENGTH()-1] = makeWall(k, getMATRIX_LENGTH()-1);
+            this.matrix[0][k] = makeWall(0, k);
+            this.matrix[getMATRIX_LENGTH()-1][k] = makeWall(getMATRIX_LENGTH()-1, k);
+        }
+    }
+
+    @Override
+    public CellInfluenceRepulsionClass makeWall(int i, int j) {
+        return new CellInfluenceRepulsionClass(getCOLOR_OBSTACLE(), i, j, true);
     }
 }

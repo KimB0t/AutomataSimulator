@@ -45,6 +45,8 @@ public class AutomatonLife extends Automaton{
                 this.matrix[i][j] = new CellLife(0, getCOLOR_DEFAULT(), i, j, false);
             }
         }
+        //applay boundaries if they are enabled
+        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
     }
     
     @Override
@@ -60,8 +62,8 @@ public class AutomatonLife extends Automaton{
         for(int i=0; i<nbr_cell; i++){
 
             // Calcul des coordonnées
-            rn_x = RAND.nextInt(getMATRIX_LENGTH());
-            rn_y = RAND.nextInt(getMATRIX_LENGTH());
+            rn_x = getRANDcoordinate();
+            rn_y = getRANDcoordinate();
             
             // Créer l'agent
             this.setAgent(rn_x, rn_y, 1, getCOLOR_AGENT1(), false);
@@ -75,41 +77,16 @@ public class AutomatonLife extends Automaton{
         //For every cell calculate the next state
         for(int i=0; i<getMATRIX_LENGTH(); i++) {
             for(int j=0; j<getMATRIX_LENGTH(); j++){
-                Neighbours nghbrs = countNeighbours(this.matrix[i][j], -1);
-                new_matrix_life[i][j] = this.matrix[i][j].nextState(getP(), nghbrs);
+                if (!this.matrix[i][j].isWall()) {
+                    Neighbours nghbrs = countNeighbours(this.matrix[i][j], -1);
+                    new_matrix_life[i][j] = this.matrix[i][j].nextState(getP(), nghbrs);
+                }
+                else new_matrix_life[i][j] = makeWall(i, j);
             }
         }
         this.matrix = new_matrix_life;
         increaseNBGeneration(1);
     }
-    
-    /**
-     * The three rules of life game
-     * @param c
-     * @return
-     */
-//    @Override
-//    public CellLife nextStateCell(Cell c){
-//        
-//        CellLife new_cell;
-//        new_cell = new CellLife(c.getNbAgents(), c.getCouleur(),
-//                                c.getI(), c.getJ(), false);
-//        int nb_neighbours_alive = countNeighbours(new_cell);
-//        if(new_cell.getNbAgents()==0 && nb_neighbours_alive == 3){
-//            new_cell.setNbAgents(1);
-//            new_cell.setCouleur(COLOR_AGENT1);
-//        }
-//        else if(new_cell.getNbAgents()==1 && (nb_neighbours_alive == 3
-//                || nb_neighbours_alive == 2)){
-//            new_cell.setNbAgents(1);
-//            new_cell.setCouleur(COLOR_AGENT1);
-//        }
-//        else {
-//            new_cell.setNbAgents(0);
-//            new_cell.setCouleur(COLOR_DEFAULT);
-//        }
-//        return new_cell;
-//    }
     
     /**
      *
@@ -139,4 +116,19 @@ public class AutomatonLife extends Automaton{
         this.matrix[i][j].setWall(wl);
     }
     
+    @Override
+    public void makeBoundaries(){
+        
+        for (int k = 0; k < getMATRIX_LENGTH(); k++) {
+            this.matrix[k][0] = makeWall(k, 0);
+            this.matrix[k][getMATRIX_LENGTH()-1] = makeWall(k, getMATRIX_LENGTH()-1);
+            this.matrix[0][k] = makeWall(0, k);
+            this.matrix[getMATRIX_LENGTH()-1][k] = makeWall(getMATRIX_LENGTH()-1, k);
+        }
+    }
+
+    @Override
+    public CellLife makeWall(int i, int j) {
+        return new CellLife(getCOLOR_OBSTACLE(), i, j, true);
+    }
 }

@@ -43,6 +43,12 @@ public class CellTurmites extends Cell{
         this.position = -1;
     }
     
+    public CellTurmites(Color c, int i, int j, boolean w) {
+        super(c, i, j, w);
+        this.state = -1;
+        this.position = -1;
+    }
+    
     public void setState(int state) {
         this.state = state;
     }
@@ -105,5 +111,10 @@ public class CellTurmites extends Cell{
 //            }
 //        }
 //        return null;
+//    }
+
+//    @Override
+//    public Cell setWall(Color co, int i, int j, boolean wall) {
+//        return new CellTurmites(co, i, j, wall);
 //    }
 }

@@ -56,6 +56,8 @@ public class AutomatonDiffusionClass extends Automaton{
                 this.matrix[i][j] = new CellDiffusionClass(getP(), 0, getCOLOR_DEFAULT(), i, j, false);
             }
         }
+        //applay boundaries if they are enabled
+        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
     }
 
     @Override
@@ -71,8 +73,8 @@ public class AutomatonDiffusionClass extends Automaton{
         for(int i=0; i<nbr_cell; i++){
 
             // Calcul des coordonnées
-            rn_x = RAND.nextInt(getMATRIX_LENGTH());
-            rn_y = RAND.nextInt(getMATRIX_LENGTH());
+            rn_x = getRANDcoordinate();
+            rn_y = getRANDcoordinate();
             
             // Créer l'agent (le dernier param c'est l'id et cet agent n'as pas besoins d'id )
             this.setAgent(rn_x, rn_y, 1, null, false);
@@ -88,44 +90,47 @@ public class AutomatonDiffusionClass extends Automaton{
         for(int i=0; i<getMATRIX_LENGTH(); i++) {
             for(int j=0; j<getMATRIX_LENGTH(); j++){
                 
-                //Déplacement des agents
-                //if there is an agent in this cell sa classe est forcément != -1
-                Neighbours nghbrs;
-                if (this.matrix[i][j].getNbAgents() > 0) {
-                    //Depl des agents
-                    nghbrs = countNeighbours(this.matrix[i][j], this.matrix[i][j].getClasse());
-                    PointAndCell f = this.matrix[i][j].nextPoint(getP(), nghbrs);
-                    reserve(f.point);
-                    new_matrix_class[i][j] = f.cell;
-//                    if(f.cell == null) System.out.println("PPPPPPPPPPPPP");
-//                    else System.out.println("OOOOOOOOOOOOO: " + f.cell.getI());
-//                    ((CellDiffusionClass)f.cell).printCell("MMMMMMMMMM: ");
-                }
-                else{
-                    CellDiffusionClass new_cell = new CellDiffusionClass(getP(), this.matrix[i][j].getNbAgents(), this.matrix[i][j].getCouleur(),
-                                this.matrix[i][j].getI(), this.matrix[i][j].getJ(), false, this.matrix[i][j].getState(), this.matrix[i][j].getDi(), this.matrix[i][j].getDj(),
-                                this.matrix[i][j].getClasse(), this.matrix[i][j].isReserved());
-                    new_matrix_class[i][j] = new_cell;
-                }
-                this.matrix[i][j].printCell("11111111111111");
-                //this variables assures that waves are displayed correctly
-                //if the first vague is diplayed, other do not
-                //if the first is not, the second will and the rest will not
-                //and so on...
-                setVAGUE(false);
+                if(!this.matrix[i][j].isWall()){
+                    //Déplacement des agents
+                    //if there is an agent in this cell sa classe est forcément != -1
+                    Neighbours nghbrs;
+                    if (this.matrix[i][j].getNbAgents() > 0) {
+                        //Depl des agents
+                        nghbrs = countNeighbours(this.matrix[i][j], this.matrix[i][j].getClasse());
+                        PointAndCell f = this.matrix[i][j].nextPoint(getP(), nghbrs);
+                        reserve(f.point);
+                        new_matrix_class[i][j] = f.cell;
+    //                    if(f.cell == null) System.out.println("PPPPPPPPPPPPP");
+    //                    else System.out.println("OOOOOOOOOOOOO: " + f.cell.getI());
+    //                    ((CellDiffusionClass)f.cell).printCell("MMMMMMMMMM: ");
+                    }
+                    else{
+                        CellDiffusionClass new_cell = new CellDiffusionClass(getP(), this.matrix[i][j].getNbAgents(), this.matrix[i][j].getCouleur(),
+                                    this.matrix[i][j].getI(), this.matrix[i][j].getJ(), false, this.matrix[i][j].getState(), this.matrix[i][j].getDi(), this.matrix[i][j].getDj(),
+                                    this.matrix[i][j].getClasse(), this.matrix[i][j].isReserved());
+                        new_matrix_class[i][j] = new_cell;
+                    }
+                    this.matrix[i][j].printCell("11111111111111");
+                    //this variables assures that waves are displayed correctly
+                    //if the first vague is diplayed, other do not
+                    //if the first is not, the second will and the rest will not
+                    //and so on...
+                    setVAGUE(false);
 
-                //Expantion de la Vague
-                //for all classes
-//                System.out.println("8979879879879564621322165784561");
-                for (int k = 0; k < getNB_CLASSES(); k++) {
-                    //count excited neighbours for this class
-                    nghbrs = countNeighbours(new_matrix_class[i][j], k);
-//                    new_matrix_class[i][j] = new_matrix_class[i][j].expandWave(nghbrs, k);
-                    boolean new_VAGUE = new_matrix_class[i][j].expandWave(getP(), nghbrs, k);
-                    setVAGUE(new_VAGUE);
+                    //Expantion de la Vague
+                    //for all classes
+    //                System.out.println("8979879879879564621322165784561");
+                    for (int k = 0; k < getNB_CLASSES(); k++) {
+                        //count excited neighbours for this class
+                        nghbrs = countNeighbours(new_matrix_class[i][j], k);
+    //                    new_matrix_class[i][j] = new_matrix_class[i][j].expandWave(nghbrs, k);
+                        boolean new_VAGUE = new_matrix_class[i][j].expandWave(getP(), nghbrs, k);
+                        setVAGUE(new_VAGUE);
 
-                    this.matrix[i][j].printCell("222222222222222 ===== " + k);
+                        this.matrix[i][j].printCell("222222222222222 ===== " + k);
+                    }
                 }
+                else new_matrix_class[i][j] = makeWall(i, j);
             }
         }
 
@@ -205,5 +210,21 @@ public class AutomatonDiffusionClass extends Automaton{
     
     public void reserve(Point p){
         this.matrix[(int)p.getX()][(int)p.getY()].setReserved(true);
+    }
+    
+    @Override
+    public void makeBoundaries(){
+        
+        for (int k = 0; k < getMATRIX_LENGTH(); k++) {
+            this.matrix[k][0] = makeWall(k, 0);
+            this.matrix[k][getMATRIX_LENGTH()-1] = makeWall(k, getMATRIX_LENGTH()-1);
+            this.matrix[0][k] = makeWall(0, k);
+            this.matrix[getMATRIX_LENGTH()-1][k] = makeWall(getMATRIX_LENGTH()-1, k);
+        }
+    }
+
+    @Override
+    public CellDiffusionClass makeWall(int i, int j) {
+        return new CellDiffusionClass(getCOLOR_OBSTACLE(), i, j, true);
     }
 }

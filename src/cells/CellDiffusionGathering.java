@@ -57,6 +57,13 @@ public class CellDiffusionGathering extends Cell{
         this.di = -1;
         this.dj = -1;
     }
+    
+    public CellDiffusionGathering(Color c, int i, int j, boolean w){
+        super(c, i, j, w);
+        this.state = -1;
+        this.di = -1;
+        this.dj = -1;
+    }
 
     public void setState(int state) {
         this.state = state;
@@ -172,4 +179,9 @@ public class CellDiffusionGathering extends Cell{
                     " | Dj: " + this.dj+
                     " | State: " + this.state);
     }
+
+//    @Override
+//    public void setWall(Color co, int i, int j, boolean wall) {
+//        thi new CellDiffusionGathering(co, i, j, wall);
+//    }
 }

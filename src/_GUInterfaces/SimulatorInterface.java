@@ -23,9 +23,11 @@ import automata.AutomatonDiffusionGathering;
 import automata.AutomatonInfluenceClass;
 import automata.AutomatonInfluenceRepulsionClass;
 import automata.AutomatonTurmites;
+import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -33,9 +35,13 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -317,6 +323,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jLabel4 = new javax.swing.JLabel();
         jButton_color = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
+        jButton_screenSave = new javax.swing.JButton();
         jPanel_obstacles = new javax.swing.JPanel();
         jTextField_obstaclesNbr = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
@@ -333,11 +340,13 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jButton_ObstaclesReset = new javax.swing.JButton();
         jCheckBox_handDrawObstacles = new javax.swing.JCheckBox();
         jLabel18 = new javax.swing.JLabel();
-        jLabel_variante = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jCheckBox_uncover = new javax.swing.JCheckBox();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel_variante = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel_nbrGenerations = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -594,7 +603,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel_modelParams.add(jLabel1, gridBagConstraints);
 
-        jTextField_repulsion.setText("0.1");
+        jTextField_repulsion.setText("0.0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
@@ -622,7 +631,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jPanel_modelParams.add(jButton_repulsion, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.1;
@@ -648,7 +657,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.weightx = 0.8;
@@ -777,7 +786,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jPanel1.add(jLabel_coordinates, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -883,12 +892,27 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel_displayOptions.add(jLabel19, gridBagConstraints);
 
+        jButton_screenSave.setText("Screensave");
+        jButton_screenSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_screenSaveActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel_displayOptions.add(jButton_screenSave, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
         getContentPane().add(jPanel_displayOptions, gridBagConstraints);
@@ -1113,7 +1137,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jPanel_obstacles.add(jLabel18, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
@@ -1121,19 +1145,6 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
         getContentPane().add(jPanel_obstacles, gridBagConstraints);
-
-        jLabel_variante.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
-        jLabel_variante.setForeground(new java.awt.Color(0, 0, 204));
-        jLabel_variante.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel_variante.setText("Classification");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
-        getContentPane().add(jLabel_variante, gridBagConstraints);
 
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
@@ -1143,18 +1154,33 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weightx = 0.2;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
         getContentPane().add(jPanel4, gridBagConstraints);
+
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        jLabel_variante.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
+        jLabel_variante.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel_variante.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel_variante.setText("Classification");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.1;
+        jPanel2.add(jLabel_variante, gridBagConstraints);
 
         jLabel3.setText("Générations:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        getContentPane().add(jLabel3, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.1;
+        jPanel2.add(jLabel3, gridBagConstraints);
 
         jLabel_nbrGenerations.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel_nbrGenerations.setForeground(new java.awt.Color(0, 0, 204));
@@ -1162,7 +1188,36 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        getContentPane().add(jLabel_nbrGenerations, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.1;
+        jPanel2.add(jLabel_nbrGenerations, gridBagConstraints);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        jPanel2.add(jPanel3, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 1);
+        getContentPane().add(jPanel2, gridBagConstraints);
 
         jMenu1.setText("File");
 
@@ -1263,6 +1318,10 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     private void jButton_repulsionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_repulsionActionPerformed
         ac.setREPULSION(Double.valueOf(jTextField_repulsion.getText()));
     }//GEN-LAST:event_jButton_repulsionActionPerformed
+
+    private void jButton_screenSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_screenSaveActionPerformed
+        saveImage();
+    }//GEN-LAST:event_jButton_screenSaveActionPerformed
     
     private void initParams(){
         
@@ -1318,7 +1377,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         java.awt.GridBagConstraints gridBagConstraints;
         
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.weightx = 0.8;
@@ -1551,6 +1610,39 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         
     }
     
+    private void saveImage(){
+        BufferedImage imagebuf=null;
+        try {
+            imagebuf = new Robot().createScreenCapture(jPanel_screen.getBounds());
+        } catch (AWTException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }  
+         Graphics2D graphics2D = imagebuf.createGraphics();
+         jPanel_screen.paint(graphics2D);
+         try {
+            JFileChooser chooser = new JFileChooser(); 
+            chooser.setCurrentDirectory(new java.io.File("."));
+            chooser.setDialogTitle("Choisir l'emplacement pour sauvegarder");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            // disable the "All files" option.
+            chooser.setAcceptAllFileFilterUsed(false);
+            //    
+            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                String outputPathFilename = chooser.getSelectedFile().toString()+"\\Save_"+VARIANTE.toString()+".png";
+                ImageIO.write(imagebuf,"png", new File(outputPathFilename));
+                System.out.println("SAved in : " + outputPathFilename);
+            }
+            else {
+                System.out.println("Aucun emplacement n'a été choisit! Veuillez choisir un emplacement");
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            System.out.println("error");
+        }
+        
+    }
+    
 //<editor-fold defaultstate="collapsed" desc="Var Declaration">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -1569,6 +1661,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton jButton_randObstacle;
     private javax.swing.JButton jButton_random;
     private javax.swing.JButton jButton_repulsion;
+    private javax.swing.JButton jButton_screenSave;
     private javax.swing.JButton jButton_start;
     private javax.swing.JButton jButton_stop;
     private javax.swing.JCheckBox jCheckBox_grid;
@@ -1605,6 +1698,8 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel_displayOptions;
     private javax.swing.JPanel jPanel_modelParams;

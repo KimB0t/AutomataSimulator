@@ -34,6 +34,10 @@ public class CellLife extends Cell{
     public CellLife() {
         super();
     }
+    
+    public CellLife(Color c, int i, int j, boolean w) {
+        super(c, i, j, w);
+    }
 
     @Override
     public CellLife nextState(Prm param, Neighbours nghbrs) {
@@ -57,5 +61,10 @@ public class CellLife extends Cell{
         }
         return new_cell;
     }
+
+//    @Override
+//    public Cell setWall(Color co, int i, int j, boolean wall) {
+//        return new CellLife(co, i, j, wall);
+//    }
 
 }
