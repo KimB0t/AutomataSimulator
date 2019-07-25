@@ -311,4 +311,14 @@ public class AutomatonInfluenceClass extends Automaton{
     public CellInfluenceClass makeWall(int i, int j) {
         return new CellInfluenceClass(getCOLOR_OBSTACLE(), i, j, true);
     }
+
+    @Override
+    public void deleteAgent(int i, int j) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public void makeWallAt(int i, int j) {
+        this.matrix[i][j] = new CellInfluenceClass(getCOLOR_OBSTACLE(), i, j, true);
+    }
 }

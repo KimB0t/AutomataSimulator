@@ -23,6 +23,7 @@ public class Painter extends JPanel{
     
 //    private Cell[][] matrix;
     private Automaton ac;
+    boolean erase = false;
     
     public Painter(Automaton aa) {
         this.ac = aa;
@@ -100,40 +101,123 @@ public class Painter extends JPanel{
     private void setMouseAdapter(){
         
         setBackground(Color.WHITE);
+//        addMouseMotionListener(new MouseAdapter() {
+//            @Override
+//            public void mouseDragged(MouseEvent e) {
+//                draw(e.getX(), e.getY());
+//            }
+//        });
+//        addMouseListener(new MouseAdapter() {
+//             @Override
+//            public void mousePressed(MouseEvent e) {
+//                if(!ac.getUNCOVER()){
+//                    if(!erase) {
+//                        if(ac.getOBSTACLES() && ac.getHAND_DRAW_OBSTACLES()){
+//                        }
+//                        else{
+//                            draw(e.getX(), e.getY());
+//                        }
+//                    }
+//                }
+//            }
+//        });
+        
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                int i = e.getX()/ac.getCELL_DIM()+ac.getWALL();
-                int j = e.getY()/ac.getCELL_DIM()+ac.getWALL();
-                if(e.getX()>=0 && e.getX()<ac.getPANEL_LENGTH() && 
-                        e.getY()>=0 && e.getY()<ac.getPANEL_LENGTH()){
-                    
-                    //DRAW
-                    ac.setAgent(i, j, 1, ac.getCOLOR_AGENT1(), false);
-                    repaint();
+                //DRAW
+                if(!ac.getUNCOVER()){
+                    if(!erase) {
+                        //IF we are drawing obstacles
+                        if(ac.getOBSTACLES() && ac.getHAND_DRAW_OBSTACLES()) 
+                            drawObstacle(e.getX(), e.getY());
+                        else 
+                            drawAgent(e.getX(), e.getY());
+                    }
+                    //ERASE
+                    else{
+                        drawEmpty(e.getX(), e.getY());
+                    }
                 }
             }
-            
-            //To display coordiantes on the screen
-//            @Override
-//            public void mouseMoved(MouseEvent e){
-//                jLabel_coordinates.setText("<html>X="+e.getX()+"<br>Y="+e.getY()+"</html>");
-//            }
         });
         addMouseListener(new MouseAdapter() {
              @Override
             public void mousePressed(MouseEvent e) {
-                int i = e.getX()/ac.getCELL_DIM()+ac.getWALL();
-                int j = e.getY()/ac.getCELL_DIM()+ac.getWALL();
-                if(e.getX()>=0 && e.getX()<ac.getPANEL_LENGTH() && 
-                        e.getY()>=0 && e.getY()<ac.getPANEL_LENGTH()){
-                    
-                    //DRawing agents
-                    ac.setAgent(i, j, 1, ac.getCOLOR_AGENT1(), false);
-                    repaint();
+                //IF We are drawing (button1==click gauche)
+                if(e.getButton() == MouseEvent.BUTTON1) {
+                    erase = false;
+
+                    if(ac.getUNCOVER()){
+                        System.out.println("Painter->setMouseAdapter->addMouseListener->mousePressed"
+                                + " TO BE IMPLEMENTED");
+                    }
+                    else{
+                        //IF we are drawing obstacles
+                        if(ac.getOBSTACLES() && ac.getHAND_DRAW_OBSTACLES()) 
+                            drawObstacle(e.getX(), e.getY());
+                        else 
+                            drawAgent(e.getX(), e.getY());
+                    }
+                }
+                else if(e.getButton() == MouseEvent.BUTTON3){
+                    erase = true;
+                    drawEmpty(e.getX(), e.getY());
                 }
             }
         });
+    }
+    
+    public void drawAgent(int x, int y){
+        
+        int i = x/ac.getCELL_DIM()+ac.getWALL();
+        int j = y/ac.getCELL_DIM()+ac.getWALL();
+        if(x>=0 && x<ac.getPANEL_LENGTH() && 
+                y>=0 && y<ac.getPANEL_LENGTH()){
+
+            //DRawing agents
+            ac.setAgent(i, j, 1, ac.getCOLOR_AGENT1(), false);
+            repaint();
+        }
+    }
+    
+    public void drawObstacle(int x, int y){
+        
+        int i = x/ac.getCELL_DIM()+ac.getWALL();
+        int j = y/ac.getCELL_DIM()+ac.getWALL();
+        if(x>=0 && x<ac.getPANEL_LENGTH() && 
+                y>=0 && y<ac.getPANEL_LENGTH()){
+
+            //DRawing agents
+            ac.makeWallAt(i, j);
+            repaint();
+        }
+    }
+    
+    public void drawEmpty(int x, int y){
+        
+        int i = x/ac.getCELL_DIM()+ac.getWALL();
+        int j = y/ac.getCELL_DIM()+ac.getWALL();
+        if(x>=0 && x<ac.getPANEL_LENGTH() && 
+                y>=0 && y<ac.getPANEL_LENGTH()){
+
+            //DRawing agents
+            ac.deleteAgent(i, j);
+            repaint();
+        }
+    }
+    
+    public void printInfo(int x, int y){
+        
+        int i = x/ac.getCELL_DIM()+ac.getWALL();
+        int j = y/ac.getCELL_DIM()+ac.getWALL();
+        if(x>=0 && x<ac.getPANEL_LENGTH() && 
+                y>=0 && y<ac.getPANEL_LENGTH()){
+
+            //DRawing agents
+            ac.deleteAgent(i, j);
+            repaint();
+        }
     }
     
 }

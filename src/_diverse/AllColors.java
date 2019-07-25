@@ -5,6 +5,7 @@
  */
 package _diverse;
 
+import static _diverse.Params.MAIN_COLORS_ARRAY;
 import static _diverse.Params.RAND;
 import java.awt.Color;
 import java.util.HashMap;
@@ -55,11 +56,16 @@ public class AllColors {
         this.COLOR_TABLE = new HashMap<>();
     }
     
-    public void initColorTable(int NB_CLASSES){
+    public void initColorTable(int NB_CLASSES, boolean RAND_COLORS){
         //Remplir les couleurs
-        for (int i = 0; i < NB_CLASSES; i++) {
-            COLOR_TABLE.put(i, randomColor(200));
-        }
+        if(RAND_COLORS)
+            for (int i = 0; i < NB_CLASSES; i++) {
+                COLOR_TABLE.put(i, randomColor(200));
+            }
+        else
+            for (int i = 0; i < NB_CLASSES; i++) {
+                COLOR_TABLE.put(i, MAIN_COLORS_ARRAY[i]);
+            }
     }
     
     /**

@@ -18,6 +18,7 @@ import static _diverse.Params.MAIN_OBSTACLES_LENGTH;
 import static _diverse.Params.MAIN_OBSTACLES_NBR;
 import static _diverse.Params.MAIN_PA;
 import static _diverse.Params.MAIN_PANEL_LENGTH;
+import static _diverse.Params.MAIN_RAND_COLORS;
 import static _diverse.Params.MAIN_REPULSION;
 import static _diverse.Params.MAIN_SHAPE;
 import static _diverse.Params.MAIN_WALL;
@@ -157,6 +158,11 @@ public class Prm {
     
     public boolean FIRST_TO_FIRE;
     
+    /**
+     *  to print content of a cell
+     */
+    public boolean RAND_COLORS;
+    
     public void initParamsGlobal(){
         
         this.CELL_DIM = MAIN_CELL_DIM;
@@ -187,10 +193,12 @@ public class Prm {
         this.PA = MAIN_PA;
         
         this.COLORS = new AllColors(MAIN_COLOR_AGENT1, Color.black, Color.red, Color.blue, Color.white);
-        this.COLORS.initColorTable(this.NB_CLASSES);
+        this.COLORS.initColorTable(this.NB_CLASSES, this.RAND_COLORS);
         
         this.REPULSION = MAIN_REPULSION;
         this.FIRST_TO_FIRE = true;
+        
+        this.RAND_COLORS = MAIN_RAND_COLORS;
     }
     
     public Color getCOLOR_at(int key){

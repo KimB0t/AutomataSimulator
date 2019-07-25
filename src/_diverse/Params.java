@@ -36,6 +36,9 @@ public class Params {
     
     
     public static boolean MAIN_GRID;
+    
+    
+    public static boolean MAIN_RAND_COLORS;
     /**
      *  Different types of automata
      */
@@ -153,6 +156,9 @@ public class Params {
     public static double MAIN_PA;
     public static Policy MAIN_POLICY;
     public static double MAIN_REPULSION;
+    
+    
+    public static Color[] MAIN_COLORS_ARRAY;
     
     /**
      * Function that simulates a random bernoulli trial

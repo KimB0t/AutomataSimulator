@@ -36,6 +36,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.stage.FileChooser;
@@ -1395,43 +1398,6 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                         +"<br>Y="+e.getY()/ac.getCELL_DIM()+"</html>");
             }
         });
-        
-//        jPanel_screen.setBackground(Color.WHITE);
-//        jPanel_screen.addMouseMotionListener(new MouseAdapter() {
-//            @Override
-//            public void mouseDragged(MouseEvent e) {
-//                int i = e.getX()/ac.getCELL_DIM();
-//                int j = e.getY()/ac.getCELL_DIM();
-//                if(e.getX()>=0 && e.getX()<ac.getPANEL_LENGTH() && 
-//                        e.getY()>=0 && e.getY()<ac.getPANEL_LENGTH()){
-//
-//                    //DRAW
-//                    ac.setAgent(i, j, 1, ac.getCOLOR_AGENT1(), false);
-//                    repaint();
-//                }
-//            }
-//
-////            //To display coordiantes on the screen
-////            @Override
-////            public void mouseMoved(MouseEvent e){
-////                jLabel_coordinates.setText("<html>X="+e.getX()+"<br>Y="+e.getY()+"</html>");
-////            }
-//
-//        });
-//        jPanel_screen.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                int i = e.getX()/ac.getCELL_DIM();
-//                int j = e.getY()/ac.getCELL_DIM();
-//                if(e.getX()>=0 && e.getX()<ac.getPANEL_LENGTH() && 
-//                        e.getY()>=0 && e.getY()<ac.getPANEL_LENGTH()){
-//
-//                    //DRawing agents
-//                    ac.setAgent(i, j, 1, ac.getCOLOR_AGENT1(), false);
-//                    repaint();
-//                }
-//            }
-//        });
     }
     
     private void updateScreen(){
@@ -1541,7 +1507,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                         if(c != jCheckBox_obstacles)
                             c.setEnabled(true);
                     }
-//                    OBSTACLES = true;
+                    ac.setOBSTACLES(true);
 //                    _ac.setObstacles();
                 }
                 else {
@@ -1549,7 +1515,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                         if(c != jCheckBox_obstacles)
                             c.setEnabled(false);
                     }
-//                    OBSTACLES = false;
+                    ac.setOBSTACLES(false);
 //                    _ac.removeObstacles();
                 }
             }
@@ -1629,7 +1595,12 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
             chooser.setAcceptAllFileFilterUsed(false);
             //    
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                String outputPathFilename = chooser.getSelectedFile().toString()+"\\Save_"+VARIANTE.toString()+".png";
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                Date date = new Date();
+                String uniqueID = dateFormat.format(date);
+                uniqueID = uniqueID.replaceAll("[/,:, ]", "");
+                String outputPathFilename = chooser.getSelectedFile().toString()
+                        +"\\Save_"+VARIANTE.toString()+"_"+uniqueID+".png";
                 ImageIO.write(imagebuf,"png", new File(outputPathFilename));
                 System.out.println("SAved in : " + outputPathFilename);
             }

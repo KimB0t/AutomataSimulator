@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import _diverse.Params.Directions;
 import static _diverse.Params.RAND;
+import java.util.Iterator;
 
 /**
  *
@@ -60,6 +61,28 @@ public class AutomatonTurmites extends Automaton{
         int pos = j + i*getMATRIX_LENGTH();
         this._ag.add(this.idCounter, new AgentTurmite(i, j, Directions.EAST, pos, this.idCounter));
         this.idCounter++;
+    }
+    
+    @Override
+    public void deleteAgent(int i, int j) {
+        
+//        this.matrix[i][j].setNbAgents(0);
+//        this.matrix[i][j].setCouleur(getCOLOR_DEFAULT());
+//        this.matrix[i][j].setWall(false);
+//        int pos = j + i*getMATRIX_LENGTH();
+//        Iterator<Agent> it = this._ag.iterator();
+//        while(it.hasNext()){
+//            Agent a = it.next();
+//            if(a.getPosition() == pos){
+//                this._ag.remove(a);
+//                System.out.println("HAS BEEN DELETED");
+//            }
+//        }
+//        if(this._ag.contains(this.matrix[i][j])){
+//            this._ag.remove(this.matrix[i][j]);
+//            System.out.println("HAS BEEN DELETED");
+//        }
+//        this.idCounter--;
     }
     
     @Override
@@ -214,5 +237,10 @@ public class AutomatonTurmites extends Automaton{
     @Override
     public CellTurmites makeWall(int i, int j) {
         return new CellTurmites(getCOLOR_OBSTACLE(), i, j, true);
+    }
+    
+    @Override
+    public void makeWallAt(int i, int j) {
+        this.matrix[i][j] = new CellTurmites(getCOLOR_OBSTACLE(), i, j, true);
     }
 }

@@ -117,6 +117,13 @@ public class AutomatonLife extends Automaton{
     }
     
     @Override
+    public void deleteAgent(int i, int j) {
+        this.matrix[i][j].setNbAgents(0);
+        this.matrix[i][j].setCouleur(getCOLOR_DEFAULT());
+        this.matrix[i][j].setWall(false);
+    }
+    
+    @Override
     public void makeBoundaries(){
         
         for (int k = 0; k < getMATRIX_LENGTH(); k++) {
@@ -131,4 +138,10 @@ public class AutomatonLife extends Automaton{
     public CellLife makeWall(int i, int j) {
         return new CellLife(getCOLOR_OBSTACLE(), i, j, true);
     }
+    
+    @Override
+    public void makeWallAt(int i, int j) {
+        this.matrix[i][j] = new CellLife(getCOLOR_OBSTACLE(), i, j, true);
+    }
+    
 }

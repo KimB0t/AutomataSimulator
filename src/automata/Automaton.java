@@ -279,7 +279,27 @@ public abstract class Automaton {
         return RAND.nextInt(p.MATRIX_LENGTH-2 * p.WALL) + p.WALL;
     }
     
+    public boolean getOBSTACLES(){
+        return p.OBSTACLES;
+    }
+    
+    public void setOBSTACLES(boolean bol){
+        p.OBSTACLES = bol;
+    }
+    
+    public boolean getHAND_DRAW_OBSTACLES(){
+        return p.HAND_DRAW_OBSTACLES;
+    }
+    
+    public boolean getUNCOVER(){
+        return p.UNCOVER;
+    }
+    
     public abstract Cell makeWall(int i, int j);
     
+    public abstract void makeWallAt(int i, int j);
+    
     public abstract void makeBoundaries();
+    
+    public abstract void deleteAgent(int i, int j);
 }

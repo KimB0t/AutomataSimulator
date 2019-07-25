@@ -20,6 +20,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import _diverse.Params;
 import static _diverse.Params.*;
+import java.awt.Component;
 
 /**
  *
@@ -120,9 +121,21 @@ public class Launcher extends javax.swing.JFrame {
         jComboBox_boundaries = new javax.swing.JComboBox();
         jLabel10 = new javax.swing.JLabel();
         jComboBox_neighbourhood = new javax.swing.JComboBox();
+        jPanel_classes = new javax.swing.JPanel();
         jLabel_classes = new javax.swing.JLabel();
         jTextField_classes = new javax.swing.JTextField();
         jButton_okClasses = new javax.swing.JButton();
+        jCheckBox_randColors = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel_colors = new javax.swing.JPanel();
+        jButton_color1 = new javax.swing.JButton();
+        jButton_color2 = new javax.swing.JButton();
+        jButton_color3 = new javax.swing.JButton();
+        jButton_color4 = new javax.swing.JButton();
+        jButton_color5 = new javax.swing.JButton();
+        jButton_color6 = new javax.swing.JButton();
+        jButton_color7 = new javax.swing.JButton();
+        jButton_color8 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -155,9 +168,9 @@ public class Launcher extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(300, 300));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel2.setMaximumSize(new java.awt.Dimension(500, 500));
+        jPanel2.setMaximumSize(new java.awt.Dimension(1000, 1000));
         jPanel2.setMinimumSize(new java.awt.Dimension(300, 300));
-        jPanel2.setPreferredSize(new java.awt.Dimension(300, 300));
+        jPanel2.setPreferredSize(new java.awt.Dimension(500, 500));
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
         jComboBox_variante.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "LifeGame", "DiffusionGathering", "DiffusionClassification", "Turmites", "InfluenceClassification", "InfluenceRepulsion" }));
@@ -182,7 +195,7 @@ public class Launcher extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
@@ -194,7 +207,7 @@ public class Launcher extends javax.swing.JFrame {
         jCheckBox_grid.setText("Grid");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
@@ -321,47 +334,156 @@ public class Launcher extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel2.add(jComboBox_neighbourhood, gridBagConstraints);
 
+        this.jPanel_classes.setVisible(false);
+        jPanel_classes.setLayout(new java.awt.GridBagLayout());
+
         jLabel_classes.setText("Classes:");
-        jLabel_classes.setVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
-        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weightx = 0.3;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        jPanel2.add(jLabel_classes, gridBagConstraints);
+        jPanel_classes.add(jLabel_classes, gridBagConstraints);
 
         jTextField_classes.setText("3");
-        jTextField_classes.setVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weightx = 0.3;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        jPanel2.add(jTextField_classes, gridBagConstraints);
+        jPanel_classes.add(jTextField_classes, gridBagConstraints);
 
         jButton_okClasses.setText("OK");
         jButton_okClasses.setBorder(null);
         jButton_okClasses.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton_okClasses.setPreferredSize(new java.awt.Dimension(30, 30));
-        jButton_okClasses.setVisible(false);
         jButton_okClasses.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_okClassesActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weightx = 0.3;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        jPanel2.add(jButton_okClasses, gridBagConstraints);
+        jPanel_classes.add(jButton_okClasses, gridBagConstraints);
+
+        jCheckBox_randColors.setText("Random Colors");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel_classes.add(jCheckBox_randColors, gridBagConstraints);
+
+        jLabel2.setText("Colors:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel_classes.add(jLabel2, gridBagConstraints);
+
+        jPanel_colors.setLayout(new java.awt.GridLayout());
+
+        jButton_color1.setText("1");
+        jButton_color1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_color1.setMaximumSize(new java.awt.Dimension(30, 30));
+        jButton_color1.setMinimumSize(new java.awt.Dimension(30, 30));
+        jButton_color1.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.GREEN)));
+        jPanel_colors.add(jButton_color1);
+
+        jButton_color2.setText("2");
+        jButton_color2.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_color2.setMaximumSize(new java.awt.Dimension(30, 30));
+        jButton_color2.setMinimumSize(new java.awt.Dimension(30, 30));
+        jButton_color2.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.ORANGE)));
+        jPanel_colors.add(jButton_color2);
+
+        jButton_color3.setText("3");
+        jButton_color3.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_color3.setMaximumSize(new java.awt.Dimension(30, 30));
+        jButton_color3.setMinimumSize(new java.awt.Dimension(30, 30));
+        jButton_color3.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.MAGENTA)));
+        jPanel_colors.add(jButton_color3);
+
+        jButton_color4.setText("4");
+        jButton_color4.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_color4.setMaximumSize(new java.awt.Dimension(30, 30));
+        jButton_color4.setMinimumSize(new java.awt.Dimension(30, 30));
+        jButton_color4.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.PINK)));
+        jPanel_colors.add(jButton_color4);
+
+        jButton_color5.setText("5");
+        jButton_color5.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_color5.setMaximumSize(new java.awt.Dimension(30, 30));
+        jButton_color5.setMinimumSize(new java.awt.Dimension(30, 30));
+        jButton_color5.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.YELLOW)));
+        jPanel_colors.add(jButton_color5);
+
+        jButton_color6.setText("6");
+        jButton_color6.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_color6.setMaximumSize(new java.awt.Dimension(30, 30));
+        jButton_color6.setMinimumSize(new java.awt.Dimension(30, 30));
+        jButton_color6.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.RED)));
+        jPanel_colors.add(jButton_color6);
+
+        jButton_color7.setText("7");
+        jButton_color7.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_color7.setMaximumSize(new java.awt.Dimension(30, 30));
+        jButton_color7.setMinimumSize(new java.awt.Dimension(30, 30));
+        jButton_color7.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.CYAN)));
+        jPanel_colors.add(jButton_color7);
+
+        jButton_color8.setText("8");
+        jButton_color8.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_color8.setMaximumSize(new java.awt.Dimension(30, 30));
+        jButton_color8.setMinimumSize(new java.awt.Dimension(30, 30));
+        jButton_color8.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.GRAY)));
+        jPanel_colors.add(jButton_color8);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.1;
+        jPanel_classes.add(jPanel_colors, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel2.add(jPanel_classes, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -403,12 +525,23 @@ public class Launcher extends javax.swing.JFrame {
         MAIN_CELL_DIM = Integer.valueOf(this.getjComboBox_tailleCell().getSelectedItem().toString());
         MAIN_SHAPE = this.getjComboBox_shape().getSelectedItem().toString();
         MAIN_COLOR_AGENT1 = Color.gray;
-//        MAIN_WALL = 0;
+        MAIN_WALL = 0;
+        MAIN_RAND_COLORS = false;
         MAIN_BOUNDARIES = this.getjComboBox_boundaries().getSelectedItem().toString();
         MAIN_NB_CLASSES = Integer.parseInt(this.getjTextField_classes().getText());
         MAIN_GRID = false;
         RAND = new Random();
         switchVariante(this.getjComboBox_variante().getSelectedItem().toString());
+        
+        MAIN_COLORS_ARRAY = new Color[8];
+        MAIN_COLORS_ARRAY[0] = Color.GREEN;
+        MAIN_COLORS_ARRAY[1] = Color.ORANGE;
+        MAIN_COLORS_ARRAY[2] = Color.MAGENTA;
+        MAIN_COLORS_ARRAY[3] = Color.PINK;
+        MAIN_COLORS_ARRAY[4] = Color.YELLOW;
+        MAIN_COLORS_ARRAY[5] = Color.RED;
+        MAIN_COLORS_ARRAY[6] = Color.CYAN;
+        MAIN_COLORS_ARRAY[7] = Color.GRAY;
     }
     
     private void initListeners(){
@@ -424,7 +557,7 @@ public class Launcher extends javax.swing.JFrame {
         });
         
         //Color chooser to change color
-        this.getjButton_color().addActionListener((ActionEvent arg0) -> {
+        this.jButton_color.addActionListener((ActionEvent arg0) -> {
             Color c = JColorChooser.showDialog(null, "Choose a color", Color.GRAY);
             if (c!=null) {
                 MAIN_COLOR_AGENT1 = c;
@@ -433,8 +566,22 @@ public class Launcher extends javax.swing.JFrame {
             }
         });
         
+        //Init all color buttons with color choosers
+        for(Component c : jPanel_colors.getComponents()){
+            ((JButton)c).addActionListener((ActionEvent arg0) -> {
+                
+                int index = Integer.parseInt(((JButton)c).getText()) - 1;
+                
+                Color clr = JColorChooser.showDialog(null, "Choose a color", MAIN_COLORS_ARRAY[index]);
+                if (clr!=null) {
+                    MAIN_COLORS_ARRAY[index] = clr;
+                    ((JButton)c).setIcon(new ImageIcon(getColorIcon(MAIN_COLORS_ARRAY[index])));
+                    c.repaint();
+                }
+            });
+        }
         //When boundaries are set or removed
-        this.getjComboBox_boundaries().addActionListener((ActionEvent e) -> {
+        this.jComboBox_boundaries.addActionListener((ActionEvent e) -> {
             MAIN_BOUNDARIES = getjComboBox_boundaries().getSelectedItem().toString();
             System.out.println("NEED TO BE IMPLEMENTED");
             if(MAIN_BOUNDARIES.equals("Free")) MAIN_WALL = 1;
@@ -442,26 +589,30 @@ public class Launcher extends javax.swing.JFrame {
         });
         
         //When Grid is checked
-        this.getjCheckBox_grid().addItemListener((ItemEvent e) -> {
+        this.jCheckBox_grid.addItemListener((ItemEvent e) -> {
             MAIN_GRID = e.getStateChange() == ItemEvent.SELECTED;
         });
         
+        //When randColors is checked
+        this.jCheckBox_randColors.addItemListener((ItemEvent e) -> {
+            MAIN_RAND_COLORS = e.getStateChange() == ItemEvent.SELECTED;
+            for(Component c : jPanel_colors.getComponents()){
+                c.setEnabled(!MAIN_RAND_COLORS);
+            }
+        });
+        
         //When boundaries are set or removed
-        this.getjComboBox_variante().addActionListener((ActionEvent e) -> {
+        this.jComboBox_variante.addActionListener((ActionEvent e) -> {
             
             switchVariante(this.getjComboBox_variante().getSelectedItem().toString());
             
             if(VARIANTE == Variante.DIFFUSION_CLASSIFICATION 
                     || VARIANTE == Variante.INFLUENCE_CLASSIFICATION
                     || VARIANTE == Variante.INFLUENCE_REPULSION) {
-                jLabel_classes.setVisible(true);
-                jTextField_classes.setVisible(true);
-                jButton_okClasses.setVisible(true);
+                jPanel_classes.setVisible(true);
             }
             else {
-                jLabel_classes.setVisible(false);
-                jTextField_classes.setVisible(false);
-                jButton_okClasses.setVisible(false);
+                jPanel_classes.setVisible(false);
             }
         });
     }
@@ -533,9 +684,18 @@ public class Launcher extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton_color;
+    private javax.swing.JButton jButton_color1;
+    private javax.swing.JButton jButton_color2;
+    private javax.swing.JButton jButton_color3;
+    private javax.swing.JButton jButton_color4;
+    private javax.swing.JButton jButton_color5;
+    private javax.swing.JButton jButton_color6;
+    private javax.swing.JButton jButton_color7;
+    private javax.swing.JButton jButton_color8;
     private javax.swing.JButton jButton_okClasses;
     private javax.swing.JButton jButton_okVariante;
     private javax.swing.JCheckBox jCheckBox_grid;
+    private javax.swing.JCheckBox jCheckBox_randColors;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JComboBox jComboBox_boundaries;
     private javax.swing.JComboBox jComboBox_neighbourhood;
@@ -545,6 +705,7 @@ public class Launcher extends javax.swing.JFrame {
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
@@ -555,6 +716,8 @@ public class Launcher extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel_classes;
+    private javax.swing.JPanel jPanel_colors;
     private javax.swing.JTextField jTextField_classes;
     // End of variables declaration//GEN-END:variables
 //</editor-fold>

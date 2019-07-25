@@ -127,12 +127,14 @@ public class AutomatonInfluenceRepulsionClass extends Automaton{
             //Recupéré uniquement l'état pour cette classe de cet agent
             thisi = _ag.get(i).getI();
             thisj = _ag.get(i).getJ();
-
+         
             //Count neighbours
-            this.countNeighbours(this.matrix[thisi][thisj], ((AgentInfluenceRepulsionClass)_ag.get(i)).getClasse());
+            int laClasse= ((AgentInfluenceRepulsionClass)_ag.get(i)).getClasse();
+            Cell cellOperation= this.matrix[thisi][thisj];
+            this.countNeighbours(cellOperation, laClasse);
             
             //PERCIEVE + DECIDE
-            new_t = _ag.get(i).move(getP(), nghbrs, this.matrix[thisi][thisj]);
+            new_t = _ag.get(i).move(getP(), nghbrs, cellOperation);
             //je vais le mettre directement pour l'instant
 
             //Si cet agent va se deplacer
@@ -329,5 +331,15 @@ public class AutomatonInfluenceRepulsionClass extends Automaton{
     @Override
     public CellInfluenceRepulsionClass makeWall(int i, int j) {
         return new CellInfluenceRepulsionClass(getCOLOR_OBSTACLE(), i, j, true);
+    }
+
+    @Override
+    public void deleteAgent(int i, int j) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public void makeWallAt(int i, int j) {
+        this.matrix[i][j] = new CellInfluenceRepulsionClass(getCOLOR_OBSTACLE(), i, j, true);
     }
 }
