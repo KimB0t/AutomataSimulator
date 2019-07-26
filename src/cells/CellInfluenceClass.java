@@ -1,14 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2019 Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package cells;
 
-import _diverse.AllColors;
-import _diverse.Neighbours;
-import static _diverse.Params.bernoulli;
-import _diverse.Prm;
+import misc.Neighbours;
+import static misc.Params.bernoulli;
+import misc.Params;
 import java.awt.Color;
 
 /**
@@ -24,8 +35,8 @@ public class CellInfluenceClass extends Cell{
     //position
     private int position;
     
-    public CellInfluenceClass(Prm param, int nbA, Color c, int i, int j, boolean w, int[] s, int[] nA, int pos) {
-        super(nbA, c, i, j, w);
+    public CellInfluenceClass(Params param, Color c, int i, int j, boolean w, int[] s, int[] nA, int pos) {
+        super(c, i, j, w);
         
         this.position = pos;
         
@@ -43,7 +54,7 @@ public class CellInfluenceClass extends Cell{
      * @param s
      * @param cls
      */
-    public CellInfluenceClass(Prm param, int[] s, int[] nA, int pos) {
+    public CellInfluenceClass(Params param, int[] s, int[] nA, int pos) {
         super();
         
         this.position = pos;
@@ -60,7 +71,7 @@ public class CellInfluenceClass extends Cell{
     /**
      *
      */
-    public CellInfluenceClass(Prm param) {
+    public CellInfluenceClass(Params param) {
         super();
         this.stateInitializer(param);
         this.agentInitializer(param);
@@ -69,8 +80,8 @@ public class CellInfluenceClass extends Cell{
         this.nb_agents = new int[param.NB_CLASSES];
     }
     
-    public CellInfluenceClass(Prm param, int nbA, Color c, int i, int j, boolean w) {
-        super(nbA, c, i, j, w);
+    public CellInfluenceClass(Params param, Color c, int i, int j, boolean w) {
+        super(c, i, j, w);
         this.stateInitializer(param);
         this.agentInitializer(param);
         this.position = -1;
@@ -78,14 +89,14 @@ public class CellInfluenceClass extends Cell{
 //        this.nb_agents = new int[param.NB_CLASSES];
     }
 
-    public CellInfluenceClass(Prm param, int nbA, Color c, int i, int j, boolean w, int pos) {
-        super(nbA, c, i, j, w);
+    public CellInfluenceClass(Params param, Color c, int i, int j, boolean w, int pos) {
+        super(c, i, j, w);
         this.position = pos;
         this.state = new int[param.NB_CLASSES];
         this.nb_agents = new int[param.NB_CLASSES];
     }
     
-    public void setState(Prm param, int[] state) {
+    public void setState(Params param, int[] state) {
         this.state = new int[param.NB_CLASSES];
         if(state!=null)
             System.arraycopy(state, 0, this.state, 0, param.NB_CLASSES);
@@ -148,7 +159,7 @@ public class CellInfluenceClass extends Cell{
         this.nb_agents[k] = value;
     }
     
-    private void stateInitializer(Prm param){
+    private void stateInitializer(Params param){
 //        int[] a = new int[NB_CLASSES];
         for (int i = 0; i < param.NB_CLASSES; i++) {
             //initialisation avec le min de chaque classe
@@ -181,7 +192,7 @@ public class CellInfluenceClass extends Cell{
         return this.nb_agents[k] == value;
     }
     
-    public void agentInitializer(Prm param){
+    public void agentInitializer(Params param){
         
         this.nb_agents = new int[param.NB_CLASSES];
         
@@ -192,13 +203,13 @@ public class CellInfluenceClass extends Cell{
     }
     
     @Override
-    public CellInfluenceClass nextState(Prm param, Neighbours nghbrs){
+    public CellInfluenceClass nextState(Params param, Neighbours nghbrs){
         
         return null;
     }
 //    
 
-    public boolean expandWave(Prm param, Neighbours nghbrs, int k) {
+    public boolean expandWave(Params param, Neighbours nghbrs, int k) {
         
         if (this.isMinStateAtK(param.MLEVEL, k) //test min
                 && (nghbrs.isSupThen(0)

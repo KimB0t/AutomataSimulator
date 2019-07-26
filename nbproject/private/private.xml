@@ -3,16 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/automata/Automaton.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/_diverse/Neighbours.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/automata/AutomatonTurmites.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/automata/AutomatonInfluenceClass.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/automata/AutomatonInfluenceRepulsionClass.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/agents/AgentInfluenceRepulsionClass.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/automata/AutomatonDiffusionGathering.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/_GUInterfaces/SimulatorInterface.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/cells/CellInfluenceRepulsionClass.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/automata/AutomatonDiffusionClass.java</file>
+            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/misc/Painter.java</file>
+            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/graphicInterfaces/SimulatorInterface.java</file>
+            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/graphicInterfaces/Launcher.java</file>
         </group>
     </open-files>
 </project-private>

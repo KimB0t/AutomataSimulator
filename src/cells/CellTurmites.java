@@ -1,13 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2019 Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package cells;
 
-import _diverse.AllColors;
-import _diverse.Neighbours;
-import _diverse.Prm;
+import misc.Neighbours;
+import misc.Params;
 import java.awt.Color;
 
 /**
@@ -19,8 +30,8 @@ public class CellTurmites extends Cell{
     private int state = 0;
     private int position = 0;
     
-    public CellTurmites(int nbA, Color c, int i, int j, boolean w, int s, int p) {
-        super(nbA, c, i, j, w);
+    public CellTurmites(Color c, int i, int j, boolean w, int s, int p) {
+        super(c, i, j, w);
         this.state = s;
         this.position = p;
     }
@@ -35,12 +46,6 @@ public class CellTurmites extends Cell{
         super();
         this.state = s;
         this.position = p;
-    }
-    
-    public CellTurmites(int nbA, Color c, int i, int j, boolean w) {
-        super(nbA, c, i, j, w);
-        this.state = -1;
-        this.position = -1;
     }
     
     public CellTurmites(Color c, int i, int j, boolean w) {
@@ -65,7 +70,7 @@ public class CellTurmites extends Cell{
         return position;
     }
     
-    public void changeState(Prm param){
+    public void changeState(Params param){
         this.state = 1 - this.state;
         if(state == 0)
             this.setCouleur(param.COLORS.COLOR_DEFAULT);
@@ -74,47 +79,7 @@ public class CellTurmites extends Cell{
     }
 
     @Override
-    public Cell nextState(Prm param, Neighbours nghbrs) {
+    public Cell nextState(Params param, Neighbours nghbrs) {
         return null;
     }
-    
-//    public Agent nextStateTurmite(Neighbours nghbrs) {
-//        
-//        if(nghbrs.cCGet(this.position) != null) {
-//            ArrayList<Agent> tempConcur = nghbrs.cCGet(this.position);
-//            int oldi, oldj;
-//            switch(POLICY){
-//                case CYCLIC:
-//                    //Normalement qlq soit le nombre d'agent on prendra tjrs le 1er et le reste
-//                    //on les prends pas, ils ne vont pas changer dans _ag.
-//                    oldi = _ag.get(tempConcur.get(0).getId()).getI();
-//                    oldj = _ag.get(tempConcur.get(0).getId()).getJ();
-//                    if(!this.matrix[tempConcur.get(0).getI()][tempConcur.get(0).getJ()].isWall()){
-//                        this.matrix[oldi][oldj].changeState();
-//                        //get(0) pour recupèrer le 1er agent
-//                        _ag.set(tempConcur.get(0).getId(), tempConcur.get(0));
-//                    }
-//                    break;
-//                case RANDOM:
-//                    //Choisir 1 aléatoirement
-//                    int i = RAND.nextInt(tempConcur.size());
-//                    oldi = _ag.get(tempConcur.get(i).getId()).getI();
-//                    oldj = _ag.get(tempConcur.get(i).getId()).getJ();
-//                    if(!this.matrix[tempConcur.get(0).getI()][tempConcur.get(0).getJ()].isWall()){
-//                        this.matrix[oldi][oldj].changeState();
-//                        //get(0) pour recupèrer le 1er agent
-//                        _ag.set(tempConcur.get(i).getId(), tempConcur.get(i));
-//                    }
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//        return null;
-//    }
-
-//    @Override
-//    public Cell setWall(Color co, int i, int j, boolean wall) {
-//        return new CellTurmites(co, i, j, wall);
-//    }
 }

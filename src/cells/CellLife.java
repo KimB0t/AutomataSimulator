@@ -1,13 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2019 Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package cells;
 
-import _diverse.AllColors;
-import _diverse.Neighbours;
-import _diverse.Prm;
+import misc.Neighbours;
+import misc.Params;
 import java.awt.Color;
 
 /**
@@ -16,8 +27,11 @@ import java.awt.Color;
  */
 public class CellLife extends Cell{
     
+    //NB agents on this cell
+    private int nbAgents;
+    
     /**
-     *
+     * 
      * @param nbA
      * @param c
      * @param i
@@ -25,7 +39,8 @@ public class CellLife extends Cell{
      * @param w
      */
     public CellLife(int nbA, Color c, int i, int j, boolean w) {
-        super(nbA, c, i, j, w);
+        super(c, i, j, w);
+        this.nbAgents = nbA;
     }
 
     /**
@@ -33,14 +48,49 @@ public class CellLife extends Cell{
      */
     public CellLife() {
         super();
+        this.nbAgents = 0;
     }
     
     public CellLife(Color c, int i, int j, boolean w) {
         super(c, i, j, w);
+        this.nbAgents = 0;
     }
 
+    
+    /**
+     *
+     * @param nbAgents
+     */
+        public void setNbAgents(int nbAgents) {
+        this.nbAgents = nbAgents;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getNbAgents() {
+        return nbAgents;
+    }
+    
+    /**
+     * decrease number of agents on this cell
+     * @param num - number of agents to substract
+     */
+    public void decreaseNbAgents(int num){
+        this.nbAgents -= num;
+    }
+    
+    /**
+     * increase number of agents on this cell
+     * @param num - number of agents to add
+     */
+    public void increaseNbAgents(int num){
+        this.nbAgents += num;
+    }
+    
     @Override
-    public CellLife nextState(Prm param, Neighbours nghbrs) {
+    public CellLife nextState(Params param, Neighbours nghbrs) {
         
         CellLife new_cell;
         new_cell = new CellLife(this.getNbAgents(), this.getCouleur(),
@@ -61,10 +111,4 @@ public class CellLife extends Cell{
         }
         return new_cell;
     }
-
-//    @Override
-//    public Cell setWall(Color co, int i, int j, boolean wall) {
-//        return new CellLife(co, i, j, wall);
-//    }
-
 }

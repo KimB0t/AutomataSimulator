@@ -1,13 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2019 Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package cells;
 
-import _diverse.Neighbours;
-import static _diverse.Params.bernoulli;
-import _diverse.Prm;
+import misc.Neighbours;
+import static misc.Params.bernoulli;
+import misc.Params;
 import java.awt.Color;
 
 /**
@@ -23,8 +35,8 @@ public class CellInfluenceRepulsionClass extends Cell{
     //position
     private int position;
     
-    public CellInfluenceRepulsionClass(Prm param, int nbA, Color c, int i, int j, boolean w, int[] s, int[] nA, int pos) {
-        super(nbA, c, i, j, w);
+    public CellInfluenceRepulsionClass(Params param, Color c, int i, int j, boolean w, int[] s, int[] nA, int pos) {
+        super(c, i, j, w);
         
         this.position = pos;
         
@@ -39,10 +51,12 @@ public class CellInfluenceRepulsionClass extends Cell{
     
     /**
      *
+     * @param param
      * @param s
-     * @param cls
+     * @param nA
+     * @param pos
      */
-    public CellInfluenceRepulsionClass(Prm param, int[] s, int[] nA, int pos) {
+    public CellInfluenceRepulsionClass(Params param, int[] s, int[] nA, int pos) {
         super();
         
         this.position = pos;
@@ -58,8 +72,9 @@ public class CellInfluenceRepulsionClass extends Cell{
 
     /**
      *
+     * @param param
      */
-    public CellInfluenceRepulsionClass(Prm param) {
+    public CellInfluenceRepulsionClass(Params param) {
         super();
         this.stateInitializer(param);
         this.agentInitializer(param);
@@ -68,8 +83,8 @@ public class CellInfluenceRepulsionClass extends Cell{
 //        this.nb_agents = new int[param.NB_CLASSES];
     }
     
-    public CellInfluenceRepulsionClass(Prm param, int nbA, Color c, int i, int j, boolean w) {
-        super(nbA, c, i, j, w);
+    public CellInfluenceRepulsionClass(Params param, Color c, int i, int j, boolean w) {
+        super(c, i, j, w);
         this.stateInitializer(param);
         this.agentInitializer(param);
         this.position = -1;
@@ -77,14 +92,14 @@ public class CellInfluenceRepulsionClass extends Cell{
 //        this.nb_agents = new int[param.NB_CLASSES];
     }
 
-    public CellInfluenceRepulsionClass(Prm param, int nbA, Color c, int i, int j, boolean w, int pos) {
-        super(nbA, c, i, j, w);
+    public CellInfluenceRepulsionClass(Params param, Color c, int i, int j, boolean w, int pos) {
+        super(c, i, j, w);
         this.position = pos;
         this.state = new int[param.NB_CLASSES];
         this.nb_agents = new int[param.NB_CLASSES];
     }
     
-    public void setState(Prm param, int[] state) {
+    public void setState(Params param, int[] state) {
         this.state = new int[param.NB_CLASSES];
         if(state!=null)
             System.arraycopy(state, 0, this.state, 0, param.NB_CLASSES);
@@ -96,12 +111,6 @@ public class CellInfluenceRepulsionClass extends Cell{
         this.state = null;
         this.nb_agents = null;
     }
-    
-//    public void setNb_agents(int[] nb_agents) {
-//        this.nb_agents = new int[NB_CLASSES];
-//        if(nb_agents!=null)
-//            System.arraycopy(nb_agents, 0, this.nb_agents, 0, NB_CLASSES);
-//    }
 
     public void setPosition(int position) {
         this.position = position;
@@ -147,7 +156,7 @@ public class CellInfluenceRepulsionClass extends Cell{
         this.nb_agents[k] = value;
     }
     
-    private void stateInitializer(Prm param){
+    private void stateInitializer(Params param){
 //        int[] a = new int[NB_CLASSES];
         for (int i = 0; i < param.NB_CLASSES; i++) {
             //initialisation avec le min de chaque classe
@@ -180,7 +189,7 @@ public class CellInfluenceRepulsionClass extends Cell{
         return this.nb_agents[k] == value;
     }
     
-    public void agentInitializer(Prm param){
+    public void agentInitializer(Params param){
         
         this.nb_agents = new int[param.NB_CLASSES];
         
@@ -190,14 +199,20 @@ public class CellInfluenceRepulsionClass extends Cell{
         }
     }
     
+    public CellInfluenceRepulsionClass getCopy(Params param){
+        return new CellInfluenceRepulsionClass(param, this.getCouleur(),
+                                this.getI(), this.getJ(), false, this.state,
+                                this.nb_agents, this.position);
+    }
+    
     @Override
-    public CellInfluenceRepulsionClass nextState(Prm param, Neighbours nghbrs){
+    public CellInfluenceRepulsionClass nextState(Params param, Neighbours nghbrs){
         
         return null;
     }
 //    
 
-    public boolean expandWave(Prm param, Neighbours nghbrs, int k) {
+    public boolean expandWave(Params param, Neighbours nghbrs, int k) {
         
         if (this.isMinStateAtK(param.MLEVEL, k) //test min
                 && (nghbrs.isSupThen(0)
@@ -251,10 +266,5 @@ public class CellInfluenceRepulsionClass extends Cell{
     public int minLevel(int MLEVEL, int k){
         return k * (MLEVEL+1);
     }
-
-//    @Override
-//    public CellInfluenceRepulsionClass setWall(Color co, int i, int j, boolean wall) {
-//        return new CellInfluenceRepulsionClass(co, i, j, wall);
-//    }
     
 }

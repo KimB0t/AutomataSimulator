@@ -1,14 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2019 Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package automata;
 
-import _diverse.Neighbours;
-import _diverse.Params;
-import static _diverse.Params.RAND;
-import static _diverse.Params.bernoulli;
+import misc.Neighbours;
+import static misc.Params.RAND;
+import static misc.Params.bernoulli;
 import agents.Agent;
 import agents.AgentInfluenceRepulsionClass;
 import cells.Cell;
@@ -80,7 +91,7 @@ public class AutomatonInfluenceRepulsionClass extends Automaton{
     public void init_matrix() {
         for(int i=0; i<getMATRIX_LENGTH(); i++) {
             for(int j=0; j<getMATRIX_LENGTH(); j++){
-                this.matrix[i][j] = new CellInfluenceRepulsionClass(getP(), 0, getCOLOR_DEFAULT(), i, j, false, j + i*getMATRIX_LENGTH());
+                this.matrix[i][j] = new CellInfluenceRepulsionClass(getP(), getCOLOR_DEFAULT(), i, j, false, j + i*getMATRIX_LENGTH());
             }
         }
         //applay boundaries if they are enabled
@@ -154,9 +165,7 @@ public class AutomatonInfluenceRepulsionClass extends Automaton{
         for(int i=0; i<getMATRIX_LENGTH(); i++) {
             for(int j=0; j<getMATRIX_LENGTH(); j++){
                 if (!this.matrix[i][j].isWall()) {
-                    CellInfluenceRepulsionClass new_cell = new CellInfluenceRepulsionClass(getP(), this.matrix[i][j].getNbAgents(), this.matrix[i][j].getCouleur(),
-                                this.matrix[i][j].getI(), this.matrix[i][j].getJ(), false, this.matrix[i][j].getState(),
-                                this.matrix[i][j].getNb_agents(), this.matrix[i][j].getPosition());
+                    CellInfluenceRepulsionClass new_cell = this.matrix[i][j].getCopy(getP());
 //                    System.out.println("PPPPPPPPPP ++ " + this.matrix[i][j].getPosition());
                     //this variables assures that waves are displayed correctly
                     //if the first vague is diplayed, other do not

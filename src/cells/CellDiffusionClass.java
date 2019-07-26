@@ -1,17 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2019 Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package cells;
 
-import _diverse.PointAndCell;
-import _diverse.Neighbours;
+import misc.PointAndCell;
+import misc.Neighbours;
 import java.awt.Color;
 import java.awt.Point;
-import static _diverse.Params.RAND;
-import static _diverse.Params.bernoulli;
-import _diverse.Prm;
+import static misc.Params.RAND;
+import static misc.Params.bernoulli;
+import misc.Params;
 
 /**
  *
@@ -19,6 +31,8 @@ import _diverse.Prm;
  */
 public class CellDiffusionClass extends Cell{
     
+    //NB agents on this cell
+    private int nbAgents;
     //Array of states
     private int[] state;
     //Next position for the agent of this cell to move on (delta)
@@ -29,8 +43,9 @@ public class CellDiffusionClass extends Cell{
     //for when the cell is reserved by the first agent that reserves it
     private boolean reserved;
     
-    public CellDiffusionClass(Prm param){
+    public CellDiffusionClass(Params param){
         super();
+        this.nbAgents = 0;
         this.state = this.stateInitializer(param);
         this.di = -1;
         this.dj = -1;
@@ -38,8 +53,9 @@ public class CellDiffusionClass extends Cell{
         this.reserved = false;
     }
     
-    public CellDiffusionClass(Prm param, int nbA, Color c, int i, int j, boolean w){
-        super(nbA, c, i, j, w);
+    public CellDiffusionClass(Params param, int nbA, Color c, int i, int j, boolean w){
+        super(c, i, j, w);
+        this.nbAgents = nbA;
         this.state = this.stateInitializer(param);
         this.di = -1;
         this.dj = -1;
@@ -47,9 +63,10 @@ public class CellDiffusionClass extends Cell{
         this.reserved = false;
     }
     
-    public CellDiffusionClass(Prm param, int nbA, Color c, int i, int j, boolean w, 
+    public CellDiffusionClass(Params param, int nbA, Color c, int i, int j, boolean w, 
             int[] s, int di, int dj, int cl, boolean r) {
-        super(nbA, c, i, j, w);
+        super(c, i, j, w);
+        this.nbAgents = nbA;
         this.state = new int[param.NB_CLASSES];
         if(s!=null)
             System.arraycopy(s, 0, this.state, 0, param.NB_CLASSES);
@@ -61,25 +78,15 @@ public class CellDiffusionClass extends Cell{
     
     public CellDiffusionClass(Color co, int i, int j, boolean wall){
         super(co, i, j, wall);
+        this.nbAgents = 0;
         this.state = null;
         this.di = -1;
         this.dj = -1;
         this.classe = -1;
         this.reserved = false;
     }
-    
-//    public CellDiffusionClass(int nbA, Color c, int i, int j, boolean w, 
-//            int[] s, int cl) {
-//        super(nbA, c, i, j, w);
-//        this.state = new int[NB_CLASSES];
-//        if(s!=null)
-//            System.arraycopy(s, 0, this.state, 0, NB_CLASSES);
-//        this.classe = cl;
-//        this.di = -1;
-//        this.dj = -1;
-//    }
 
-    public void setState(Prm param, int[] state) {
+    public void setState(Params param, int[] state) {
         this.state = new int[param.NB_CLASSES];
         if(state!=null)
             System.arraycopy(state, 0, this.state, 0, param.NB_CLASSES);
@@ -105,11 +112,11 @@ public class CellDiffusionClass extends Cell{
         this.state[k] = s;
     }
 
-    public void setMaxAtK(Prm param, int k) {
+    public void setMaxAtK(Params param, int k) {
         this.state[k] = maxLevel(param, k);
     }
 
-    public void setMinAtK(Prm param, int k) {
+    public void setMinAtK(Params param, int k) {
         this.state[k] = minLevel(param, k);
     }
     
@@ -133,7 +140,39 @@ public class CellDiffusionClass extends Cell{
         return reserved;
     }
     
-    private int [] stateInitializer(Prm param){
+    /**
+     *
+     * @param nbAgents
+     */
+        public void setNbAgents(int nbAgents) {
+        this.nbAgents = nbAgents;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getNbAgents() {
+        return nbAgents;
+    }
+    
+    /**
+     * decrease number of agents on this cell
+     * @param num - number of agents to substract
+     */
+    public void decreaseNbAgents(int num){
+        this.nbAgents -= num;
+    }
+    
+    /**
+     * increase number of agents on this cell
+     * @param num - number of agents to add
+     */
+    public void increaseNbAgents(int num){
+        this.nbAgents += num;
+    }
+    
+    private int [] stateInitializer(Params param){
         int[] a = new int[param.NB_CLASSES];
         for (int i = 0; i < param.NB_CLASSES; i++) {
             //initialisation avec le min de chaque classe
@@ -142,7 +181,7 @@ public class CellDiffusionClass extends Cell{
         return a;
     }
     
-    public CellDiffusionClass[][] additional_step(Prm param, CellDiffusionClass[][] new_matrix_class){
+    public CellDiffusionClass[][] additional_step(Params param, CellDiffusionClass[][] new_matrix_class){
         
         if (this.di != -1 && this.dj != -1){
             //moving agents
@@ -153,9 +192,9 @@ public class CellDiffusionClass extends Cell{
             //setting color
             new_matrix_class[this.di][this.dj].setCouleur(param.getCOLOR_at(this.classe));
         }
-        if (this.getNbAgents() == 1)
+        if (this.nbAgents == 1)
             this.setCouleur(param.getCOLOR_at(this.classe));
-        else if (this.getNbAgents() > 1)
+        else if (this.nbAgents > 1)
             this.setCouleur(param.getCOLOR_at(this.classe));
         else //means this class became empty, so we make it a neutral class
             this.setClasse(-1);
@@ -165,15 +204,15 @@ public class CellDiffusionClass extends Cell{
         return new_matrix_class;
     }
     
-    public boolean isMaxStateAtK(Prm param, int k){
+    public boolean isMaxStateAtK(Params param, int k){
         return this.state[k] == maxLevel(param, k);
     }
     
-    public boolean isMinStateAtK(Prm param, int k){
+    public boolean isMinStateAtK(Params param, int k){
         return this.state[k] == minLevel(param, k);
     }
     
-    public boolean isSupThenMinAtK(Prm param, int k){
+    public boolean isSupThenMinAtK(Params param, int k){
         return this.state[k] > minLevel(param, k);
     }
     
@@ -185,7 +224,7 @@ public class CellDiffusionClass extends Cell{
      * @param k
      * @return
      */
-    public int maxLevel(Prm param, int k){
+    public int maxLevel(Params param, int k){
         return k * (param.MLEVEL+1) + param.MLEVEL;
     }
     
@@ -194,18 +233,18 @@ public class CellDiffusionClass extends Cell{
      * @param k
      * @return
      */
-    public int minLevel(Prm param, int k){
+    public int minLevel(Params param, int k){
         return k * (param.MLEVEL+1);
     }
 
     @Override
-    public CellDiffusionClass nextState(Prm param, Neighbours nghbrs) {
+    public CellDiffusionClass nextState(Params param, Neighbours nghbrs) {
         return null;
     }
     
-    public PointAndCell nextPoint(Prm param, Neighbours nghbrs) {
+    public PointAndCell nextPoint(Params param, Neighbours nghbrs) {
         Point p = new Point();
-        CellDiffusionClass new_cell = new CellDiffusionClass(param, this.getNbAgents(), this.getCouleur(),
+        CellDiffusionClass new_cell = new CellDiffusionClass(param, this.nbAgents, this.getCouleur(),
                                 this.getI(), this.getJ(), false, this.state, this.di, this.dj,
                                 this.classe, this.reserved);
         
@@ -246,11 +285,11 @@ public class CellDiffusionClass extends Cell{
         return new PointAndCell(p, new_cell);
     }
     
-    public boolean expandWave(Prm param, Neighbours nghbrs, int k) {
+    public boolean expandWave(Params param, Neighbours nghbrs, int k) {
         
         if (this.isMinStateAtK(param, k) //test min
             && (nghbrs.isSupThen(0)
-                || (this.getNbAgents() > 0 
+                || (this.nbAgents > 0 
                     && this.getClasse() == k 
                     && bernoulli(param.LAMBDA) == 1))){
             this.setMaxAtK(param, k); //put max
@@ -289,7 +328,7 @@ public class CellDiffusionClass extends Cell{
 //                " | Color: " + this.getCouleur());
     }
     
-    public void doStuff(Prm param, int cl){
+    public void doStuff(Params param, int cl){
         this.increaseNbAgents(1);
         //setting new classe
         this.setClasse(cl);

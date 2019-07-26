@@ -1,11 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2019 Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package automata;
 
-import _diverse.Neighbours;
+import misc.Neighbours;
 import agents.Agent;
 import agents.AgentTurmite;
 import cells.Cell;
@@ -13,9 +25,8 @@ import cells.CellTurmites;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
-import _diverse.Params.Directions;
-import static _diverse.Params.RAND;
-import java.util.Iterator;
+import misc.Params.Directions;
+import static misc.Params.RAND;
 
 /**
  *
@@ -55,7 +66,7 @@ public class AutomatonTurmites extends Automaton{
     @Override
     public void setAgent(int i, int j, int nb, Color co, boolean wl) {
         
-        this.matrix[i][j].setNbAgents(nb);
+//        this.matrix[i][j].setNbAgents(nb);
         this.matrix[i][j].setCouleur(co);
         this.matrix[i][j].setWall(wl);
         int pos = j + i*getMATRIX_LENGTH();
@@ -95,7 +106,7 @@ public class AutomatonTurmites extends Automaton{
         for(int i=0; i<getMATRIX_LENGTH(); i++) {
             for(int j=0; j<getMATRIX_LENGTH(); j++){
                 this.matrix[i][j] = 
-                        new CellTurmites(0, getCOLOR_DEFAULT(), i, j, false, 0, j + i*getMATRIX_LENGTH());
+                        new CellTurmites(getCOLOR_DEFAULT(), i, j, false, 0, j + i*getMATRIX_LENGTH());
             }
         }
         //applay boundaries if they are enabled

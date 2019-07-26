@@ -1,16 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2019 Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package cells;
 
-import _diverse.AllColors;
-import _diverse.Neighbours;
-import static _diverse.Params.bernoulli;
+import misc.Neighbours;
+import static misc.Params.bernoulli;
 import java.awt.Color;
-import static _diverse.Params.RAND;
-import _diverse.Prm;
+import static misc.Params.RAND;
+import misc.Params;
 
 /**
  *
@@ -18,34 +29,43 @@ import _diverse.Prm;
  */
 public class CellDiffusionGathering extends Cell{
     
+    //State of the cell
     private int state;
+    
     //Next position for the agent of this cell to move on (delta)
     public int di;
     public int dj;
     
+    //NB agents on this cell
+    private int nbAgents;
+    
     public CellDiffusionGathering(){
         super();
+        this.nbAgents = 0;
         this.state = 0;
         this.di = -1;
         this.dj = -1;
     }
     
     public CellDiffusionGathering(int nbA, Color c, int i, int j, boolean w){
-        super(nbA, c, i, j, w);
+        super(c, i, j, w);
+        this.nbAgents = nbA;
         this.state = 0;
         this.di = -1;
         this.dj = -1;
     }
     
     public CellDiffusionGathering(int nbA, Color c, int i, int j, boolean w, int s, int di, int dj) {
-        super(nbA, c, i, j, w);
+        super(c, i, j, w);
+        this.nbAgents = nbA;
         this.state = s;
         this.di = di;
         this.dj = dj;
     }
     
     public CellDiffusionGathering(int nbA, Color c, int i, int j, boolean w, int s){
-        super(nbA, c, i, j, w);
+        super(c, i, j, w);
+        this.nbAgents = nbA;
         this.state = s;
         this.di = -1;
         this.dj = -1;
@@ -53,6 +73,7 @@ public class CellDiffusionGathering extends Cell{
     
     public CellDiffusionGathering(int i, int j){
         super(i, j);
+        this.nbAgents = 0;
         this.state = 0;
         this.di = -1;
         this.dj = -1;
@@ -60,6 +81,7 @@ public class CellDiffusionGathering extends Cell{
     
     public CellDiffusionGathering(Color c, int i, int j, boolean w){
         super(c, i, j, w);
+        this.nbAgents = 0;
         this.state = -1;
         this.di = -1;
         this.dj = -1;
@@ -89,28 +111,21 @@ public class CellDiffusionGathering extends Cell{
         return dj;
     }
     
-//    public CellRDClassification[][] additional_step(CellRDClassification[][] new_matrix_class){
-//        
-//        if (this.di != -1 && this.dj != -1){
-//            //moving agents
-//            this.decreaseNbAgents(1);
-//            new_matrix_class[this.di][this.dj].increaseNbAgents(1);
-//            //setting new classe
-//            new_matrix_class[this.di][this.dj].setClasse(this.classe);
-//            //setting color
-//            new_matrix_class[this.di][this.dj].setCouleur(COLOR_TABLE.get(this.classe));
-//        }
-//        if (this.getNbAgents() == 1)
-//            this.setCouleur(COLOR_TABLE.get(this.classe));
-//        else if (this.getNbAgents() > 1)
-//            this.setCouleur(COLOR_TABLE.get(this.classe));
-//        else //means this class became empty, so we make it a neutral class
-//            this.setClasse(-1);
-//        //always un-reserve the cell
-//        this.reserved = false;
-//        
-//        return new_matrix_class;
-//    }
+    /**
+     *
+     * @param nbAgents
+     */
+        public void setNbAgents(int nbAgents) {
+        this.nbAgents = nbAgents;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getNbAgents() {
+        return nbAgents;
+    }
     
     public void increaseState(int value){
         this.state += value;
@@ -119,19 +134,35 @@ public class CellDiffusionGathering extends Cell{
     public void decreaseState(int value){
         this.state -= value;
     }
+    
+    /**
+     * decrease number of agents on this cell
+     * @param num - number of agents to substract
+     */
+    public void decreaseNbAgents(int num){
+        this.nbAgents -= num;
+    }
+    
+    /**
+     * increase number of agents on this cell
+     * @param num - number of agents to add
+     */
+    public void increaseNbAgents(int num){
+        this.nbAgents += num;
+    }
 
     @Override
-    public CellDiffusionGathering nextState(Prm param, Neighbours nghbrs) {
+    public CellDiffusionGathering nextState(Params param, Neighbours nghbrs) {
         
 //        System.out.println("NEXTSTATE=========BEFORE==============NEWCELL :");
         
-        CellDiffusionGathering new_cell = new CellDiffusionGathering(this.getNbAgents(), this.getCouleur(),
+        CellDiffusionGathering new_cell = new CellDiffusionGathering(this.nbAgents, this.getCouleur(),
                                 this.getI(), this.getJ(), false, this.state);
 //        new_cell.printCell();
         //Calculating new state
         if (new_cell.getState() == 0 
                 && (nghbrs.isSupThen(0)
-                    || (new_cell.getNbAgents() > 0 && bernoulli(param.LAMBDA) == 1))){
+                    || (new_cell.nbAgents > 0 && bernoulli(param.LAMBDA) == 1))){
             new_cell.setState(param.MLEVEL);
             new_cell.setCouleur(param.COLORS.COLOR_EXCITED);
         }
@@ -157,7 +188,7 @@ public class CellDiffusionGathering extends Cell{
                 new_cell.setDj(delta.getJ());
             }
         }
-        else if (this.state == 0 && this.getNbAgents() > 0){
+        else if (this.state == 0 && this.nbAgents > 0){
             if (!nghbrs.isEmptyFreeExcitedCells()) {
                 Cell delta = nghbrs.getElementFreeExcitedCells(
                         RAND.nextInt(nghbrs.getSizeFreeExcitedCells()));
@@ -172,7 +203,7 @@ public class CellDiffusionGathering extends Cell{
     }
     
     public void printCell(){
-        System.out.println("nbAgent: " + this.getNbAgents()+
+        System.out.println("nbAgent: " + this.nbAgents+
                     " | Color: " + this.getCouleur()+
                     " | Wall: " + this.isWall()+
                     " | Di: " + this.di+
