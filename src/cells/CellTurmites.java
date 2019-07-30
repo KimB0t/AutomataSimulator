@@ -23,53 +23,97 @@ import java.awt.Color;
 
 /**
  *
- * @author Karim
+ * @author Karim BOUTAMINE <boutaminekarim06 at gmail.com>
  */
 public class CellTurmites extends Cell{
 
     private int state = 0;
     private int position = 0;
     
+    /**
+     *
+     * @param c
+     * @param i
+     * @param j
+     * @param w
+     * @param s
+     * @param p
+     */
     public CellTurmites(Color c, int i, int j, boolean w, int s, int p) {
         super(c, i, j, w);
         this.state = s;
         this.position = p;
     }
 
+    /**
+     *
+     */
     public CellTurmites() {
         super();
         this.state = -1;
         this.position = -1;
     }
 
+    /**
+     *
+     * @param s
+     * @param p
+     */
     public CellTurmites(int s, int p) {
         super();
         this.state = s;
         this.position = p;
     }
     
+    /**
+     *
+     * @param c
+     * @param i
+     * @param j
+     * @param w
+     */
     public CellTurmites(Color c, int i, int j, boolean w) {
         super(c, i, j, w);
         this.state = -1;
         this.position = -1;
     }
     
+    /**
+     *
+     * @param state
+     */
     public void setState(int state) {
         this.state = state;
     }
 
+    /**
+     *
+     * @param position
+     */
     public void setPosition(int position) {
         this.position = position;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getState() {
         return state;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPosition() {
         return position;
     }
     
+    /**
+     *
+     * @param param
+     */
     public void changeState(Params param){
         this.state = 1 - this.state;
         if(state == 0)
@@ -79,7 +123,33 @@ public class CellTurmites extends Cell{
     }
 
     @Override
-    public Cell nextState(Params param, Neighbours nghbrs) {
-        return null;
+    public CellTurmites getCopy(Params param) {
+        return new CellTurmites(this.getCouleur(), this.getI(), this.getJ(), 
+                this.isWall(), this.state, this.position);
+    }
+
+    @Override
+    public int getNbAgents() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getNbAgents(int k) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void countNeighbours() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void countNeighbours(Params p, int k) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void nextState(Params param) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

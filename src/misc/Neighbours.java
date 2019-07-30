@@ -28,17 +28,23 @@ import java.util.HashMap;
  */
 public class Neighbours {
     
+
+    //List of neighbouring cells.
+    protected Cell[] neighbours;
+    
+    //Number of neighbouring cells.
+    private int NB_NGHBRS;
+    
     /**
      *  nb of neighbours of cell c 
      */
-    private int excited_free_cells_count;
+    protected int excited_free_cells_count;
     
     /**
      *  list of excited neighbouring free cells of cell c 
      *  to where the agent of cell c can possibly move  
      */
     private ArrayList<Cell> excited_free_cells;
-    
     
     /**
      *  list of neighbouring free cells of cell c 
@@ -51,6 +57,10 @@ public class Neighbours {
     
     private HashMap<Integer, ArrayList<Agent>> concurent_cells;
 
+    
+    public Neighbours(){
+    }
+    
     /**
      * 
      * @param c
@@ -61,10 +71,14 @@ public class Neighbours {
         this.excited_free_cells_count = c;
         this.excited_free_cells = efs;
         this.free_cells = fs;
+        this.NB_NGHBRS = 8;
+        this.neighbours = new Cell[this.NB_NGHBRS];
     }
     
     public Neighbours(int c){
         this.excited_free_cells_count = c;
+        this.NB_NGHBRS = 8;
+        this.neighbours = new Cell[this.NB_NGHBRS];
     }
     
     public Neighbours(HashMap<Integer, ArrayList<Agent>> cc){
@@ -185,5 +199,13 @@ public class Neighbours {
     
     public int getSizeFreeRepulsiveCells(){
         return this.repulsive_free_cells.size();
+    }
+    
+    public int getNB_NGHBRS(){
+        return this.NB_NGHBRS;
+    }
+    
+    public void setNeighbours(Cell[] nghbrs){
+        this.neighbours = nghbrs;
     }
 }

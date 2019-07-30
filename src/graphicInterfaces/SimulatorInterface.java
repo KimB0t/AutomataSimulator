@@ -18,22 +18,16 @@
 package graphicInterfaces;
 
 import automata.Automaton;
-import automata.AutomatonLife;
+import automata.AutoLife;
 import java.awt.Color;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import misc.Painter;
-import automata.AutomatonDiffusionClass;
-import automata.AutomatonDiffusionGathering;
-import automata.AutomatonInfluenceClass;
-import automata.AutomatonInfluenceRepulsionClass;
-import automata.AutomatonTurmites;
+import automata.AutoDiffClass;
+import automata.AutoDiffGather;
+import automata.AutoInfClass;
+import automata.AutoInfRepClass;
+import automata.AutoTurmites;
 import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -61,7 +55,7 @@ import static misc.Params.*;
  * Graphic interface that displays simulation of the automaton.
  * Extends a JFrame for GUI and implements a Runnable for threads.
  * The thresd is responsible for automaton simulation.
- * @author Karim
+ * @author Karim BOUTAMINE <boutaminekarim06 at gmail.com>
  */
 public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
 
@@ -93,22 +87,22 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         //Choosing which automaton to launch
         switch(var){
             case LIFE:
-                ac = new AutomatonLife();
+                ac = new AutoLife();
                 break;
             case TURMITES:
-                ac = new AutomatonTurmites();
+                ac = new AutoTurmites();
                 break;
             case DIFFUSION_CLASSIFICATION:
-                ac = new AutomatonDiffusionClass();
+                ac = new AutoDiffClass();
                 break;
             case DIFFUSION_GATHERING:
-                ac = new AutomatonDiffusionGathering();
+                ac = new AutoDiffGather();
                 break;
             case INFLUENCE_CLASSIFICATION:
-                ac = new AutomatonInfluenceClass();
+                ac = new AutoInfClass();
                 break;
             case INFLUENCE_REPULSION:
-                ac = new AutomatonInfluenceRepulsionClass();
+                ac = new AutoInfRepClass();
                 break;
             default:
                 break;
@@ -1120,15 +1114,15 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jButton_nextActionPerformed
 
     private void jButton_okFireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okFireActionPerformed
-        ac.setLAMBDA(Float.parseFloat(jTextField_fire.getText()));
+        ac.setLAMBDA(jTextField_fire.getText());
     }//GEN-LAST:event_jButton_okFireActionPerformed
 
     private void jButton_okDensityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okDensityActionPerformed
-        ac.setDENSITY(Float.parseFloat(jTextField_density.getText()));
+        ac.setDENSITY(jTextField_density.getText());
     }//GEN-LAST:event_jButton_okDensityActionPerformed
 
     private void jButton_okMlevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okMlevelActionPerformed
-       ac.setMLEVEL(Integer.parseInt(jTextField_mlevel.getText()));
+       ac.setMLEVEL(jTextField_mlevel.getText());
     }//GEN-LAST:event_jButton_okMlevelActionPerformed
 
     private void jButton_nextPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_nextPlusActionPerformed
@@ -1140,11 +1134,11 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jButton_randObstacleActionPerformed
 
     private void jButton_okLengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okLengthActionPerformed
-        ac.setOBSTACLES_LENGTH(Integer.parseInt(jTextField_obstacleLength.getText()));
+        ac.setOBSTACLES_LENGTH(jTextField_obstacleLength.getText());
     }//GEN-LAST:event_jButton_okLengthActionPerformed
 
     private void jButton_okNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okNumberActionPerformed
-        ac.setOBSTACLES_NBR(Integer.parseInt(jTextField_obstaclesNbr.getText()));
+        ac.setOBSTACLES_NBR(jTextField_obstaclesNbr.getText());
     }//GEN-LAST:event_jButton_okNumberActionPerformed
 
     private void jButton_ObstaclesResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ObstaclesResetActionPerformed
@@ -1156,7 +1150,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jButton_next1000ActionPerformed
 
     private void jButton_okPAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okPAActionPerformed
-        ac.setPA(Double.valueOf(jTextField_pa.getText()));
+        ac.setPA(jTextField_pa.getText());
     }//GEN-LAST:event_jButton_okPAActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1165,7 +1159,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton_repulsionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_repulsionActionPerformed
-        ac.setREPULSION(Double.valueOf(jTextField_repulsion.getText()));
+        ac.setREPULSION(jTextField_repulsion.getText());
     }//GEN-LAST:event_jButton_repulsionActionPerformed
 
     private void jButton_screenSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_screenSaveActionPerformed
@@ -1219,8 +1213,8 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                 
                 //Devide by the CELL_DIM to get the cell (i, j) instead of 
                 //the (x, y) coordinates of the mouse.
-                int x = e.getX()/ac.getCELL_DIM();
-                int y = e.getY()/ac.getCELL_DIM();
+                int x = e.getX()/ac.CELL_DIM;
+                int y = e.getY()/ac.CELL_DIM;
                 jLabel_coordinates.setText("<html>X="+x+"<br>Y="+y+"</html>");
             }
         });
@@ -1239,14 +1233,14 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
             shutdown();
             try {
                 Thread.sleep(40);
-                for(int i=0; i<x; i++) ac.step();
+                for(int i=0; i<x; i++) {/*System.out.println("STTEEEEP "+ac.NB_GENERATIONS);*/ ac.step();}
                 Thread.sleep(40);
             } catch (InterruptedException ex) {
                 Logger.getLogger(SimulatorInterface.class.getName()).log(Level.SEVERE, null, ex);
             }
             start();
         }
-        else for(int i=0; i<x; i++) ac.step();
+        else for(int i=0; i<x; i++) {/*System.out.println("STTEEEEP "+ac.NB_GENERATIONS);*/ ac.step();}
         updateScreen();
     }
     
@@ -1303,110 +1297,87 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jButton_color.setIcon(new ImageIcon(colorSample));
         
         //When speed is changed
-        jComboBox_speed.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                ac.setCOEF_SPEED(Float.parseFloat(jComboBox_speed.getSelectedItem().toString().substring(1)));
-            }
+        jComboBox_speed.addActionListener((ActionEvent e) -> {
+            ac.setCOEF_SPEED(jComboBox_speed.getSelectedItem().toString().substring(1));
         });
         
         //when shape is changed
-        jComboBox_shape.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                ac.setSHAPE(jComboBox_shape.getSelectedItem().toString());
-            }
+        jComboBox_shape.addActionListener((ActionEvent e) -> {
+            ac.setSHAPE(jComboBox_shape.getSelectedItem().toString());
         });
         
         //Color chooser to change color
-        jButton_color.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent arg0) {
-                Color c = JColorChooser.showDialog(null, "Choose a color", Color.GRAY);
-                if (c!=null) {
-                    ac.setCOLOR_AGENT1(c);
-                    Graphics2D g = colorSample.createGraphics();
-                    g.setColor(ac.getCOLOR_AGENT1());
-                    g.fillRect(0, 0, colorSample.getWidth(), colorSample.getHeight());
-                    g.dispose();
-                    jButton_color.setIcon(new ImageIcon(colorSample));
-                    jButton_color.repaint();
-                    System.out.println("couleur: " + c);
-                }
+        jButton_color.addActionListener((ActionEvent arg0) -> {
+            Color c = JColorChooser.showDialog(null, "Choose a color", Color.GRAY);
+            if (c!=null) {
+                ac.setCOLOR_AGENT1(c);
+                Graphics2D g = colorSample.createGraphics();
+                g.setColor(ac.getCOLOR_AGENT1());
+                g.fillRect(0, 0, colorSample.getWidth(), colorSample.getHeight());
+                g.dispose();
+                jButton_color.setIcon(new ImageIcon(colorSample));
+                jButton_color.repaint();
+                System.out.println("couleur: " + c);
             }
         });
         
         //When obstacles are checked/unchecked
-        jCheckBox_obstacles.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED){
-                    for(Component c : jPanel_obstacles.getComponents()){
-                        if(c != jCheckBox_obstacles)
-                            c.setEnabled(true);
-                    }
-                    ac.setOBSTACLES(true);
+        jCheckBox_obstacles.addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED){
+                for(Component c : jPanel_obstacles.getComponents()){
+                    if(c != jCheckBox_obstacles)
+                        c.setEnabled(true);
+                }
+                ac.setOBSTACLES(true);
 //                    _ac.setObstacles();
+            }
+            else {
+                for(Component c : jPanel_obstacles.getComponents()){
+                    if(c != jCheckBox_obstacles)
+                        c.setEnabled(false);
                 }
-                else {
-                    for(Component c : jPanel_obstacles.getComponents()){
-                        if(c != jCheckBox_obstacles)
-                            c.setEnabled(false);
-                    }
-                    ac.setOBSTACLES(false);
+                ac.setOBSTACLES(false);
 //                    _ac.removeObstacles();
-                }
             }
         });
         
-        jCheckBox_grid.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED)
-                    ac.setGRID(true);
-                else
-                    ac.setGRID(false);
-            }
+        jCheckBox_grid.addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+                ac.setGRID(true);
+            else
+                ac.setGRID(false);
         });
         
-        jCheckBox_handDrawObstacles.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED)
-                    ac.setHAND_DRAW_OBSTACLES(true);
-                else
-                    ac.setHAND_DRAW_OBSTACLES(false);
-            }
+        jCheckBox_handDrawObstacles.addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+                ac.setHANDRAW_OBSTACLES(true);
+            else
+                ac.setHANDRAW_OBSTACLES(false);
         });
         
         //When policy is changed
-        jComboBox_policy.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                switch(jComboBox_policy.getSelectedItem().toString()){
-                    case "Synch":
-                        ac.setPOLICY(Policy.SYNCHRO);
-                        break;
-                    case "Cyclic":
-                        ac.setPOLICY(Policy.CYCLIC);
-                        break;
-                    case "Random":
-                        ac.setPOLICY(Policy.RANDOM);
-                        break;
-                    default: 
-                        ac.setPOLICY(Policy.DEFAULT);
-                        break;
-                }
+        jComboBox_policy.addActionListener((ActionEvent e) -> {
+            switch(jComboBox_policy.getSelectedItem().toString()){
+                case "Synch":
+                    ac.setPOLICY(Policy.SYNCHRO);
+                    break;
+                case "Cyclic":
+                    ac.setPOLICY(Policy.CYCLIC);
+                    break;
+                case "Random":
+                    ac.setPOLICY(Policy.RANDOM);
+                    break;
+                default:
+                    ac.setPOLICY(Policy.DEFAULT);
+                    break;
             }
         });
         
-        jCheckBox_uncover.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED)
-                    ac.setUNCOVER(true);
-                else
-                    ac.setUNCOVER(false);
-            }
+        jCheckBox_uncover.addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+                ac.setUNCOVER(true);
+            else
+                ac.setUNCOVER(false);
         });
         
     }

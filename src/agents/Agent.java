@@ -20,7 +20,8 @@ package agents;
 import misc.Neighbours;
 import misc.Params;
 import cells.Cell;
-import cells.CellInfluenceClass;
+import cells.CellInfClass;
+import java.awt.Point;
 
 /**
  *
@@ -28,13 +29,9 @@ import cells.CellInfluenceClass;
  */
 public abstract class Agent{
     
-    // Coordinates of the cell in which the agent is placed on the matrix.
+    // Coordinates of the cell on which the agent is placed on the matrix.
     private int i = 0;
     private int j = 0;
-    
-    // Position of an Agent. this is another way to locate agent on the matrix
-    // Positions goes from 0 to matrix lenght²
-    private int position = 0;
     
     // Unique ID for this Agent.
     private int id = 0;
@@ -46,10 +43,9 @@ public abstract class Agent{
      * @param p
      * @param id
      */
-    public Agent(int i, int j, int p, int id) {
+    public Agent(int i, int j, int id) {
         this.i = i;
         this.j = j;
-        this.position = p;
         this.id = id;
     }
 
@@ -75,9 +71,9 @@ public abstract class Agent{
      *
      * @param position
      */
-    public void setPosition(int position) {
-        this.position = position;
-    }
+//    public void setPosition(Point p) {
+//        this.location = p;
+//    }
 
     /**
      *
@@ -107,9 +103,9 @@ public abstract class Agent{
      *
      * @return
      */
-    public int getPosition() {
-        return position;
-    }
+//    public Point getPosition() {
+//        return this.location;
+//    }
 
     /**
      *
@@ -118,11 +114,6 @@ public abstract class Agent{
     public int getId() {
         return id;
     }
-
-//    public int getMATRIX_LENGTH() {
-//        return MATRIX_LENGTH;
-//    }
-    
     //</editor-fold>
     
     /**
@@ -138,5 +129,5 @@ public abstract class Agent{
      * @param new_cell
      * @return
      */
-    public abstract Agent move(Params param, Neighbours nghbrs, Cell new_cell);
+    public abstract Point move(Params param, Cell new_cell);
 }

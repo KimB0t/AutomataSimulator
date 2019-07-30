@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Karim
+ * @author Karim BOUTAMINE <boutaminekarim06 at gmail.com>
  */
 public class Painter extends JPanel{
     
@@ -38,8 +38,7 @@ public class Painter extends JPanel{
     boolean erase = false;
     
     public Painter() {
-//        this.ac = aa;
-//        setMouseAdapter();
+        
     }
     
     public void setAutomaton(Automaton aa){
@@ -60,49 +59,49 @@ public class Painter extends JPanel{
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //if shape oval draw circles
         if(ac.shapeIs("Oval")) {
-            for(int i=ac.getWALL(); i<ac.getRelativeLength(); i++) {
-                for(int j=ac.getWALL(); j<ac.getRelativeLength(); j++){
+            for(int i=ac.BOUNDARY_LENGTH; i<ac.getRelativeLength(); i++) {
+                for(int j=ac.BOUNDARY_LENGTH; j<ac.getRelativeLength(); j++){
                     g2.setColor(ac.getCellColor(i, j));
-                    int x = (i-ac.getWALL())*ac.getCELL_DIM();
-                    int y = (j-ac.getWALL())*ac.getCELL_DIM();
-                    int dim = ac.getCELL_DIM();
+                    int x = (i-ac.BOUNDARY_LENGTH)*ac.CELL_DIM;
+                    int y = (j-ac.BOUNDARY_LENGTH)*ac.CELL_DIM;
+                    int dim = ac.CELL_DIM;
                     g2.fillOval(x, y, dim, dim);
                 }
             }
         }
         //if shape square draw squares
         else if(ac.shapeIs("Square")){
-            for(int i=ac.getWALL(); i<ac.getRelativeLength(); i++) {
-                for(int j=ac.getWALL(); j<ac.getRelativeLength(); j++){
+            for(int i=ac.BOUNDARY_LENGTH; i<ac.getRelativeLength(); i++) {
+                for(int j=ac.BOUNDARY_LENGTH; j<ac.getRelativeLength(); j++){
                     g2.setColor(ac.getCellColor(i, j));
-                    int x = (i-ac.getWALL())*ac.getCELL_DIM();
-                    int y = (j-ac.getWALL())*ac.getCELL_DIM();
-                    int dim = ac.getCELL_DIM();
+                    int x = (i-ac.BOUNDARY_LENGTH)*ac.CELL_DIM;
+                    int y = (j-ac.BOUNDARY_LENGTH)*ac.CELL_DIM;
+                    int dim = ac.CELL_DIM;
                     g2.fillRect(x, y, dim, dim);
                 }
             }
         }
         //if shape square draw squares
 //        else if(ac.shapeIs("Triangle")){
-//            for(int i=0+ac.getWALL(); i<ac.getMATRIX_LENGTH()-ac.getWALL(); i++) {
-//                for(int j=0+ac.getWALL(); j<ac.getMATRIX_LENGTH()-ac.getWALL(); j++){
+//            for(int i=0+ac.BOUNDARY_LENGTH; i<ac.MATRIX_LENGTH-ac.BOUNDARY_LENGTH; i++) {
+//                for(int j=0+ac.BOUNDARY_LENGTH; j<ac.MATRIX_LENGTH-ac.BOUNDARY_LENGTH; j++){
 //                    g2.setColor(ac.getCellColor(i, j));
-//                    Polygon poly = new Polygon(new int[] { (i-ac.getWALL())*ac.getCELL_DIM(), (i-ac.getWALL())*ac.getCELL_DIM(), (i-ac.getWALL())*ac.getCELL_DIM() + ac.getCELL_DIM() }, 
-//                            new int[] { (j-ac.getWALL())*ac.getCELL_DIM(), (j-ac.getWALL())*ac.getCELL_DIM() + ac.getCELL_DIM(), (j-ac.getWALL())*ac.getCELL_DIM() + (ac.getCELL_DIM()/2) }, 
+//                    Polygon poly = new Polygon(new int[] { (i-ac.BOUNDARY_LENGTH)*ac.CELL_DIM, (i-ac.BOUNDARY_LENGTH)*ac.CELL_DIM, (i-ac.BOUNDARY_LENGTH)*ac.CELL_DIM + ac.CELL_DIM }, 
+//                            new int[] { (j-ac.BOUNDARY_LENGTH)*ac.CELL_DIM, (j-ac.BOUNDARY_LENGTH)*ac.CELL_DIM + ac.CELL_DIM, (j-ac.BOUNDARY_LENGTH)*ac.CELL_DIM + (ac.CELL_DIM/2) }, 
 //                            3);
 //                    g2.fill(poly);
 //                }
 //            }
 //        }
         
-        if(ac.isGRID()){
+        if(ac.GRID){
             // draw horizontal & vertical rows for grid
-            int nb_lines = ac.getMATRIX_LENGTH();
-            int rowDim = ac.getCELL_DIM();
+            int nb_lines = ac.MATRIX_LENGTH;
+            int rowDim = ac.CELL_DIM;
             g2.setColor(Color.BLACK);
             for (int i = 0; i < nb_lines; i++) {
-                g2.drawLine(0, i * rowDim, ac.getPANEL_LENGTH(), i * rowDim);
-                g2.drawLine(i * rowDim, 0, i * rowDim, ac.getPANEL_LENGTH());
+                g2.drawLine(0, i * rowDim, ac.PANEL_LENGTH, i * rowDim);
+                g2.drawLine(i * rowDim, 0, i * rowDim, ac.PANEL_LENGTH);
             }
         }
     }
@@ -125,7 +124,7 @@ public class Painter extends JPanel{
 //            public void mousePressed(MouseEvent e) {
 //                if(!ac.getUNCOVER()){
 //                    if(!erase) {
-//                        if(ac.getOBSTACLES() && ac.getHAND_DRAW_OBSTACLES()){
+//                        if(ac.OBSTACLES && ac.getHAND_DRAW_OBSTACLES()){
 //                        }
 //                        else{
 //                            draw(e.getX(), e.getY());
@@ -139,10 +138,10 @@ public class Painter extends JPanel{
             @Override
             public void mouseDragged(MouseEvent e) {
                 //DRAW
-                if(!ac.getUNCOVER()){
+                if(!ac.UNCOVER){
                     if(!erase) {
                         //IF we are drawing obstacles
-                        if(ac.getOBSTACLES() && ac.getHAND_DRAW_OBSTACLES()) 
+                        if(ac.OBSTACLES && ac.HANDRAW_OBSTACLES) 
                             drawObstacle(e.getX(), e.getY());
                         else 
                             drawAgent(e.getX(), e.getY());
@@ -161,13 +160,13 @@ public class Painter extends JPanel{
                 if(e.getButton() == MouseEvent.BUTTON1) {
                     erase = false;
 
-                    if(ac.getUNCOVER()){
+                    if(ac.UNCOVER){
                         System.out.println("Painter->setMouseAdapter->addMouseListener->mousePressed"
                                 + " TO BE IMPLEMENTED");
                     }
                     else{
                         //IF we are drawing obstacles
-                        if(ac.getOBSTACLES() && ac.getHAND_DRAW_OBSTACLES()) 
+                        if(ac.OBSTACLES && ac.HANDRAW_OBSTACLES) 
                             drawObstacle(e.getX(), e.getY());
                         else 
                             drawAgent(e.getX(), e.getY());
@@ -183,10 +182,10 @@ public class Painter extends JPanel{
     
     public void drawAgent(int x, int y){
         
-        int i = x/ac.getCELL_DIM()+ac.getWALL();
-        int j = y/ac.getCELL_DIM()+ac.getWALL();
-        if(x>=0 && x<ac.getPANEL_LENGTH() && 
-                y>=0 && y<ac.getPANEL_LENGTH()){
+        int i = x/ac.CELL_DIM+ac.BOUNDARY_LENGTH;
+        int j = y/ac.CELL_DIM+ac.BOUNDARY_LENGTH;
+        if(x>=0 && x<ac.PANEL_LENGTH && 
+                y>=0 && y<ac.PANEL_LENGTH){
 
             //DRawing agents
             ac.setAgent(i, j, 1, ac.getCOLOR_AGENT1(), false);
@@ -196,10 +195,10 @@ public class Painter extends JPanel{
     
     public void drawObstacle(int x, int y){
         
-        int i = x/ac.getCELL_DIM()+ac.getWALL();
-        int j = y/ac.getCELL_DIM()+ac.getWALL();
-        if(x>=0 && x<ac.getPANEL_LENGTH() && 
-                y>=0 && y<ac.getPANEL_LENGTH()){
+        int i = x/ac.CELL_DIM+ac.BOUNDARY_LENGTH;
+        int j = y/ac.CELL_DIM+ac.BOUNDARY_LENGTH;
+        if(x>=0 && x<ac.PANEL_LENGTH && 
+                y>=0 && y<ac.PANEL_LENGTH){
 
             //DRawing agents
             ac.makeWallAt(i, j);
@@ -209,10 +208,10 @@ public class Painter extends JPanel{
     
     public void drawEmpty(int x, int y){
         
-        int i = x/ac.getCELL_DIM()+ac.getWALL();
-        int j = y/ac.getCELL_DIM()+ac.getWALL();
-        if(x>=0 && x<ac.getPANEL_LENGTH() && 
-                y>=0 && y<ac.getPANEL_LENGTH()){
+        int i = x/ac.CELL_DIM+ac.BOUNDARY_LENGTH;
+        int j = y/ac.CELL_DIM+ac.BOUNDARY_LENGTH;
+        if(x>=0 && x<ac.PANEL_LENGTH && 
+                y>=0 && y<ac.PANEL_LENGTH){
 
             //DRawing agents
             ac.deleteAgent(i, j);
@@ -222,10 +221,10 @@ public class Painter extends JPanel{
     
     public void printInfo(int x, int y){
         
-        int i = x/ac.getCELL_DIM()+ac.getWALL();
-        int j = y/ac.getCELL_DIM()+ac.getWALL();
-        if(x>=0 && x<ac.getPANEL_LENGTH() && 
-                y>=0 && y<ac.getPANEL_LENGTH()){
+        int i = x/ac.CELL_DIM+ac.BOUNDARY_LENGTH;
+        int j = y/ac.CELL_DIM+ac.BOUNDARY_LENGTH;
+        if(x>=0 && x<ac.PANEL_LENGTH && 
+                y>=0 && y<ac.PANEL_LENGTH){
 
             //DRawing agents
             ac.deleteAgent(i, j);

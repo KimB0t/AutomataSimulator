@@ -28,165 +28,182 @@ import java.util.Random;
  * 
  * Fields starting with the prefix MAIN_* means they are static.
  * Static variables are only used from the launcher class to initiate params
- * @author Karim
+ * @author Karim BOUTAMINE <boutaminekarim06 at gmail.com>
  */
 public class Params {
     
 //<editor-fold defaultstate="collapsed" desc="Static fields">
-    /**
-     * 
-     */
-    public static int MAIN_CELL_DIM;
     
     /**
-     *
+     * Length of a cell.
+     */
+    public static int MAIN_CELL_LENGTH;
+    
+    /**
+     * Text describtion of a cell's shape ("Square", "Oval", etc.).
      */
     public static String MAIN_SHAPE;
     
     /**
-     *
+     * Color of cell when it contains an Agent.
      */
     public static Color MAIN_COLOR_AGENT1;
     
     /**
-     *
+     * A global variable same as <code>BOUNDATY_LENGTH</code>.
+     * @see BOUNDARY_LENGTH
      */
-    public static int MAIN_WALL;
+    public static int MAIN_BOUNDARY_LENGTH;
     
     /**
-     *
+     * Length of a matrix.
      */
     public static int MAIN_MATRIX_LENGTH;
     
     /**
-     *
+     * Text description of an automaton boundaries ("Free", "Toric", etc.).
      */
     public static String MAIN_BOUNDARIES;
     
     /**
-     *
+     * Number of classes in a classification type of automata.
      */
     public static int MAIN_NB_CLASSES;
     
     /**
-     *
+     * <code>true</code> to display a grid on <code>jPanel_screen</code>
+     * <code>false</code> otherwise.
+     * used by <code>Painter</code>
      */
     public static boolean MAIN_GRID;
     
     /**
-     *
+     * <code>true</code> to use random colors when coloring classes of agents
+     * <code>false</code> to use pre-defined colors.
      */
     public static boolean MAIN_RAND_COLORS;
     
     /**
-     * Different types of automata
+     * Variantes of automata.
      */
     public static enum Variante { 
 
             /**
-             * Indicates a life game
+             * Conway's game of life (1970).
              */
             LIFE, 
 
             /**
-             * Indicates a gathering amoebae with reaction-diffusion
+             * Reaction-diffusion-chemotaxis decentralised gathering 
+             * (Nazim Fatès).
              */
             DIFFUSION_GATHERING, 
 
             /**
-             *  for classifying amoebae with reaction-diffusion
+             * Reaction-diffusion-chemotaxis decentralised classification
+             * (Karim Boutamine).
              */
             DIFFUSION_CLASSIFICATION, 
 
             /**
-             *  
+             * Turmites model (Selma Belgacem, Nazim Fatès).
              */
             TURMITES, 
 
             /**
-             *  
+             * Influence-diffusion-chemotaxis decentralised classification
+             * (Karim Boutamine).
              */
             INFLUENCE_CLASSIFICATION,
             
             /**
-             *  
+             * Influence-repulsion-diffusion-chemotaxis decentralised 
+             * classification (Karim Boutamine).
              */
             INFLUENCE_REPULSION,
             
             /**
-             *  if none
+             * Default value if none of the above.
              */
             DEFAULT};
     
     /**
-     * 
+     * Turmites orientations on the matrix. 
+     * (see Selma Belgacem, Nazim Fatès. Robustness of multi-agent models: 
+     * the example of collaboration between turmites with synchronous and 
+     * asynchronous updating. Complex Systems, Complex Systems Publications, 
+     * 2012, 21 (3), pp.165-182. 
+     * {http://www.complex-systems.com/abstracts/v21_i03_a01.html}. 
+     * {https://hal.inria.fr/inria-00462438v2})
      */
     public static enum Directions { 
 
             /**
-             *
+             * Agent is north oriented (looking north).
              */
             NORTH, 
 
             /**
-             *
+             * Agent is east oriented (looking east).
              */
             EAST, 
 
             /**
-             *
+             * Agent is south oriented (looking south).
              */
             SOUTH, 
 
             /**
-             *
+             * Agent is west oriented (looking west).
              */
             WEST, 
 
             /**
-             *
+             * Default value if no orientation is specified.
              */
             DEFAULT};
     
     /**
-     * 
+     * Policy used when choosing agents' influences to update the system.
      */
     public static enum Policy { 
 
             /**
-             *
+             * Synchronous updating: Checking all the agents' influences 
+             * at the same time and then taking decision.
              */
             SYNCHRO, 
 
             /**
-             *
+             * Cyclic updating: Checking agents' inluences one by one in 
+             * a given order.
              */
             CYCLIC, 
 
             /**
-             *
+             * Random updating: Randomly checking of agents' inluences. 
              */
             RANDOM,
             
             /**
-             *
+             * Default value if no <code>Policy</code> is choosen.
              */
             DEFAULT};
     
     /**
-     *  The current variante in (enum.Variante)
+     * The current variante of the automaton simulation.
      */
     public static Variante VARIANTE;
     
     /**
-     *  to print content of a cell
+     * A global random Variable for all instances of all classes.
      */
     public static Random RAND;
     
     // For SimulatorInterface
 
     /**
-     *
+     * 
      */
     public static float MAIN_COEF_SPEED;
 
@@ -239,6 +256,9 @@ public class Params {
      *
      */
     public static Color[] MAIN_COLORS_ARRAY;
+    
+    
+    public static String MAIN_NEIGHBOURHOOD;
     
     /**
      * Function that simulates a random bernoulli trial
@@ -302,11 +322,21 @@ public class Params {
     public int PANEL_LENGTH;
     
     /**
-     * 1: the cell is a wall
-     * 0: othewise
+     * The matrix's boundary length in number of cells. IT is used when 
+     * displaying automaton matrix on screen 
+     * <code>jPanel_screen</code>. If <code>BOUNDARY_LENGTH == 0</code>, 
+     * then we start drawing the matrix from Cell(0,0) to 
+     * Cell(MATRIX_LENGTH, MATRIX_LENGTH).
+     * If <code>BOUNDARY_LENGTH > 0</code>, this means that there is a wall 
+     * surronding the matrix with length <code>BOUNDARY_LENGTH</code>, 
+     * so we don't when to display it. So we start 
+     * drawing from Cell(0 + BOUNDARY_LENGTH, 0 + BOUNDARY_LENGTH) to 
+     * Cell(MATRIX_LENGTH - BOUNDARY_LENGTH, MATRIX_LENGTH - BOUNDARY_LENGTH).
+     * <p>
+     * Note: (in general the boundary length is 1 cell)
      */
-    public int WALL;
-        
+    public int BOUNDARY_LENGTH;
+    
     /**
      * The matrix length = PANEL_LENGTH / CELL_DIM
      */
@@ -416,14 +446,17 @@ public class Params {
      */
     public boolean RAND_COLORS;
     
+    
+    public String NEIGHBOURHOOD;
+    
     /**
      *
      */
     public void initParamsGlobal(){
         
-        this.CELL_DIM           = MAIN_CELL_DIM;
+        this.CELL_DIM           = MAIN_CELL_LENGTH;
         this.SHAPE              = MAIN_SHAPE;
-        this.WALL               = MAIN_WALL;
+        this.BOUNDARY_LENGTH    = MAIN_BOUNDARY_LENGTH;
         this.BOUNDARIES         = MAIN_BOUNDARIES;
         this.NB_CLASSES         = MAIN_NB_CLASSES;
         this.GRID               = MAIN_GRID;
@@ -436,8 +469,9 @@ public class Params {
         this.PA                 = MAIN_PA;
         this.RAND_COLORS        = MAIN_RAND_COLORS;
         this.REPULSION          = MAIN_REPULSION;
+        this.NEIGHBOURHOOD       = MAIN_NEIGHBOURHOOD;
         this.PANEL_LENGTH       = MAIN_PANEL_LENGTH;
-        this.MATRIX_LENGTH      = (MAIN_PANEL_LENGTH/CELL_DIM) + 2*WALL;
+        this.MATRIX_LENGTH      = (MAIN_PANEL_LENGTH/CELL_DIM) + 2*BOUNDARY_LENGTH;
         
         this.OBSTACLES          = false;
         this.HANDRAW_OBSTACLES  = false;
@@ -493,4 +527,7 @@ public class Params {
     
 //</editor-fold>
 
+    public Params getParams(){
+        return this;
+    }
 }

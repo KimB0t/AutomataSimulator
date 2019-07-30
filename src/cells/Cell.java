@@ -17,15 +17,14 @@
  */
 package cells;
 
-import misc.Neighbours;
 import misc.Params;
 import java.awt.Color;
 
 /**
  * A cell is a component of an Automaton.
- * @author Karim BOUTAMINE
+ * @author Karim BOUTAMINE <boutaminekarim06 at gmail.com>
  */
-public abstract class Cell {
+public abstract class Cell{
     
     //Color of the cell
     private Color couleur;
@@ -36,7 +35,12 @@ public abstract class Cell {
     
     //If this cell is a wall then 1 else 0
     private boolean wall;
-
+    
+    /**
+     *  nb of neighbours of cell c 
+     */
+    protected int excited_free_cells_count;
+    
     /**
      * Create a cell with default settings:
      * color = Color.WHITE, 
@@ -45,10 +49,10 @@ public abstract class Cell {
      * wall = false;
      */
     public Cell() {
-        this.couleur = Color.WHITE;
         this.i = -1;
         this.j = -1;
         this.wall = false;
+        this.couleur = Color.WHITE;
     }
     
     /**
@@ -59,10 +63,10 @@ public abstract class Cell {
      * @param j column index
      */
     public Cell(int i, int j) {
-        this.couleur = Color.WHITE;
         this.i = i;
         this.j = j;
         this.wall = false;
+        this.couleur = Color.WHITE;
     }
     
     /**
@@ -73,10 +77,10 @@ public abstract class Cell {
      * @param wall 1 if wall, 0 else
      */
     public Cell(Color co, int i, int j, boolean wall) {
-        this.couleur = co;
         this.i = i;
         this.j = j;
         this.wall = wall;
+        this.couleur = co;
     }
     
     //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
@@ -149,8 +153,42 @@ public abstract class Cell {
     /**
      * Compute the next state of this cell.
      * @param param The simulation parameters.
-     * @param nghbrs A neighbours object.
-     * @return A new cell after computing the new state.
      */
-    public abstract Cell nextState(Params param, Neighbours nghbrs);
+    public abstract void nextState(Params param);
+//    public abstract Cell nextState(Params param, int k);
+    
+    /**
+     * This function returns a copy of the cell.
+     * @param param Params of the automaton simulation
+     * @return A copy of this cell.
+     */
+    public abstract Cell getCopy(Params param);
+    
+    public abstract int getNbAgents();
+    
+    public abstract int getNbAgents(int k);
+    
+    public abstract void countNeighbours();
+    
+    public abstract void countNeighbours(Params p, int k);
+    
+    public void setExcited_free_cells_count(int excited_free_cells_count) {
+        this.excited_free_cells_count = excited_free_cells_count;
+    }
+
+    public boolean isSupThen(int value){
+        return this.excited_free_cells_count > value;
+    }
+    
+    public boolean isInfThen(int value){
+        return this.excited_free_cells_count < value;
+    }
+    
+    public boolean isEqualTo(int value){
+        return this.excited_free_cells_count == value;
+    }
+    
+    public void increaseEFCount(int value){
+        this.excited_free_cells_count += value;
+    }
 }

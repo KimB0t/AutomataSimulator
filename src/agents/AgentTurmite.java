@@ -18,10 +18,11 @@
 package agents;
 
 import misc.Neighbours;
-import cells.CellInfluenceClass;
+import cells.CellInfClass;
 import misc.Params.Directions;
 import misc.Params;
 import cells.Cell;
+import java.awt.Point;
 
 /**
  *
@@ -40,8 +41,8 @@ public class AgentTurmite extends Agent{
      * @param id
      */
         
-    public AgentTurmite(int i, int j, Directions d, int p, int id) {
-        super(i, j, p, id);
+    public AgentTurmite(int i, int j, Directions d, int id) {
+        super(i, j, id);
         this.orientation = d;
     }
     
@@ -117,13 +118,13 @@ public class AgentTurmite extends Agent{
         
         int new_i = (this.getI() + d_i + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
         int new_j = (this.getJ() + d_j + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
-        int new_Position = (this.getPosition() + d_Position + (param.MATRIX_LENGTH*param.MATRIX_LENGTH)) % (param.MATRIX_LENGTH*param.MATRIX_LENGTH);
+//        int new_Position = (this.getPosition() + d_Position + (param.MATRIX_LENGTH*param.MATRIX_LENGTH)) % (param.MATRIX_LENGTH*param.MATRIX_LENGTH);
         
-        return new AgentTurmite(new_i, new_j, d_Direction, new_Position, this.getId());
+        return new AgentTurmite(new_i, new_j, d_Direction, this.getId());
     }
 
     @Override
-    public Agent move(Params param, Neighbours nghbrs, Cell new_cell) {
+    public Point move(Params param, Cell new_cell) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

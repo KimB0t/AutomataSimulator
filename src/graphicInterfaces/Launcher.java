@@ -31,7 +31,7 @@ import java.awt.Component;
 
 /**
  *
- * @author Karim
+ * @author Karim BOUTAMINE <boutaminekarim06@gmail.com>
  */
 public class Launcher extends javax.swing.JFrame {
     
@@ -476,14 +476,15 @@ public class Launcher extends javax.swing.JFrame {
     
     private void initParams(){
         
-        MAIN_CELL_DIM = Integer.valueOf(this.jComboBox_tailleCell.getSelectedItem().toString());
+        MAIN_CELL_LENGTH = Integer.valueOf(this.jComboBox_tailleCell.getSelectedItem().toString());
         MAIN_SHAPE = this.jComboBox_shape.getSelectedItem().toString();
         MAIN_COLOR_AGENT1 = Color.gray;
-        MAIN_WALL = 0;
+        MAIN_BOUNDARY_LENGTH = 0;
         MAIN_RAND_COLORS = false;
         MAIN_BOUNDARIES = this.jComboBox_boundaries.getSelectedItem().toString();
         MAIN_NB_CLASSES = Integer.parseInt(this.jTextField_classes.getText());
         MAIN_GRID = false;
+        MAIN_NEIGHBOURHOOD = this.jComboBox_neighbourhood.getSelectedItem().toString();
         RAND = new Random();
         switchVariante(this.jComboBox_variante.getSelectedItem().toString());
         
@@ -502,7 +503,7 @@ public class Launcher extends javax.swing.JFrame {
         
         //When cell dimention is changed
         this.jComboBox_tailleCell.addActionListener((ActionEvent e) -> {
-            MAIN_CELL_DIM = Integer.parseInt(jComboBox_tailleCell.getSelectedItem().toString());
+            MAIN_CELL_LENGTH = Integer.parseInt(jComboBox_tailleCell.getSelectedItem().toString());
         });
         
         //when shape is changed
@@ -539,8 +540,8 @@ public class Launcher extends javax.swing.JFrame {
         this.jComboBox_boundaries.addActionListener((ActionEvent e) -> {
             MAIN_BOUNDARIES = jComboBox_boundaries.getSelectedItem().toString();
             System.out.println("NEED TO BE IMPLEMENTED");
-            if(MAIN_BOUNDARIES.equals("Free")) MAIN_WALL = 1;
-            else MAIN_WALL = 0;
+            if(MAIN_BOUNDARIES.equals("Free")) MAIN_BOUNDARY_LENGTH = 1;
+            else MAIN_BOUNDARY_LENGTH = 0;
         });
         
         //When Grid is checked

@@ -26,7 +26,7 @@ import static misc.Params.RAND;
 
 /**
  *
- * @author Karim
+ * @author Karim BOUTAMINE <boutaminekarim06 at gmail.com>
  */
 public class AllColors {
     
@@ -61,15 +61,28 @@ public class AllColors {
      */
     public HashMap<Integer, Color> COLOR_TABLE;
     
+    /**
+     *
+     * @param COLOR_AGENT1
+     * @param COLOR_AGENT2
+     * @param COLOR_EXCITED
+     * @param COLOR_OBSTACLE
+     * @param COLOR_DEFAULT
+     */
     public AllColors(Color COLOR_AGENT1, Color COLOR_AGENT2, Color COLOR_EXCITED, Color COLOR_OBSTACLE, Color COLOR_DEFAULT) {
-        this.COLOR_AGENT1 = COLOR_AGENT1;
-        this.COLOR_AGENT2 = COLOR_AGENT2;
-        this.COLOR_EXCITED = COLOR_EXCITED;
+        this.COLOR_AGENT1   = COLOR_AGENT1;
+        this.COLOR_AGENT2   = COLOR_AGENT2;
+        this.COLOR_EXCITED  = COLOR_EXCITED;
         this.COLOR_OBSTACLE = COLOR_OBSTACLE;
-        this.COLOR_DEFAULT = COLOR_DEFAULT;
-        this.COLOR_TABLE = new HashMap<>();
+        this.COLOR_DEFAULT  = COLOR_DEFAULT;
+        this.COLOR_TABLE    = new HashMap<>();
     }
     
+    /**
+     *
+     * @param NB_CLASSES
+     * @param RAND_COLORS
+     */
     public void initColorTable(int NB_CLASSES, boolean RAND_COLORS){
         //Remplir les couleurs
         if(RAND_COLORS)
@@ -92,18 +105,38 @@ public class AllColors {
                     RAND.nextInt(245)+5, RAND.nextInt(245)+5, opacity);
     }
     
+    /**
+     *
+     * @param k
+     * @return
+     */
     public Color getColorAt(int k){
         return this.COLOR_TABLE.get(k);
     }
     
+    /**
+     *
+     * @param k
+     * @return
+     */
     public int getRed_at(int k){
         return this.COLOR_TABLE.get(k).getRed();
     }
     
+    /**
+     *
+     * @param k
+     * @return
+     */
     public int getBlue_at(int k){
         return this.COLOR_TABLE.get(k).getBlue();
     }
     
+    /**
+     *
+     * @param k
+     * @return
+     */
     public int getGreen_at(int k){
         return this.COLOR_TABLE.get(k).getGreen();
     }
