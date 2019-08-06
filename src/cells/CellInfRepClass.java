@@ -31,12 +31,10 @@ import java.util.Arrays;
 public class CellInfRepClass extends Cell{
     
     //<editor-fold defaultstate="collapsed" desc="Declarations">
-    //Array of states of every classe i
+    //Array of states for every classe k
     private int[] state;
-    //nb agents pour chaque classe i
+    //nb agents for every classe k
     private int[] nb_agents;
-    //position
-//    private Point delta;
     //List of neighbouring cells
     private CellInfRepClass[] neighbours;
     //list of excited neighbouring free cells of this cell 
@@ -45,22 +43,29 @@ public class CellInfRepClass extends Cell{
     //list of neighbouring free cells 
     //to where the agent can possibly move
     private ArrayList<CellInfRepClass> free_cells;
-    
+    //list of neighbouring free cells 
+    //to where the agent is repulsed
     private ArrayList<CellInfRepClass> repulsive_free_cells;
-    
+    //list of agents willing to move to this cell
     private ArrayList<AgInfRepClass> concurent_agents;
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Constructors">
+    /**
+     * 
+     * @param param Parameters of the automaton
+     * @param c color of the cell
+     * @param i line coordinate
+     * @param j column coordinate
+     * @param w if the cell is a wall
+     * @param s array of states for all classes
+     * @param nA array of nb of agents for every classe
+     */
     public CellInfRepClass(Params param, Color c, int i, int j, boolean w, int[] s, int[] nA) {
         super(c, i, j, w);
-        
-//        this.delta = new Point(delta);
-        
         this.state = new int[param.NB_CLASSES];
         if(s!=null)
             System.arraycopy(s, 0, this.state, 0, param.NB_CLASSES);
-        
         this.nb_agents = new int[param.NB_CLASSES];
         if(nA!=null)
             System.arraycopy(nA, 0, this.nb_agents, 0, param.NB_CLASSES);
@@ -68,20 +73,15 @@ public class CellInfRepClass extends Cell{
     
     /**
      *
-     * @param param
-     * @param s
-     * @param nA
-     * @param pos
+     * @param param Parameters of the automaton
+     * @param s array of states for all classes
+     * @param nA array of nb of agents for every classe
      */
     public CellInfRepClass(Params param, int[] s, int[] nA) {
         super();
-        
-//        this.delta = new Point(delta);
-
         this.state = new int[param.NB_CLASSES];
         if(s!=null)
             System.arraycopy(s, 0, this.state, 0, param.NB_CLASSES);
-        
         this.nb_agents = new int[param.NB_CLASSES];
         if(nA!=null)
             System.arraycopy(nA, 0, this.nb_agents, 0, param.NB_CLASSES);
@@ -89,76 +89,131 @@ public class CellInfRepClass extends Cell{
 
     /**
      *
-     * @param param
+     * @param param Parameters of the automaton
      */
     public CellInfRepClass(Params param) {
         super();
         this.stateInitializer(param);
         this.agentInitializer(param);
-//        this.delta = new Point(-1, -1);
     }
     
+    /**
+     *
+     * @param param Parameters of the automaton
+     * @param c color of the cell
+     * @param i line coordinate
+     * @param j column coordinate
+     * @param w if the cell is a wall
+     */
     public CellInfRepClass(Params param, Color c, int i, int j, boolean w) {
         super(c, i, j, w);
         this.stateInitializer(param);
         this.agentInitializer(param);
-//        this.delta = new Point(-1, -1);
     }
-
-//    public CellInfRepClass(Params param, Color c, int i, int j, boolean w) {
-//        super(c, i, j, w);
-////        this.delta = new Point(delta);
-//        this.state = new int[param.NB_CLASSES];
-//        this.nb_agents = new int[param.NB_CLASSES];
-//    }
     
+    /**
+     *
+     * @param c color of the cell
+     * @param i line coordinate
+     * @param j column coordinate
+     * @param w if the cell is a wall
+     */
+        
     public CellInfRepClass(Color c, int i, int j, boolean w) {
         super(c, i, j, w);
-//        this.delta = new Point(-1, -1);
         this.state = null;
         this.nb_agents = null;
     }
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
+    /**
+     *
+     * @param param
+     * @param state
+     */
     public void setState(Params param, int[] state) {
         this.state = new int[param.NB_CLASSES];
         if(state!=null)
             System.arraycopy(state, 0, this.state, 0, param.NB_CLASSES);
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] getNb_agents() {
         return nb_agents;
     }
     
+    /**
+     *
+     * @param k
+     * @param s
+     */
     public void setStateAtK(int k, int s) {
         this.state[k] = s;
     }
 
+    /**
+     *
+     * @param MLEVEL
+     * @param k
+     */
     public void setMaxAtK(int MLEVEL, int k) {
         this.state[k] = maxLevel(MLEVEL, k);
     }
 
+    /**
+     *
+     * @param MLEVEL
+     * @param k
+     */
     public void setMinAtK(int MLEVEL, int k) {
         this.state[k] = minLevel(MLEVEL, k);
     }
     
+    /**
+     *
+     * @return
+     */
     public int[] getState() {
         return this.state;
     }
     
+    /**
+     *
+     * @param k
+     * @param value
+     */
     public void increaseNbAgentsAtK(int k, int value){
         this.nb_agents[k] += value;
     }
     
+    /**
+     *
+     * @param k
+     * @param value
+     * @return
+     */
     public boolean isNbAgentsAtKsupThen(int k, int value){
         return this.nb_agents[k] > value;
     }
     
+    /**
+     *
+     * @param k
+     * @return
+     */
     public int getNb_agentsAtK(int k){
         return this.nb_agents[k];
     }
     
+    /**
+     *
+     * @param k
+     * @param value
+     */
     public void setNb_agentsAtK(int k, int value){
         this.nb_agents[k] = value;
     }
@@ -172,26 +227,61 @@ public class CellInfRepClass extends Cell{
         }
     }
     
+    /**
+     *
+     * @param MLEVEL
+     * @param k
+     * @return
+     */
     public boolean isMaxStateAtK(int MLEVEL, int k){
         return this.state[k] == maxLevel(MLEVEL, k);
     }
     
+    /**
+     *
+     * @param MLEVEL
+     * @param k
+     * @return
+     */
     public boolean isMinStateAtK(int MLEVEL, int k){
         return this.state[k] == minLevel(MLEVEL, k);
     }
     
+    /**
+     *
+     * @param MLEVEL
+     * @param k
+     * @return
+     */
     public boolean isSupThenMinAtK(int MLEVEL, int k){
         return this.state[k] > minLevel(MLEVEL, k);
     }
     
+    /**
+     *
+     * @param k
+     * @param value
+     */
     public void decreaseStateatK(int k, int value){
         this.state[k] -= value;
     }
     
+    /**
+     *
+     * @param k
+     * @param value
+     * @return
+     */
     public boolean nbAgentsAtKisSupThen(int k, int value){
         return this.nb_agents[k] > value;
     }
     
+    /**
+     *
+     * @param k
+     * @param value
+     * @return
+     */
     public boolean nbAgentsAtKisEqualTo(int k, int value){
         return this.nb_agents[k] == value;
     }
@@ -209,106 +299,213 @@ public class CellInfRepClass extends Cell{
         return new_cell;
     }
 
+    /**
+     *
+     * @param excited_free_cells
+     */
     public void setExcited_free_cells(ArrayList<CellInfRepClass> excited_free_cells) {
         this.excited_free_cells = excited_free_cells;
     }
 
+    /**
+     *
+     * @param free_cells
+     */
     public void setFree_cells(ArrayList<CellInfRepClass> free_cells) {
         this.free_cells = free_cells;
     }
 
+    /**
+     *
+     * @param concurent_agents
+     */
     public void setConcurent_cells(ArrayList<AgInfRepClass> concurent_agents) {
         this.concurent_agents = concurent_agents;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<CellInfRepClass> getExcited_free_cells() {
         return excited_free_cells;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<CellInfRepClass> getFree_cells() {
         return free_cells;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<AgInfRepClass> getConcurent_agents() {
         return concurent_agents;
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean isEmptyFreeCells(){
         return this.free_cells.isEmpty();
     }
     
+    /**
+     *
+     * @param i
+     * @return
+     */
     public CellInfRepClass getElementFreeCells(int i){
         return this.free_cells.get(i);
     }
     
+    /**
+     *
+     * @return
+     */
     public int getSizeFreeCells(){
         return this.free_cells.size();
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean isEmptyFreeExcitedCells(){
         return this.excited_free_cells.isEmpty();
     }
     
+    /**
+     *
+     * @param i
+     * @return
+     */
     public CellInfRepClass getElementFreeExcitedCells(int i){
         return this.excited_free_cells.get(i);
     }
     
+    /**
+     *
+     * @return
+     */
     public int getSizeFreeExcitedCells(){
         return this.excited_free_cells.size();
     }
     
+    /**
+     *
+     * @param cell
+     */
     public void addFreeExcitedCells(CellInfRepClass cell){
         this.excited_free_cells.add(cell);
     }
     
+    /**
+     *
+     * @param cell
+     */
     public void addFreeCells(CellInfRepClass cell){
         this.free_cells.add(cell);
     }
 
+    /**
+     *
+     * @param repulsive_free_cells
+     */
     public void setRepulsive_free_cells(ArrayList<CellInfRepClass> repulsive_free_cells) {
         this.repulsive_free_cells = repulsive_free_cells;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<CellInfRepClass> getRepulsive_free_cells() {
         return repulsive_free_cells;
     }
     
+    /**
+     *
+     * @param cell
+     */
     public void addFreeRepulsiveCells(CellInfRepClass cell){
         this.repulsive_free_cells.add(cell);
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean isEmptyFreeRepulsiveCells(){
         return this.repulsive_free_cells.isEmpty();
     }
     
+    /**
+     *
+     * @param i
+     * @return
+     */
     public CellInfRepClass getElementFreeRepulsiveCells(int i){
         return this.repulsive_free_cells.get(i);
     }
     
+    /**
+     *
+     * @return
+     */
     public int getSizeFreeRepulsiveCells(){
         return this.repulsive_free_cells.size();
     }
 
+    /**
+     *
+     * @param state
+     */
     public void setState(int[] state) {
         this.state = state;
     }
 
+    /**
+     *
+     * @param nb_agents
+     */
     public void setNb_agents(int[] nb_agents) {
         this.nb_agents = nb_agents;
     }
 
+    /**
+     *
+     * @param neighbours
+     */
     public void setNeighbours(CellInfRepClass[] neighbours) {
         this.neighbours = neighbours;
     }
 
+    /**
+     *
+     * @param concurent_agents
+     */
     public void setConcurent_agents(ArrayList<AgInfRepClass> concurent_agents) {
         this.concurent_agents = concurent_agents;
     }
 
+    /**
+     *
+     * @return
+     */
     public CellInfRepClass[] getNeighbours() {
         return neighbours;
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean isThereAgents(){
         
         for (int i = 0; i < nb_agents.length; i++) {
@@ -319,32 +516,41 @@ public class CellInfRepClass extends Cell{
     }
     //</editor-fold>
     
+    /**
+     *
+     * @param param
+     */
     public void agentInitializer(Params param){
         
         this.nb_agents = new int[param.NB_CLASSES];
         for (int i = 0; i < param.NB_CLASSES; i++) {
             //initialisation avec le min de chaque classe
-            this.nb_agents[i] = 0; //i représente la classe
+            //i représente la classe
+            this.nb_agents[i] = 0;
         }
     }
     
-    public void reinitArrays(){
-        neighbours = null;
-        excited_free_cells = null;
-        free_cells = null;
-        concurent_agents = null;
-        repulsive_free_cells = null;
-    }
-    
-    public void reinitArraysSaufConcurent(){
+    /**
+     * 
+     * @param reinitConcurentAlso to reinitialize concurent array also
+     */
+    public void reinitArrays(boolean reinitConcurentAlso){
         neighbours = null;
         excited_free_cells = null;
         free_cells = null;
         repulsive_free_cells = null;
+        if(reinitConcurentAlso) concurent_agents = null;
     }
     
+    /**
+     *
+     * @param p
+     * @param k
+     */
     @Override
     public void countNeighbours(Params p, int k) {
+        
+        //reinit all arrays
         this.setExcited_free_cells_count(0); 
         this.setFree_cells(new ArrayList<>());
         this.setExcited_free_cells(new ArrayList<>());
@@ -382,9 +588,6 @@ public class CellInfRepClass extends Cell{
                                         && neighbours[j].getNb_agentsAtK(k) < 2)
                                     this.addFreeRepulsiveCells(neighbours[j]);
                             }
-//                            if (this.matrix[ii][jj].getNb_agentsAtK(k) < 2){
-//                                this.nghbrs.addFreeRepulsiveCells(this.matrix[ii][jj]);
-//                            }
                         }
                     }
                 }
@@ -410,6 +613,11 @@ public class CellInfRepClass extends Cell{
         }
     }
     
+    /**
+     *
+     * @param param
+     * @return
+     */
     public AgInfRepClass chooseAgent(Params param){
         
         AgInfRepClass ag = null;
@@ -434,6 +642,11 @@ public class CellInfRepClass extends Cell{
         return ag;
     }
     
+    /**
+     *
+     * @param param
+     * @param cl
+     */
     public void colorier(Params param, int cl){
         
         increaseNbAgentsAtK(cl, 1);
@@ -455,6 +668,12 @@ public class CellInfRepClass extends Cell{
         if(a>=2) setCouleur(Color.BLACK);
     }
     
+    /**
+     *
+     * @param param
+     * @param k
+     * @return
+     */
     public boolean expandWave(Params param, int k) {
         
         if (this.isMinStateAtK(param.MLEVEL, k) //test min
@@ -464,20 +683,14 @@ public class CellInfRepClass extends Cell{
                         && bernoulli(param.LAMBDA) == 1))){
             this.setMaxAtK(param.MLEVEL, k); //put max
             //coloring
-            this.setCouleur(new Color(param.getCOLOR_at(k).getRed(),
-            param.getCOLOR_at(k).getGreen(),
-            param.getCOLOR_at(k).getBlue(),
-            100));
+            this.setCouleur(param.getCOLOR_at(k, 100));
             param.VAGUE = true;
         }
         else if (this.isSupThenMinAtK(param.MLEVEL, k)){
 
             this.decreaseStateatK(k, 1);
             if(this.isSupThenMinAtK(param.MLEVEL, k)) {
-                this.setCouleur(new Color(param.getCOLOR_at(k).getRed(),
-                param.getCOLOR_at(k).getGreen(),
-                param.getCOLOR_at(k).getBlue(),
-                100));
+                this.setCouleur(param.getCOLOR_at(k, 100));
                 param.VAGUE = true;
             }
         }
@@ -490,6 +703,7 @@ public class CellInfRepClass extends Cell{
     
     /**
      *  Calculate Max level
+     * @param MLEVEL
      * @param k
      * @return
      */
@@ -499,28 +713,18 @@ public class CellInfRepClass extends Cell{
     
     /**
      * Caculate Min
+     * @param MLEVEL
      * @param k
      * @return
      */
     public int minLevel(int MLEVEL, int k){
         return k * (MLEVEL+1);
     }
-
-    @Override
-    public int getNbAgents() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getNbAgents(int k) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void countNeighbours() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
+    /**
+     *
+     * @param ag
+     */
     public void addConcurent_agents(AgInfRepClass ag){
         if(concurent_agents == null){
             concurent_agents = new ArrayList<>();
@@ -531,7 +735,40 @@ public class CellInfRepClass extends Cell{
         }
     }
     
-    public void printCell(String msg){
+    /**
+     *
+     * @return
+     */
+    @Override
+    public int getNbAgents() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     *
+     * @param k
+     * @return
+     */
+    @Override
+    public int getNbAgents(int k) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void countNeighbours(Params p) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    //<editor-fold defaultstate="collapsed" desc="Useless">
+
+    /**
+     *
+     * @param msg
+     */
+        public void printCell(String msg){
 //        System.out.println(msg);
         if(concurent_agents != null)// && free_cells != null && excited_free_cells != null)
         System.out.println(
@@ -562,6 +799,10 @@ public class CellInfRepClass extends Cell{
                 " | Color: " + this.getCouleur());
     }
     
+    /**
+     *
+     * @return
+     */
     public String printConcurents(){
         String msg = "[";
         
@@ -572,6 +813,10 @@ public class CellInfRepClass extends Cell{
         return msg;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getNb_agentsTostring(){
         String msg = "[";
         
@@ -581,4 +826,12 @@ public class CellInfRepClass extends Cell{
         msg+="]";
         return msg;
     }
+//</editor-fold>
+
+    public void makeAgent(int nb, Color co, boolean wl, int cls) {
+        setCouleur(co);
+        setWall(wl);
+        setNb_agentsAtK(cls, nb);
+    }
+    
 }

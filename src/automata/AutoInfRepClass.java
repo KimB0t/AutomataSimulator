@@ -34,31 +34,17 @@ public class AutoInfRepClass extends Automaton{
     // The matrix
     private CellInfRepClass[][] matrix;
     // The agent list
-    private ArrayList<AgInfRepClass> _ag;
-    // Counter for ids
-    private int idCounter;
+    private ArrayList<AgInfRepClass> agents;
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Constructors">
     /**
-     *
+     * Create new Influence-repultion automaton
      */
     public AutoInfRepClass() {
         super();
         this.matrix = new CellInfRepClass[MATRIX_LENGTH][MATRIX_LENGTH];
-        this._ag = new ArrayList<>();
-        this.idCounter = 0;
-    }
-    
-    /**
-     *
-     * @param mx
-     * @param aa
-     */
-    public AutoInfRepClass(CellInfRepClass[][] mx, ArrayList<AgInfRepClass> aa) {
-        super();
-        this.matrix = mx;
-        this._ag = aa;
+        this.agents = new ArrayList<>();
     }
     //</editor-fold>
     
@@ -66,15 +52,13 @@ public class AutoInfRepClass extends Automaton{
     @Override
     public void setAgent(int i, int j, int nb, Color co, boolean wl) {
         
-        // calcul de la classe
+        // Calcul de la classe (aléatoire)
         int cls = RAND.nextInt(NB_CLASSES);
-        
-        this.matrix[i][j].setCouleur(getCOLOR_at(cls));
-        this.matrix[i][j].setWall(wl);
-        this.matrix[i][j].setNb_agentsAtK(cls, nb);
-//        int pos = j + i*MATRIX_LENGTH;
-        _ag.add(this.idCounter, new AgInfRepClass(i, j, this.idCounter, cls));
-        this.idCounter++;
+        //Make a cell with an agent
+        this.matrix[i][j].makeAgent(nb, getCOLOR_at(cls), wl, cls);
+        //Add and agent to the list
+        int id = agents.size();
+        agents.add(id, new AgInfRepClass(i, j, id, cls));
     }
 
     @Override
@@ -83,18 +67,23 @@ public class AutoInfRepClass extends Automaton{
     }
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Makers">
+    @Override
+    public void makeWallAt(int i, int j) {
+        this.matrix[i][j] = new CellInfRepClass(getCOLOR_OBSTACLE(), i, j, true);
+    }
+    
+    @Override
+    public void makeCellAt(int i, int j) {
+        this.matrix[i][j] = new CellInfRepClass(getParams(), getCOLOR_DEFAULT(), i, j, false);
+    }
+//</editor-fold>
+    
     @Override
     public void init_matrix() {
-        for(int i=0; i<MATRIX_LENGTH; i++) {
-            for(int j=0; j<MATRIX_LENGTH; j++){
-                this.matrix[i][j] = new CellInfRepClass(getParams(), getCOLOR_DEFAULT(), i, j, false);
-            }
-        }
-        //applay boundaries if they are enabled
-        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
-        //Restart the others too
-        this._ag = new ArrayList<>();
-        this.idCounter = 0;
+        super.init_matrix();
+        //Restart agent list
+        this.agents = new ArrayList<>();
     }
 
     @Override
@@ -102,17 +91,15 @@ public class AutoInfRepClass extends Automaton{
         
         int thisi, thisj, thisClasse;
         CellInfRepClass thisCell;
-        CellInfRepClass[][] new_matrix_fier = new CellInfRepClass[MATRIX_LENGTH][MATRIX_LENGTH];
+        CellInfRepClass[][] new_matrix = new CellInfRepClass[MATRIX_LENGTH][MATRIX_LENGTH];
         
-        //NEXT STATE Classifier
-        for(int i=0; i<_ag.size(); i++) {
-
-            AgInfRepClass thisAgent = _ag.get(i).getCopy();
+        //Moving Agents
+        for (AgInfRepClass thisAgent : agents) {
             
-            //Recupéré uniquement l'état pour cette classe de cet agent
+            //Get some values
             thisi = thisAgent.getI();
             thisj = thisAgent.getJ();
-            thisClasse= thisAgent.getClasse();
+            thisClasse = thisAgent.getClasse();
             thisCell = this.matrix[thisi][thisj];
             
             //Count neighbours
@@ -120,17 +107,17 @@ public class AutoInfRepClass extends Automaton{
             thisCell.setNeighbours(nghbrsList);
             thisCell.countNeighbours(getParams(), thisClasse);
             
-            //PERCIEVE + DECIDE
+            //Percieve + decide to move
             Point deltaLocation = thisAgent.move(getParams(), thisCell);
 
-            //Si cet agent va se deplacer
+            //If there is a new location for the agent (this agent is moving)
             if(deltaLocation != null){
-                //informe cells of decisions
                 int di = (int)deltaLocation.getX();
                 int dj = (int)deltaLocation.getY();
+                //Add this agent to concurent list of this cell
                 matrix[di][dj].addConcurent_agents(thisAgent);
             }
-            matrix[thisi][thisj].reinitArraysSaufConcurent();
+            matrix[thisi][thisj].reinitArrays(true);
         }
         
         //Conflicts + NEXT STATE System
@@ -138,62 +125,35 @@ public class AutoInfRepClass extends Automaton{
         for(int i=0; i<MATRIX_LENGTH; i++) {
             for(int j=0; j<MATRIX_LENGTH; j++){
                 
-                new_matrix_fier[i][j] = this.matrix[i][j].getCopy(getParams());
-                if (!new_matrix_fier[i][j].isWall()) {
+                new_matrix[i][j] = this.matrix[i][j].getCopy(getParams());
+                if (!new_matrix[i][j].isWall()) {
                     //Count neighbours
                     CellInfRepClass[] nghbrsList = getListOfNeighbours(i, j, 8);
-                    new_matrix_fier[i][j].setNeighbours(nghbrsList);
+                    new_matrix[i][j].setNeighbours(nghbrsList);
             
-                    new_matrix_fier[i][j].nextState(getParams());
-                    AgInfRepClass choosenAgent = new_matrix_fier[i][j].chooseAgent(getParams());
-                    
-                    
+                    new_matrix[i][j].nextState(getParams());
+                    AgInfRepClass choosenAgent = new_matrix[i][j].chooseAgent(getParams());
                     
                     if(choosenAgent != null){
-                        _ag.set(choosenAgent.getId(), choosenAgent);
+                        choosenAgent.setNewLocation(i, j);
+                        agents.set(choosenAgent.getId(), choosenAgent);
                     }
-                    new_matrix_fier[i][j].reinitArrays();
-                    new_matrix_fier[i][j].agentInitializer(getParams());
+                    new_matrix[i][j].reinitArrays(false);
+                    new_matrix[i][j].agentInitializer(getParams());
                 }
             }
         }
         
-        for(int i=0; i<_ag.size(); i++) {
+        for(int i=0; i<agents.size(); i++) {
             
-            int cl = _ag.get(i).getClasse();
-            int ii = _ag.get(i).getI();
-            int jj = _ag.get(i).getJ();
+            int cl = agents.get(i).getClasse();
+            int ii = agents.get(i).getI();
+            int jj = agents.get(i).getJ();
             
-            new_matrix_fier[ii][jj].colorier(getParams(), cl);
+            new_matrix[ii][jj].colorier(getParams(), cl);
         }
-        this.matrix = new_matrix_fier;
+        this.matrix = new_matrix;
         increaseNBGeneration(1);
-    }
-    
-    @Override
-    public void makeBoundaries(){
-        
-        for (int k = 0; k < MATRIX_LENGTH; k++) {
-            this.matrix[k][0] = getAWallCell(k, 0);
-            this.matrix[k][MATRIX_LENGTH-1] = getAWallCell(k, MATRIX_LENGTH-1);
-            this.matrix[0][k] = getAWallCell(0, k);
-            this.matrix[MATRIX_LENGTH-1][k] = getAWallCell(MATRIX_LENGTH-1, k);
-        }
-    }
-
-    @Override
-    public CellInfRepClass getAWallCell(int i, int j) {
-        return new CellInfRepClass(getCOLOR_OBSTACLE(), i, j, true);
-    }
-
-    @Override
-    public void deleteAgent(int i, int j) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
-    public void makeWallAt(int i, int j) {
-        this.matrix[i][j] = new CellInfRepClass(getCOLOR_OBSTACLE(), i, j, true);
     }
     
     @Override
@@ -212,5 +172,10 @@ public class AutoInfRepClass extends Automaton{
             }
         }
         return nb;
+    }
+
+    @Override
+    public void deleteAgent(int i, int j) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

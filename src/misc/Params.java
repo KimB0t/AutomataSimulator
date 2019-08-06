@@ -17,6 +17,7 @@
  */
 package misc;
 
+import data.DataGauss;
 import java.awt.Color;
 import java.util.Random;
 
@@ -82,6 +83,10 @@ public class Params {
      * <code>false</code> to use pre-defined colors.
      */
     public static boolean MAIN_RAND_COLORS;
+
+    public Color getCOLOR(DataGauss data) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     /**
      * Variantes of automata.
@@ -121,6 +126,11 @@ public class Params {
              * classification (Karim Boutamine).
              */
             INFLUENCE_REPULSION,
+            
+            /**
+             * First test for real data classification (Karim Boutamine).
+             */
+            TEST,
             
             /**
              * Default value if none of the above.
@@ -487,6 +497,7 @@ public class Params {
         this.COLORS = new AllColors(MAIN_COLOR_AGENT1, 
                 Color.black, 
                 Color.red, 
+                new Color(255, 0, 0, 100), 
                 Color.blue, 
                 Color.white);
         this.COLORS.initColorTable(this.NB_CLASSES, this.RAND_COLORS);
@@ -530,4 +541,263 @@ public class Params {
     public Params getParams(){
         return this;
     }
+    
+    //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
+    /**
+     *
+     * @return
+     */
+    public long sleepTime(){
+        return (long) (SPEED/COEF_SPEED);
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public String stringNBGeneration(){
+        return String.valueOf(NB_GENERATIONS);
+    }
+    
+    /**
+     *
+     */
+    public void reInitNBGeneration(){
+        NB_GENERATIONS = 0;
+    }
+    
+    /**
+     *
+     * @param shape
+     * @return
+     */
+    public boolean shapeIs(String shape){
+        return SHAPE.equals(shape);
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Color getCOLOR_AGENT1(){
+        return COLORS.COLOR_AGENT1;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Color getCOLOR_DEFAULT(){
+        return COLORS.COLOR_DEFAULT;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Color getCOLOR_AGENT2(){
+        return COLORS.COLOR_AGENT2;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Color getCOLOR_OBSTACLE(){
+        return COLORS.COLOR_OBSTACLE;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Color getCOLOR_EXCITED(){
+        return COLORS.COLOR_EXCITED;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Color getCOLOR_EXCITED2(){
+        return COLORS.COLOR_EXCITED2;
+    }
+    
+    /**
+     *
+     * @param val
+     */
+    public void increaseNBGeneration(int val){
+        NB_GENERATIONS += val;
+    }
+    
+    /**
+     *
+     * @param co
+     */
+    public void setCOLOR_AGENT1(Color co){
+        COLORS.COLOR_AGENT1 = co;
+    }
+    
+    /**
+     *
+     * @param str
+     * @return
+     */
+    public boolean isBOUNDARIESequalTo(String str){
+        return BOUNDARIES.equals(str);
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public int getAbsoluteLength(){
+        return MATRIX_LENGTH;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public int getRelativeLength(){
+        return MATRIX_LENGTH - BOUNDARY_LENGTH;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public int getAbsoluteStarter(){
+        return 0;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public int getRelativeStarter(){
+        return BOUNDARY_LENGTH;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public int getRANDcoordinate(){
+        return RAND.nextInt(MATRIX_LENGTH-2 * BOUNDARY_LENGTH) + BOUNDARY_LENGTH;
+    }
+
+    /**
+     *
+     * @param text
+     */
+    public void setLAMBDA(String text) {
+        this.LAMBDA = Float.parseFloat(text);
+    }
+
+    /**
+     *
+     * @param text
+     */
+    public void setDENSITY(String text) {
+        this.DENSITY = Float.parseFloat(text);
+    }
+
+    /**
+     *
+     * @param text
+     */
+    public void setMLEVEL(String text) {
+        this.MLEVEL = Integer.parseInt(text);
+    }
+
+    /**
+     *
+     * @param text
+     */
+    public void setOBSTACLES_LENGTH(String text) {
+        this.OBSTACLES_LENGTH = Integer.parseInt(text);
+    }
+
+    /**
+     *
+     * @param text
+     */
+    public void setOBSTACLES_NBR(String text) {
+        this.OBSTACLES_NBR = Integer.parseInt(text);
+    }
+
+    /**
+     *
+     * @param text
+     */
+    public void setPA(String text) {
+        this.PA = Float.parseFloat(text);
+    }
+
+    /**
+     *
+     * @param text
+     */
+    public void setREPULSION(String text) {
+        this.REPULSION = Float.parseFloat(text);
+    }
+
+    /**
+     *
+     * @param substring
+     */
+    public void setCOEF_SPEED(String substring) {
+        this.COEF_SPEED = Float.parseFloat(substring);
+    }
+
+    /**
+     *
+     * @param toString
+     */
+    public void setSHAPE(String toString) {
+        this.SHAPE = toString;
+    }
+
+    /**
+     *
+     * @param b
+     */
+    public void setOBSTACLES(boolean b) {
+        this.OBSTACLES = b;
+    }
+
+    /**
+     *
+     * @param b
+     */
+    public void setGRID(boolean b) {
+        this.GRID = b;
+    }
+
+    /**
+     *
+     * @param b
+     */
+    public void setHANDRAW_OBSTACLES(boolean b) {
+        this.HANDRAW_OBSTACLES = b;
+    }
+
+    /**
+     *
+     * @param policy
+     */
+    public void setPOLICY(Policy policy) {
+        this.POLICY = policy;
+    }
+
+    /**
+     *
+     * @param b
+     */
+    public void setUNCOVER(boolean b) {
+        this.UNCOVER = b;
+    }
+//</editor-fold>
 }

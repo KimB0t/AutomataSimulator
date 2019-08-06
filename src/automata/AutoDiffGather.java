@@ -26,16 +26,20 @@ import java.util.ArrayList;
 /**
  * Automata for decentralised gathering using Reaction-diffusion-chemotaxis 
  * scheme. 
- * (See Nazim A. Fatès. Solving the Decentralised Gathering 
- * Problem with a Reaction-Diffusion-Chemotaxis scheme - 
- * Social amoebae as a source of inspiration.
+ * (For further information about the model, see : Nazim A. Fatès. Solving 
+ * the Decentralised Gathering Problem with a Reaction-Diffusion-Chemotaxis 
+ * scheme - Social amoebae as a source of inspiration.
  * http://hal.inria.fr/inria-00132266.)
- * @author Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ * @author Karim BOUTAMINE <boutaminekarim06@gmail.com>
  */
 public class AutoDiffGather extends Automaton{
-
-    private CellDiffGather[][] matrix;
     
+    
+    //<editor-fold defaultstate="collapsed" desc="Declarations">
+    private CellDiffGather[][] matrix;
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public AutoDiffGather() {
         super();
         this.matrix = new CellDiffGather[MATRIX_LENGTH][MATRIX_LENGTH];
@@ -45,7 +49,9 @@ public class AutoDiffGather extends Automaton{
         super();
         this.matrix = mx;
     }
+//</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
     @Override
     public void setAgent(int i, int j, int nb, Color co, boolean wl) {
         this.matrix[i][j].setNbAgents(nb);
@@ -57,19 +63,20 @@ public class AutoDiffGather extends Automaton{
     public Color getCellColor(int i, int j) {
         return this.matrix[i][j].getCouleur();
     }
+//</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Makers">
     @Override
-    public void init_matrix() {
-        for(int i=0; i<MATRIX_LENGTH; i++) {
-            for(int j=0; j<MATRIX_LENGTH; j++){
-                this.matrix[i][j] = new CellDiffGather(i, j);
-            }
-        }
-        //applay boundaries if they are enabled
-        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
-        
+    public void makeWallAt(int i, int j) {
+        this.matrix[i][j] = new CellDiffGather(getCOLOR_OBSTACLE(), i, j, true);
     }
-
+    
+    @Override
+    public void makeCellAt(int i, int j) {
+        this.matrix[i][j] = new CellDiffGather(i, j);
+    }
+//</editor-fold>
+    
     @Override
     public void step() {
         CellDiffGather[][] new_matrix_gathr = new CellDiffGather[MATRIX_LENGTH][MATRIX_LENGTH];
@@ -78,12 +85,11 @@ public class AutoDiffGather extends Automaton{
         //For every cell calculate the next state
         for(int i=0; i<MATRIX_LENGTH; i++) {
             for(int j=0; j<MATRIX_LENGTH; j++){
+                new_matrix_gathr[i][j] = this.matrix[i][j].getCopy(getParams());
                 if (!this.matrix[i][j].isWall()) {
                     Neighbours nghbrs = this.countNeighbours(this.matrix[i][j], -1);
                     new_matrix_gathr[i][j] = this.matrix[i][j].nextState(getParams(), nghbrs);
-//                new_matrix_gathr[i][j].printCell();
                 }
-                else new_matrix_gathr[i][j] = getAWallCell(i, j);
             }
         }
             
@@ -135,31 +141,10 @@ public class AutoDiffGather extends Automaton{
         }
         return nb;
     }
-    
-    @Override
-    public void makeBoundaries(){
-        
-        for (int k = 0; k < MATRIX_LENGTH; k++) {
-            this.matrix[k][0] = getAWallCell(k, 0);
-            this.matrix[k][MATRIX_LENGTH-1] = getAWallCell(k, MATRIX_LENGTH-1);
-            this.matrix[0][k] = getAWallCell(0, k);
-            this.matrix[MATRIX_LENGTH-1][k] = getAWallCell(MATRIX_LENGTH-1, k);
-        }
-    }
-
-    @Override
-    public CellDiffGather getAWallCell(int i, int j) {
-        return new CellDiffGather(getCOLOR_OBSTACLE(), i, j, true);
-    }
 
     @Override
     public void deleteAgent(int i, int j) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
-    public void makeWallAt(int i, int j) {
-        this.matrix[i][j] = new CellDiffGather(getCOLOR_OBSTACLE(), i, j, true);
     }
     
     @Override

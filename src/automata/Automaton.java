@@ -17,8 +17,6 @@
  */
 package automata;
 
-import misc.Neighbours;
-import static misc.Params.RAND;
 import misc.Params;
 import cells.Cell;
 import java.awt.Color;
@@ -26,7 +24,7 @@ import java.awt.Color;
 /**
  * An automaton is a matrix of cells
  * the automata matrix (matrix of cells)
- * @author Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ * @author Karim BOUTAMINE <boutaminekarim06@gmail.com>
  */
 public abstract class Automaton extends Params{
     
@@ -59,33 +57,22 @@ public abstract class Automaton extends Params{
     /**
      * Initialize a matrix
      */
-    public abstract void init_matrix();
+    public void init_matrix(){
+        for(int i=0; i<MATRIX_LENGTH; i++) {
+            for(int j=0; j<MATRIX_LENGTH; j++){
+                makeCellAt(i, j);
+            }
+        }
+        //applay boundaries if they are enabled
+        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
+    }
     
     /**
      * The automaton next step (automaton update of all cells)
      */
     public abstract void step();
     
-    /**
-     * Execute operations on neighbourhood of cell
-     * In general :
-     *  - Make a list of Free Cells
-     *  - Make a list of Free Excited Cells
-     *  - Count the Free Excited Cells
-     *  - ...
-     * @param cell
-     * @param k
-     * @return
-     */
-//    public abstract Neighbours countNeighbours(Cell cell, int k);
-    
-    /**
-     * 
-     * @param i
-     * @param j
-     * @return
-     */
-    public abstract Cell getAWallCell(int i, int j);
+    public abstract void makeCellAt(int i, int j);
     
     /**
      * Creates a wall cell at position (i, j).
@@ -97,7 +84,14 @@ public abstract class Automaton extends Params{
     /**
      * Creates borders (of wall cells) to the matrix.
      */
-    public abstract void makeBoundaries();
+    public void makeBoundaries(){
+        for (int k = 0; k < MATRIX_LENGTH; k++) {
+            makeWallAt(k, 0);
+            makeWallAt(k, MATRIX_LENGTH-1);
+            makeWallAt(0, k);
+            makeWallAt(MATRIX_LENGTH-1, k);
+        }
+    }
     
     /**
      * Delete agent in cell (i, j). 
@@ -145,252 +139,4 @@ public abstract class Automaton extends Params{
         reInitNBGeneration();
     }
     
-    /**
-     *
-     * @return
-     */
-    public long sleepTime(){
-        return (long) (SPEED/COEF_SPEED);
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public String stringNBGeneration(){
-        return String.valueOf(NB_GENERATIONS);
-    }
-    
-    /**
-     *
-     */
-    public void reInitNBGeneration(){
-        NB_GENERATIONS = 0;
-    }
-    
-    /**
-     *
-     * @param shape
-     * @return
-     */
-    public boolean shapeIs(String shape){
-        return SHAPE.equals(shape);
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public Color getCOLOR_AGENT1(){
-        return COLORS.COLOR_AGENT1;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public Color getCOLOR_DEFAULT(){
-        return COLORS.COLOR_DEFAULT;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public Color getCOLOR_AGENT2(){
-        return COLORS.COLOR_AGENT2;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public Color getCOLOR_OBSTACLE(){
-        return COLORS.COLOR_OBSTACLE;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public Color getCOLOR_EXCITED(){
-        return COLORS.COLOR_EXCITED;
-    }
-    
-    /**
-     *
-     * @param val
-     */
-    public void increaseNBGeneration(int val){
-        NB_GENERATIONS += val;
-    }
-    
-    /**
-     *
-     * @param co
-     */
-    public void setCOLOR_AGENT1(Color co){
-        COLORS.COLOR_AGENT1 = co;
-    }
-    
-    /**
-     *
-     * @param str
-     * @return
-     */
-    public boolean isBOUNDARIESequalTo(String str){
-        return BOUNDARIES.equals(str);
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public int getAbsoluteLength(){
-        return MATRIX_LENGTH;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public int getRelativeLength(){
-        return MATRIX_LENGTH - BOUNDARY_LENGTH;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public int getAbsoluteStarter(){
-        return 0;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public int getRelativeStarter(){
-        return BOUNDARY_LENGTH;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public int getRANDcoordinate(){
-        return RAND.nextInt(MATRIX_LENGTH-2 * BOUNDARY_LENGTH) + BOUNDARY_LENGTH;
-    }
-
-    /**
-     *
-     * @param text
-     */
-    public void setLAMBDA(String text) {
-        this.LAMBDA = Float.parseFloat(text);
-    }
-
-    /**
-     *
-     * @param text
-     */
-    public void setDENSITY(String text) {
-        this.DENSITY = Float.parseFloat(text);
-    }
-
-    /**
-     *
-     * @param text
-     */
-    public void setMLEVEL(String text) {
-        this.MLEVEL = Integer.parseInt(text);
-    }
-
-    /**
-     *
-     * @param text
-     */
-    public void setOBSTACLES_LENGTH(String text) {
-        this.OBSTACLES_LENGTH = Integer.parseInt(text);
-    }
-
-    /**
-     *
-     * @param text
-     */
-    public void setOBSTACLES_NBR(String text) {
-        this.OBSTACLES_NBR = Integer.parseInt(text);
-    }
-
-    /**
-     *
-     * @param text
-     */
-    public void setPA(String text) {
-        this.PA = Float.parseFloat(text);
-    }
-
-    /**
-     *
-     * @param text
-     */
-    public void setREPULSION(String text) {
-        this.REPULSION = Float.parseFloat(text);
-    }
-
-    /**
-     *
-     * @param substring
-     */
-    public void setCOEF_SPEED(String substring) {
-        this.COEF_SPEED = Float.parseFloat(substring);
-    }
-
-    /**
-     *
-     * @param toString
-     */
-    public void setSHAPE(String toString) {
-        this.SHAPE = toString;
-    }
-
-    /**
-     *
-     * @param b
-     */
-    public void setOBSTACLES(boolean b) {
-        this.OBSTACLES = b;
-    }
-
-    /**
-     *
-     * @param b
-     */
-    public void setGRID(boolean b) {
-        this.GRID = b;
-    }
-
-    /**
-     *
-     * @param b
-     */
-    public void setHANDRAW_OBSTACLES(boolean b) {
-        this.HANDRAW_OBSTACLES = b;
-    }
-
-    /**
-     *
-     * @param policy
-     */
-    public void setPOLICY(Policy policy) {
-        this.POLICY = policy;
-    }
-
-    /**
-     *
-     * @param b
-     */
-    public void setUNCOVER(boolean b) {
-        this.UNCOVER = b;
-    }
 }

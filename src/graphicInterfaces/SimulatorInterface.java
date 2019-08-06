@@ -27,6 +27,8 @@ import automata.AutoDiffClass;
 import automata.AutoDiffGather;
 import automata.AutoInfClass;
 import automata.AutoInfRepClass;
+import automata.AutoTest;
+import automata.AutoTest2;
 import automata.AutoTurmites;
 import java.awt.AWTException;
 import java.awt.Component;
@@ -103,6 +105,9 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                 break;
             case INFLUENCE_REPULSION:
                 ac = new AutoInfRepClass();
+                break;
+            case TEST:
+                ac = new AutoTest();
                 break;
             default:
                 break;
@@ -1223,7 +1228,6 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     private void updateScreen(){
         
         //Repaint the screen to show changes
-        ((Painter)jPanel_screen).setAutomaton(ac);
         jPanel_screen.repaint();
     }
     

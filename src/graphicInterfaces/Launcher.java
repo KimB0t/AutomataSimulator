@@ -127,7 +127,7 @@ public class Launcher extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(500, 500));
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        jComboBox_variante.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "LifeGame", "DiffusionGathering", "DiffusionClassification", "Turmites", "InfluenceClassification", "InfluenceRepulsion" }));
+        jComboBox_variante.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "LifeGame", "DiffusionGathering", "DiffusionClassification", "Turmites", "InfluenceClassification", "InfluenceRepulsion", "Test" }));
         jComboBox_variante.setPreferredSize(new java.awt.Dimension(50, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -361,7 +361,7 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color1.setMaximumSize(new java.awt.Dimension(30, 30));
         jButton_color1.setMinimumSize(new java.awt.Dimension(30, 30));
         jButton_color1.setPreferredSize(new java.awt.Dimension(30, 30));
-        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.GREEN)));
+        jButton_color1.setIcon(new ImageIcon(getColorIcon(Color.GREEN)));
         jPanel_colors.add(jButton_color1);
 
         jButton_color2.setText("2");
@@ -369,7 +369,7 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color2.setMaximumSize(new java.awt.Dimension(30, 30));
         jButton_color2.setMinimumSize(new java.awt.Dimension(30, 30));
         jButton_color2.setPreferredSize(new java.awt.Dimension(30, 30));
-        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.ORANGE)));
+        jButton_color2.setIcon(new ImageIcon(getColorIcon(Color.ORANGE)));
         jPanel_colors.add(jButton_color2);
 
         jButton_color3.setText("3");
@@ -377,7 +377,7 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color3.setMaximumSize(new java.awt.Dimension(30, 30));
         jButton_color3.setMinimumSize(new java.awt.Dimension(30, 30));
         jButton_color3.setPreferredSize(new java.awt.Dimension(30, 30));
-        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.MAGENTA)));
+        jButton_color3.setIcon(new ImageIcon(getColorIcon(Color.MAGENTA)));
         jPanel_colors.add(jButton_color3);
 
         jButton_color4.setText("4");
@@ -385,7 +385,7 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color4.setMaximumSize(new java.awt.Dimension(30, 30));
         jButton_color4.setMinimumSize(new java.awt.Dimension(30, 30));
         jButton_color4.setPreferredSize(new java.awt.Dimension(30, 30));
-        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.PINK)));
+        jButton_color4.setIcon(new ImageIcon(getColorIcon(Color.PINK)));
         jPanel_colors.add(jButton_color4);
 
         jButton_color5.setText("5");
@@ -393,7 +393,7 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color5.setMaximumSize(new java.awt.Dimension(30, 30));
         jButton_color5.setMinimumSize(new java.awt.Dimension(30, 30));
         jButton_color5.setPreferredSize(new java.awt.Dimension(30, 30));
-        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.YELLOW)));
+        jButton_color5.setIcon(new ImageIcon(getColorIcon(Color.YELLOW)));
         jPanel_colors.add(jButton_color5);
 
         jButton_color6.setText("6");
@@ -401,7 +401,7 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color6.setMaximumSize(new java.awt.Dimension(30, 30));
         jButton_color6.setMinimumSize(new java.awt.Dimension(30, 30));
         jButton_color6.setPreferredSize(new java.awt.Dimension(30, 30));
-        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.RED)));
+        jButton_color6.setIcon(new ImageIcon(getColorIcon(Color.RED)));
         jPanel_colors.add(jButton_color6);
 
         jButton_color7.setText("7");
@@ -409,7 +409,7 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color7.setMaximumSize(new java.awt.Dimension(30, 30));
         jButton_color7.setMinimumSize(new java.awt.Dimension(30, 30));
         jButton_color7.setPreferredSize(new java.awt.Dimension(30, 30));
-        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.CYAN)));
+        jButton_color7.setIcon(new ImageIcon(getColorIcon(Color.CYAN)));
         jPanel_colors.add(jButton_color7);
 
         jButton_color8.setText("8");
@@ -417,7 +417,7 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color8.setMaximumSize(new java.awt.Dimension(30, 30));
         jButton_color8.setMinimumSize(new java.awt.Dimension(30, 30));
         jButton_color8.setPreferredSize(new java.awt.Dimension(30, 30));
-        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.GRAY)));
+        jButton_color8.setIcon(new ImageIcon(getColorIcon(Color.GRAY)));
         jPanel_colors.add(jButton_color8);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -593,6 +593,9 @@ public class Launcher extends javax.swing.JFrame {
                 break;
             case "InfluenceRepulsion":
                 VARIANTE = Variante.INFLUENCE_REPULSION;
+                break;
+            case "Test":
+                VARIANTE = Variante.TEST;
                 break;
             default: 
                 VARIANTE = Variante.DEFAULT;

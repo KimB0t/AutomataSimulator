@@ -26,8 +26,11 @@ import java.awt.Color;
  */
 public class AutoLife extends Automaton{
     
+    //<editor-fold defaultstate="collapsed" desc="Declarations">
     private CellLife[][] matrix;
+//</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public AutoLife() {
         super();
         this.matrix = new CellLife[MATRIX_LENGTH][MATRIX_LENGTH];
@@ -37,26 +40,26 @@ public class AutoLife extends Automaton{
         super();
         this.matrix = mx;
     }
+//</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
     @Override
     public Color getCellColor(int i, int j){
         return this.matrix[i][j].getCouleur();
     }
+//</editor-fold>
     
-    /**
-     * init matrix with new cells
-     */
+    //<editor-fold defaultstate="collapsed" desc="Makers">
     @Override
-    public void init_matrix(){
-        
-        for(int i=0; i<MATRIX_LENGTH; i++) {
-            for(int j=0; j<MATRIX_LENGTH; j++){
-                this.matrix[i][j] = new CellLife(0, getCOLOR_DEFAULT(), i, j, false);
-            }
-        }
-        //applay boundaries if they are enabled
-        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
+    public void makeWallAt(int i, int j) {
+        this.matrix[i][j] = new CellLife(getCOLOR_OBSTACLE(), i, j, true);
     }
+    
+    @Override
+    public void makeCellAt(int i, int j) {
+        this.matrix[i][j] = new CellLife(0, getCOLOR_DEFAULT(), i, j, false);
+    }
+//</editor-fold>
     
     @Override
     public void step(){
@@ -66,12 +69,12 @@ public class AutoLife extends Automaton{
         //For every cell calculate the next state
         for(int i=0; i<MATRIX_LENGTH; i++) {
             for(int j=0; j<MATRIX_LENGTH; j++){
+                new_matrix_life[i][j] = this.matrix[i][j].getCopy(getParams());
                 if (!this.matrix[i][j].isWall()) {
                     CellLife[] listNghbrs = getListOfNeighbours(i, j, 8);
                     this.matrix[i][j].setNeighbours(listNghbrs);
                     new_matrix_life[i][j] = this.matrix[i][j].nextState1(getParams());
                 }
-                else new_matrix_life[i][j] = getAWallCell(i, j);
             }
         }
         this.matrix = new_matrix_life;
@@ -83,6 +86,7 @@ public class AutoLife extends Automaton{
         this.matrix[i][j].setNbAgents(nb);
         this.matrix[i][j].setCouleur(co);
         this.matrix[i][j].setWall(wl);
+        System.out.println("An Agent is added");
     }
     
     @Override
@@ -90,27 +94,6 @@ public class AutoLife extends Automaton{
         this.matrix[i][j].setNbAgents(0);
         this.matrix[i][j].setCouleur(getCOLOR_DEFAULT());
         this.matrix[i][j].setWall(false);
-    }
-    
-    @Override
-    public void makeBoundaries(){
-        
-        for (int k = 0; k < MATRIX_LENGTH; k++) {
-            this.matrix[k][0] = getAWallCell(k, 0);
-            this.matrix[k][MATRIX_LENGTH-1] = getAWallCell(k, MATRIX_LENGTH-1);
-            this.matrix[0][k] = getAWallCell(0, k);
-            this.matrix[MATRIX_LENGTH-1][k] = getAWallCell(MATRIX_LENGTH-1, k);
-        }
-    }
-
-    @Override
-    public CellLife getAWallCell(int i, int j) {
-        return new CellLife(getCOLOR_OBSTACLE(), i, j, true);
-    }
-    
-    @Override
-    public void makeWallAt(int i, int j) {
-        this.matrix[i][j] = new CellLife(getCOLOR_OBSTACLE(), i, j, true);
     }
 
     @Override

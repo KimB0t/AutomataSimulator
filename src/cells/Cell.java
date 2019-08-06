@@ -168,7 +168,7 @@ public abstract class Cell{
     
     public abstract int getNbAgents(int k);
     
-    public abstract void countNeighbours();
+    public abstract void countNeighbours(Params p);
     
     public abstract void countNeighbours(Params p, int k);
     
@@ -189,6 +189,7 @@ public abstract class Cell{
     }
     
     public void increaseEFCount(int value){
+//        System.out.println("I count it !!!!!!!!!!!!!!!!!!!!!!!");
         this.excited_free_cells_count += value;
     }
 }

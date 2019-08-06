@@ -139,7 +139,7 @@ public class CellTurmites extends Cell{
     }
 
     @Override
-    public void countNeighbours() {
+    public void countNeighbours(Params p) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

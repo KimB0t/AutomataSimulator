@@ -34,15 +34,15 @@ import static misc.Params.RAND;
  */
 public class AutoTurmites extends Automaton{
 
+    //<editor-fold defaultstate="collapsed" desc="Declarations">
     private CellTurmites[][] matrix;
     private ArrayList<Agent> _ag;
-//    private HashMap<Integer, ArrayList<AgentTurmite>> _listConcurent;
     private Neighbours nghbrs;
-    
     // Counter for ids
     private int idCounter;
+//</editor-fold>
     
-    
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public AutoTurmites() {
         super();
         this.matrix = new CellTurmites[MATRIX_LENGTH][MATRIX_LENGTH];
@@ -58,7 +58,9 @@ public class AutoTurmites extends Automaton{
         this._ag = a;
         this.nghbrs = new Neighbours(lsc);
     }
+//</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
     public CellTurmites getCellTurmite(int i, int j){
         return this.matrix[i][j];
     }
@@ -66,7 +68,6 @@ public class AutoTurmites extends Automaton{
     @Override
     public void setAgent(int i, int j, int nb, Color co, boolean wl) {
         
-//        this.matrix[i][j].setNbAgents(nb);
         this.matrix[i][j].setCouleur(co);
         this.matrix[i][j].setWall(wl);
         int pos = j + i*MATRIX_LENGTH;
@@ -75,42 +76,38 @@ public class AutoTurmites extends Automaton{
     }
     
     @Override
-    public void deleteAgent(int i, int j) {
-        
-//        this.matrix[i][j].setNbAgents(0);
-//        this.matrix[i][j].setCouleur(getCOLOR_DEFAULT());
-//        this.matrix[i][j].setWall(false);
-//        int pos = j + i*MATRIX_LENGTH;
-//        Iterator<Agent> it = this._ag.iterator();
-//        while(it.hasNext()){
-//            Agent a = it.next();
-//            if(a.getPosition() == pos){
-//                this._ag.remove(a);
-//                System.out.println("HAS BEEN DELETED");
-//            }
-//        }
-//        if(this._ag.contains(this.matrix[i][j])){
-//            this._ag.remove(this.matrix[i][j]);
-//            System.out.println("HAS BEEN DELETED");
-//        }
-//        this.idCounter--;
-    }
-    
-    @Override
     public Color getCellColor(int i, int j){
         return this.matrix[i][j].getCouleur();
     }
     
+    public void setStateCell(int i, int j, int s){
+        this.matrix[i][j].setState(s);
+    }
+    
+    public int getAgSize(){
+        return _ag.size();
+    }
+    
+    public void agAddElem(int id, AgentTurmite ag){
+        this._ag.add(id, ag);
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Makers">
+    @Override
+    public void makeWallAt(int i, int j) {
+        this.matrix[i][j] = new CellTurmites(getCOLOR_OBSTACLE(), i, j, true);
+    }
+    
+    @Override
+    public void makeCellAt(int i, int j) {
+        this.matrix[i][j] = new CellTurmites(getCOLOR_DEFAULT(), i, j, false, 0, j + i*MATRIX_LENGTH);
+    }
+//</editor-fold>
+    
     @Override
     public void init_matrix() {
-        for(int i=0; i<MATRIX_LENGTH; i++) {
-            for(int j=0; j<MATRIX_LENGTH; j++){
-                this.matrix[i][j] = 
-                        new CellTurmites(getCOLOR_DEFAULT(), i, j, false, 0, j + i*MATRIX_LENGTH);
-            }
-        }
-        //applay boundaries if they are enabled
-        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
+        super.init_matrix();
         this._ag = new ArrayList<>();
         this.nghbrs = new Neighbours(new HashMap<>());
         this.idCounter = 0;
@@ -196,39 +193,6 @@ public class AutoTurmites extends Automaton{
         return null;
     }
     
-    public void setStateCell(int i, int j, int s){
-        this.matrix[i][j].setState(s);
-    }
-    
-    public int getAgSize(){
-        return _ag.size();
-    }
-    
-    public void agAddElem(int id, AgentTurmite ag){
-        this._ag.add(id, ag);
-    }
-    
-    @Override
-    public void makeBoundaries(){
-        
-        for (int k = 0; k < MATRIX_LENGTH; k++) {
-            this.matrix[k][0] = getAWallCell(k, 0);
-            this.matrix[k][MATRIX_LENGTH-1] = getAWallCell(k, MATRIX_LENGTH-1);
-            this.matrix[0][k] = getAWallCell(0, k);
-            this.matrix[MATRIX_LENGTH-1][k] = getAWallCell(MATRIX_LENGTH-1, k);
-        }
-    }
-
-    @Override
-    public CellTurmites getAWallCell(int i, int j) {
-        return new CellTurmites(getCOLOR_OBSTACLE(), i, j, true);
-    }
-    
-    @Override
-    public void makeWallAt(int i, int j) {
-        this.matrix[i][j] = new CellTurmites(getCOLOR_OBSTACLE(), i, j, true);
-    }
-    
     @Override
     public CellTurmites[] getListOfNeighbours(int i, int j, int nbNghbrs) {
         
@@ -245,5 +209,27 @@ public class AutoTurmites extends Automaton{
             }
         }
         return nb;
+    }
+    
+    @Override
+    public void deleteAgent(int i, int j) {
+        
+//        this.matrix[i][j].setNbAgents(0);
+//        this.matrix[i][j].setCouleur(getCOLOR_DEFAULT());
+//        this.matrix[i][j].setWall(false);
+//        int pos = j + i*MATRIX_LENGTH;
+//        Iterator<Agent> it = this._ag.iterator();
+//        while(it.hasNext()){
+//            Agent a = it.next();
+//            if(a.getPosition() == pos){
+//                this._ag.remove(a);
+//                System.out.println("HAS BEEN DELETED");
+//            }
+//        }
+//        if(this._ag.contains(this.matrix[i][j])){
+//            this._ag.remove(this.matrix[i][j]);
+//            System.out.println("HAS BEEN DELETED");
+//        }
+//        this.idCounter--;
     }
 }

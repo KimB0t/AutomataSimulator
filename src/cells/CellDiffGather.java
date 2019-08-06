@@ -25,7 +25,7 @@ import misc.Params;
 
 /**
  *
- * @author Karim BOUTAMINE <boutaminekarim06 at gmail.com>
+ * @author Karim BOUTAMINE <boutaminekarim06@gmail.com>
  */
 public class CellDiffGather extends Cell{
     
@@ -224,7 +224,7 @@ public class CellDiffGather extends Cell{
     }
 
     @Override
-    public void countNeighbours() {
+    public void countNeighbours(Params p) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

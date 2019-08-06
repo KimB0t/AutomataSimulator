@@ -109,7 +109,7 @@ public class CellLife extends Cell{
     public CellLife nextState1(Params param){
         
         CellLife new_cell = this.getCopy(param);
-        this.countNeighbours();
+        this.countNeighbours(null);
         if(nbAgents==0 && excited_free_cells_count==3){
             new_cell.setNbAgents(1);
             new_cell.setCouleur(param.COLORS.COLOR_AGENT1);
@@ -127,7 +127,7 @@ public class CellLife extends Cell{
     }
     
     @Override
-    public void countNeighbours(){
+    public void countNeighbours(Params p){
         
         excited_free_cells_count = 0;
         for(int i=0; i<8; i++) {

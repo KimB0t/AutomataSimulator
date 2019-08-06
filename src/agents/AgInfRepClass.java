@@ -17,7 +17,6 @@
  */
 package agents;
 
-import misc.Neighbours;
 import cells.Cell;
 import static misc.Params.bernoulli;
 import static misc.Params.RAND;
@@ -38,7 +37,6 @@ public class AgInfRepClass extends Agent{
      *
      * @param cls
      * @param i
-     * @param p
      * @param j
      * @param id
      */
@@ -63,6 +61,10 @@ public class AgInfRepClass extends Agent{
         return classe;
     }
 
+    /**
+     *
+     * @return
+     */
     public AgInfRepClass getCopy(){
         return new AgInfRepClass(getI(), getJ(), 
                 getId(), getClasse());
@@ -99,13 +101,20 @@ public class AgInfRepClass extends Agent{
         }
         //return new agent with new location
         if(delta != null) {
-            this.setI(delta.getI());
-            this.setJ(delta.getJ());
-            deltaLocation = new Point(getI(), getJ());
+            int i = delta.getI();
+            int j = delta.getJ();
+            deltaLocation = new Point(i, j);
         }
         return deltaLocation;
     }
 
+    /**
+     *
+     * @param param
+     * @param i
+     * @param j
+     * @return
+     */
     public int calculatePosition(Params param, int i, int j){
         return i * param.MATRIX_LENGTH + j;
     }
@@ -115,6 +124,10 @@ public class AgInfRepClass extends Agent{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    /**
+     *
+     * @param msg
+     */
     public void printAgent(String msg){
 //        System.out.println(msg);
         System.out.println(
@@ -123,5 +136,10 @@ public class AgInfRepClass extends Agent{
                 " | j: " + this.getJ()+
                 " | ID: " + this.getId()+
                 " | Classe: " + this.classe);
+    }
+    
+    public void setNewLocation(int i, int j){
+        this.setI(i);
+        this.setJ(j);
     }
 }

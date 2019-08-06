@@ -27,17 +27,19 @@ import static misc.Params.RAND;
  * @author Karim
  */
 public class AutoDiffClass extends Automaton{
-
+    
+    //<editor-fold defaultstate="collapsed" desc="Declarations">
     private CellDiffClass[][] matrix;
-
-//<editor-fold defaultstate="collapsed" desc="Constructors">
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public AutoDiffClass() {
         super();
         this.matrix = new CellDiffClass[MATRIX_LENGTH][MATRIX_LENGTH];
     }
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="Setters & Getters">
+    //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
     @Override
     public void setAgent(int i, int j, int nb, Color co, boolean wl) {
         
@@ -52,35 +54,18 @@ public class AutoDiffClass extends Automaton{
     }
 //</editor-fold>
     
-//<editor-fold defaultstate="collapsed" desc="Makers">
-    @Override
-    public void makeBoundaries(){
-        
-        for (int k = 0; k < MATRIX_LENGTH; k++) {
-            makeWallAt(k, 0);
-            makeWallAt(k, MATRIX_LENGTH-1);
-            makeWallAt(0, k);
-            makeWallAt(MATRIX_LENGTH-1, k);
-        }
-    }
-    
+    //<editor-fold defaultstate="collapsed" desc="Makers">
     @Override
     public void makeWallAt(int i, int j) {
         this.matrix[i][j] = new CellDiffClass(getCOLOR_OBSTACLE(), i, j, true);
     }
-//</editor-fold>
     
     @Override
-    public void init_matrix() {
-        for(int i=0; i<MATRIX_LENGTH; i++) {
-            for(int j=0; j<MATRIX_LENGTH; j++){
-                this.matrix[i][j] = new CellDiffClass(getParams(), 0, getCOLOR_DEFAULT(), i, j, false);
-            }
-        }
-        //applay boundaries if they are enabled
-        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
+    public void makeCellAt(int i, int j) {
+        this.matrix[i][j] = new CellDiffClass(getParams(), 0, getCOLOR_DEFAULT(), i, j, false);
     }
-
+//</editor-fold>
+    
     @Override
     public void step() {
         
@@ -159,11 +144,6 @@ public class AutoDiffClass extends Automaton{
     
     public void reserve(Point p){
         this.matrix[(int)p.getX()][(int)p.getY()].setReserved(true);
-    }
-    
-    @Override
-    public CellDiffClass getAWallCell(int i, int j) {
-        return new CellDiffClass(getCOLOR_OBSTACLE(), i, j, true);
     }
 
     @Override

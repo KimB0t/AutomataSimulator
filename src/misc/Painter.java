@@ -113,26 +113,6 @@ public class Painter extends JPanel{
     private void setMouseAdapter(){
         
         setBackground(Color.WHITE);
-//        addMouseMotionListener(new MouseAdapter() {
-//            @Override
-//            public void mouseDragged(MouseEvent e) {
-//                draw(e.getX(), e.getY());
-//            }
-//        });
-//        addMouseListener(new MouseAdapter() {
-//             @Override
-//            public void mousePressed(MouseEvent e) {
-//                if(!ac.getUNCOVER()){
-//                    if(!erase) {
-//                        if(ac.OBSTACLES && ac.getHAND_DRAW_OBSTACLES()){
-//                        }
-//                        else{
-//                            draw(e.getX(), e.getY());
-//                        }
-//                    }
-//                }
-//            }
-//        });
         
         addMouseMotionListener(new MouseAdapter() {
             @Override

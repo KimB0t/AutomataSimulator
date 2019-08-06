@@ -46,6 +46,11 @@ public class AllColors {
     public Color COLOR_EXCITED;
 
     /**
+     * Color of an excited cell (default : red)
+     */
+    public Color COLOR_EXCITED2;
+
+    /**
      *  Color of obstacles (walls) (default : blue)
      */
     public Color COLOR_OBSTACLE;
@@ -69,10 +74,11 @@ public class AllColors {
      * @param COLOR_OBSTACLE
      * @param COLOR_DEFAULT
      */
-    public AllColors(Color COLOR_AGENT1, Color COLOR_AGENT2, Color COLOR_EXCITED, Color COLOR_OBSTACLE, Color COLOR_DEFAULT) {
+    public AllColors(Color COLOR_AGENT1, Color COLOR_AGENT2, Color COLOR_EXCITED, Color COLOR_EXCITED2, Color COLOR_OBSTACLE, Color COLOR_DEFAULT) {
         this.COLOR_AGENT1   = COLOR_AGENT1;
         this.COLOR_AGENT2   = COLOR_AGENT2;
         this.COLOR_EXCITED  = COLOR_EXCITED;
+        this.COLOR_EXCITED2  = COLOR_EXCITED2;
         this.COLOR_OBSTACLE = COLOR_OBSTACLE;
         this.COLOR_DEFAULT  = COLOR_DEFAULT;
         this.COLOR_TABLE    = new HashMap<>();

@@ -33,6 +33,7 @@ import java.util.HashMap;
  */
 public class AutoInfClass extends Automaton{
     
+    //<editor-fold defaultstate="collapsed" desc="Declarations">
     // The matrix
     private CellInfClass[][] matrix;
     
@@ -44,7 +45,9 @@ public class AutoInfClass extends Automaton{
     
     // Counter for ids
     private int idCounter;
+//</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      *
      */
@@ -66,7 +69,9 @@ public class AutoInfClass extends Automaton{
         this.matrix = mx;
         this._ag = aa;
     }
+//</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
     @Override
     public void setAgent(int i, int j, int nb, Color co, boolean wl) {
         
@@ -85,16 +90,23 @@ public class AutoInfClass extends Automaton{
     public Color getCellColor(int i, int j) {
         return this.matrix[i][j].getCouleur();
     }
-
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Makers">
+    @Override
+    public void makeWallAt(int i, int j) {
+        this.matrix[i][j] = new CellInfClass(getCOLOR_OBSTACLE(), i, j, true);
+    }
+    
+    @Override
+    public void makeCellAt(int i, int j) {
+        this.matrix[i][j] = new CellInfClass(getParams(), getCOLOR_DEFAULT(), i, j, false, j + i*MATRIX_LENGTH);
+    }
+//</editor-fold>
+    
     @Override
     public void init_matrix() {
-        for(int i=0; i<MATRIX_LENGTH; i++) {
-            for(int j=0; j<MATRIX_LENGTH; j++){
-                this.matrix[i][j] = new CellInfClass(getParams(), getCOLOR_DEFAULT(), i, j, false, j + i*MATRIX_LENGTH);
-            }
-        }
-        //applay boundaries if they are enabled
-        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
+        super.init_matrix();
         this._ag = new ArrayList<>();
         this.nghbrs = new Neighbours(new HashMap<>());
         this.idCounter = 0;
@@ -156,16 +168,14 @@ public class AutoInfClass extends Automaton{
         //UPDATE(Agents) + EVOLVE(System)
         for(int i=0; i<MATRIX_LENGTH; i++) {
             for(int j=0; j<MATRIX_LENGTH; j++){
-                if (!this.matrix[i][j].isWall()) {
-                    CellInfClass new_cell = this.matrix[i][j].getCopy(getParams());
+                new_matrix_fier[i][j] = this.matrix[i][j].getCopy(getParams());
+                if (!new_matrix_fier[i][j].isWall()) {
 //                    System.out.println("PPPPPPPPPP ++ " + this.matrix[i][j].getPosition());
                     //this variables assures that waves are displayed correctly
                     //if the first vague is diplayed, other do not
                     //if the first is not, the second will and the rest will not
                     //and so on...
                     VAGUE = false;
-//                    new_matrix_fier[i][j] = this.matrix[i][j];
-                    new_matrix_fier[i][j] = new_cell;
                     //Expantion de la Vague
                     //for all classes
                     for (int k = 0; k < NB_CLASSES; k++) {
@@ -178,9 +188,6 @@ public class AutoInfClass extends Automaton{
                     
 //                    new_matrix_fier[i][j] = this.matrix[i][j].nextState(nghbrs);
 //                    this.nextState(nghbrs, new_matrix_fier[i][j].getPosition());
-                }
-                else {
-                    new_matrix_fier[i][j] = getAWallCell(i, j);
                 }
             }
         }
@@ -289,31 +296,10 @@ public class AutoInfClass extends Automaton{
         
         return null;
     }
-    
-    @Override
-    public void makeBoundaries(){
-        
-        for (int k = 0; k < MATRIX_LENGTH; k++) {
-            this.matrix[k][0] = getAWallCell(k, 0);
-            this.matrix[k][MATRIX_LENGTH-1] = getAWallCell(k, MATRIX_LENGTH-1);
-            this.matrix[0][k] = getAWallCell(0, k);
-            this.matrix[MATRIX_LENGTH-1][k] = getAWallCell(MATRIX_LENGTH-1, k);
-        }
-    }
-
-    @Override
-    public CellInfClass getAWallCell(int i, int j) {
-        return new CellInfClass(getCOLOR_OBSTACLE(), i, j, true);
-    }
 
     @Override
     public void deleteAgent(int i, int j) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
-    public void makeWallAt(int i, int j) {
-        this.matrix[i][j] = new CellInfClass(getCOLOR_OBSTACLE(), i, j, true);
     }
     
     @Override
