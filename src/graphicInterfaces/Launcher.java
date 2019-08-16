@@ -28,6 +28,9 @@ import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import static misc.Params.*;
 import java.awt.Component;
+import java.io.File;
+import javax.swing.JFileChooser;
+import json.CreateJson;
 
 /**
  *
@@ -61,6 +64,7 @@ public class Launcher extends javax.swing.JFrame {
         jFrame1 = new javax.swing.JFrame();
         jColorChooser1 = new javax.swing.JColorChooser();
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jComboBox_variante = new javax.swing.JComboBox();
         jButton_okVariante = new javax.swing.JButton();
@@ -90,10 +94,14 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color6 = new javax.swing.JButton();
         jButton_color7 = new javax.swing.JButton();
         jButton_color8 = new javax.swing.JButton();
+        jPanel_dataLoader = new javax.swing.JPanel();
+        jButton_selectData = new javax.swing.JButton();
+        jRadioButton_singleValue = new javax.swing.JRadioButton();
+        jRadioButton_1xmValues = new javax.swing.JRadioButton();
+        jRadioButton_nxmValues = new javax.swing.JRadioButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem_createData = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
@@ -128,6 +136,7 @@ public class Launcher extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
         jComboBox_variante.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "LifeGame", "DiffusionGathering", "DiffusionClassification", "Turmites", "InfluenceClassification", "InfluenceRepulsion", "Test" }));
+        jComboBox_variante.setSelectedIndex(6);
         jComboBox_variante.setPreferredSize(new java.awt.Dimension(50, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -149,7 +158,7 @@ public class Launcher extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 11;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
@@ -161,7 +170,7 @@ public class Launcher extends javax.swing.JFrame {
         jCheckBox_grid.setText("Grid");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
@@ -439,6 +448,66 @@ public class Launcher extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel2.add(jPanel_classes, gridBagConstraints);
 
+        jPanel_dataLoader.setLayout(new java.awt.GridBagLayout());
+
+        jButton_selectData.setText("Load Data");
+        jButton_selectData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_selectDataActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        jPanel_dataLoader.add(jButton_selectData, gridBagConstraints);
+
+        buttonGroup2.add(jRadioButton_singleValue);
+        jRadioButton_singleValue.setText("Single value");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        jPanel_dataLoader.add(jRadioButton_singleValue, gridBagConstraints);
+
+        buttonGroup2.add(jRadioButton_1xmValues);
+        jRadioButton_1xmValues.setText("[1xm] Values");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        jPanel_dataLoader.add(jRadioButton_1xmValues, gridBagConstraints);
+
+        buttonGroup2.add(jRadioButton_nxmValues);
+        jRadioButton_nxmValues.setText("[nxm] Values");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        jPanel_dataLoader.add(jRadioButton_nxmValues, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel2.add(jPanel_dataLoader, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -450,11 +519,13 @@ public class Launcher extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Nouveau Jeu de la vie");
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setText("Nouvea Jeu de la guerre");
-        jMenu1.add(jMenuItem2);
+        jMenuItem_createData.setText("Create dataset");
+        jMenuItem_createData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_createDataActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem_createData);
 
         jMenuBar1.add(jMenu1);
 
@@ -473,6 +544,21 @@ public class Launcher extends javax.swing.JFrame {
     private void jButton_okClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okClassesActionPerformed
         MAIN_NB_CLASSES = Integer.parseInt(jTextField_classes.getText());
     }//GEN-LAST:event_jButton_okClassesActionPerformed
+
+    private void jButton_selectDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_selectDataActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println(selectedFile);
+//            java.awt.Desktop.getDesktop().open(selectedFile);//<-- here
+        }
+    }//GEN-LAST:event_jButton_selectDataActionPerformed
+
+    private void jMenuItem_createDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_createDataActionPerformed
+        DatasetCreator dtc = new DatasetCreator();
+        dtc.setVisible(true);
+    }//GEN-LAST:event_jMenuItem_createDataActionPerformed
     
     private void initParams(){
         
@@ -562,14 +648,15 @@ public class Launcher extends javax.swing.JFrame {
             
             switchVariante(this.jComboBox_variante.getSelectedItem().toString());
             
-            if(VARIANTE == Variante.DIFFUSION_CLASSIFICATION 
+            boolean colorPanelAdditonal= 
+                    (VARIANTE == Variante.DIFFUSION_CLASSIFICATION 
                     || VARIANTE == Variante.INFLUENCE_CLASSIFICATION
-                    || VARIANTE == Variante.INFLUENCE_REPULSION) {
-                jPanel_classes.setVisible(true);
-            }
-            else {
-                jPanel_classes.setVisible(false);
-            }
+                    || VARIANTE == Variante.INFLUENCE_REPULSION);
+            boolean dataLoader=  VARIANTE == Variante.TEST;
+            
+            jPanel_classes.setVisible(colorPanelAdditonal);
+            jPanel_dataLoader.setVisible(dataLoader);
+            
         });
     }
     
@@ -644,6 +731,7 @@ public class Launcher extends javax.swing.JFrame {
 //<editor-fold defaultstate="collapsed" desc="Var Declaration">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton_color;
     private javax.swing.JButton jButton_color1;
     private javax.swing.JButton jButton_color2;
@@ -655,6 +743,7 @@ public class Launcher extends javax.swing.JFrame {
     private javax.swing.JButton jButton_color8;
     private javax.swing.JButton jButton_okClasses;
     private javax.swing.JButton jButton_okVariante;
+    private javax.swing.JButton jButton_selectData;
     private javax.swing.JCheckBox jCheckBox_grid;
     private javax.swing.JCheckBox jCheckBox_randColors;
     private javax.swing.JColorChooser jColorChooser1;
@@ -674,11 +763,14 @@ public class Launcher extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem_createData;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel_classes;
     private javax.swing.JPanel jPanel_colors;
+    private javax.swing.JPanel jPanel_dataLoader;
+    private javax.swing.JRadioButton jRadioButton_1xmValues;
+    private javax.swing.JRadioButton jRadioButton_nxmValues;
+    private javax.swing.JRadioButton jRadioButton_singleValue;
     private javax.swing.JTextField jTextField_classes;
     // End of variables declaration//GEN-END:variables
 //</editor-fold>

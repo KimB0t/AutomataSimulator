@@ -3,13 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/automata/Automaton.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/automata/AutoTest.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/data/DataTest.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/agents/AgTest.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/cells/Cell.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/cells/CellTest.java</file>
-            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/cells/CellDiffGather.java</file>
+            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/cells/CellGauss.java</file>
+            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/automata/AutoGauss.java</file>
+            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/agents/AgGauss.java</file>
+            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/data/DataGauss.java</file>
+            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/graphicInterfaces/SimulatorInterface.java</file>
+            <file>file:/C:/Users/Karim/Documents/NetBeansProjects/AutomateSimulator/src/graphicInterfaces/Launcher.java</file>
         </group>
     </open-files>
 </project-private>

@@ -20,7 +20,6 @@ package agents;
 import misc.Neighbours;
 import misc.Params;
 import cells.Cell;
-import cells.CellInfClass;
 import java.awt.Point;
 
 /**
@@ -36,6 +35,9 @@ public abstract class Agent{
     // Unique ID for this Agent.
     private int id = 0;
     
+    
+    protected Params param;
+    
     /**
      *
      * @param i
@@ -47,6 +49,14 @@ public abstract class Agent{
         this.i = i;
         this.j = j;
         this.id = id;
+    }
+    
+    
+    public Agent(Params p, int i, int j, int id) {
+        this.i = i;
+        this.j = j;
+        this.id = id;
+        this.param = p;
     }
 
     //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
@@ -103,9 +113,9 @@ public abstract class Agent{
      *
      * @return
      */
-//    public Point getPosition() {
-//        return this.location;
-//    }
+    public void setParam() {
+        this.param = param;
+    }
 
     /**
      *
@@ -121,7 +131,7 @@ public abstract class Agent{
      * @param s
      * @return
      */
-    public abstract Agent move(Params param, int s);
+    public abstract Agent move(int s);
 
     /**
      * Another moving fct for AgentInfluenceClass
@@ -129,5 +139,5 @@ public abstract class Agent{
      * @param new_cell
      * @return
      */
-    public abstract Point move(Params param, Cell new_cell);
+    public abstract Point move(Cell new_cell);
 }

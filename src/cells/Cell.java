@@ -19,6 +19,8 @@ package cells;
 
 import misc.Params;
 import java.awt.Color;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * A cell is a component of an Automaton.
@@ -41,6 +43,8 @@ public abstract class Cell{
      */
     protected int excited_free_cells_count;
     
+    protected Params param;
+    
     /**
      * Create a cell with default settings:
      * color = Color.WHITE, 
@@ -48,11 +52,12 @@ public abstract class Cell{
      * j = -1, 
      * wall = false;
      */
-    public Cell() {
+    public Cell(Params p) {
         this.i = -1;
         this.j = -1;
         this.wall = false;
         this.couleur = Color.WHITE;
+        this.param = p;
     }
     
     /**
@@ -62,11 +67,12 @@ public abstract class Cell{
      * @param i line index
      * @param j column index
      */
-    public Cell(int i, int j) {
+    public Cell(Params p, int i, int j) {
         this.i = i;
         this.j = j;
         this.wall = false;
         this.couleur = Color.WHITE;
+        this.param = p;
     }
     
     /**
@@ -76,11 +82,12 @@ public abstract class Cell{
      * @param j column index
      * @param wall 1 if wall, 0 else
      */
-    public Cell(Color co, int i, int j, boolean wall) {
+    public Cell(Params p, Color co, int i, int j, boolean wall) {
         this.i = i;
         this.j = j;
         this.wall = wall;
         this.couleur = co;
+        this.param = p;
     }
     
     //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
@@ -148,13 +155,18 @@ public abstract class Cell{
     public boolean isWall() {
         return wall;
     }
+
+    public void setParam(Params param) {
+        this.param = param;
+    }
+    
     //</editor-fold>
     
     /**
      * Compute the next state of this cell.
      * @param param The simulation parameters.
      */
-    public abstract void nextState(Params param);
+    public abstract void nextState();
 //    public abstract Cell nextState(Params param, int k);
     
     /**
@@ -162,15 +174,15 @@ public abstract class Cell{
      * @param param Params of the automaton simulation
      * @return A copy of this cell.
      */
-    public abstract Cell getCopy(Params param);
+    public abstract Cell getCopy();
     
     public abstract int getNbAgents();
     
     public abstract int getNbAgents(int k);
     
-    public abstract void countNeighbours(Params p);
+    public abstract void countNeighbours();
     
-    public abstract void countNeighbours(Params p, int k);
+    public abstract void countNeighbours(int k);
     
     public void setExcited_free_cells_count(int excited_free_cells_count) {
         this.excited_free_cells_count = excited_free_cells_count;
@@ -189,7 +201,14 @@ public abstract class Cell{
     }
     
     public void increaseEFCount(int value){
-//        System.out.println("I count it !!!!!!!!!!!!!!!!!!!!!!!");
         this.excited_free_cells_count += value;
+    }
+    
+    public void print(JTable infoTable){
+        DefaultTableModel model = (DefaultTableModel) infoTable.getModel();
+        model.setValueAt(this.i, 0, 1);
+        model.setValueAt(this.j, 1, 1);
+        String hexColor = "#"+Integer.toHexString(this.couleur.getRGB()).substring(2);
+        model.setValueAt(hexColor, 2, 1);
     }
 }

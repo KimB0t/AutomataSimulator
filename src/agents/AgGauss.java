@@ -24,6 +24,8 @@ import data.DataGauss;
 import java.awt.Point;
 import java.util.ArrayList;
 import misc.Params;
+import static misc.Params.RAND;
+import static misc.Params.bernoulli;
 
 /**
  *
@@ -32,60 +34,91 @@ import misc.Params;
  */
 public class AgGauss extends Agent{
 
-    public AgGauss(int i, int j, int id) {
-        super(i, j, id);
+    private DataGauss data;
+    
+    public AgGauss(Params p, int i, int j, int id, DataGauss data) {
+        super(p, i, j, id);
+        this.data = data;
+    }
+    
+    private boolean iWantToFire() {
+        return (bernoulli(param.LAMBDA) == 1);
+    }
+    
+    public DataGauss getData() {
+        return this.data;
     }
     
     //Percieve + Decide
     public void perceive(CellGauss currentCell){
-        //Need neighbours : pour verifier si y'a excitement et qu'on doit bouger
-        //+ current state of cell : pour voir si on doit exciter (current cell de preference bech ye9der ymodifiyiha direct)
-                //+ list of agents : pour savoir le nb d'agent voisin avant de se deplacer (pas la peine le nb ykoun fel cells)
-                //return influence (where he wants to move or if he wants to excite)
+        //Need neighbours : pour verifier si y'a excitation et qu'on doit bouger
+        //+ current cell : to check it's state and decide whether to fire or not
+                        // + to check nb of agents on neighbooring cells to see whether it can move or not
+        //returns nothing: applies influences directly on cells (where he wants to move or if he wants to excite)
         //L'objet ne retourne rien mais se rajoute directement dans les 
         //liste de fire pour cette cellule ou deplacement pour ces voisins
         ArrayList<CellGauss> cellsToMoveTo = new ArrayList<>();
         ArrayList<CellGauss> nghbrs = currentCell.getNeighbours();
         
-        //Pour toutes les cellules voisines
-        for (CellGauss nghbr : nghbrs) {
-            //Si cette cellule est excitée alors l'ajouter à la liste
-            if(nghbr.isExcited()) cellsToMoveTo.add(nghbr);
+        if(bernoulli(param.PA) == 1){
+            //Pour toutes les cellules voisines
+            for (CellGauss nghbr : nghbrs) {
+                //Si cette cellule contient moins de 2 agents
+                //alors l'ajouter à la liste
+                if(nghbr.getNbAgents() < 2) 
+                    cellsToMoveTo.add(nghbr);
+            }
+        }
+        else {
+            //Pour toutes les cellules voisines
+            for (CellGauss nghbr : nghbrs) {
+                //Si cette cellule est excitée 
+                //et qu'elle contient moins de 2 agents
+                //et que la donnée qu'elle contient est égale à ma donnée
+                //alors l'ajouter à la liste
+                if(nghbr.isRepulsing(this.data))
+                    cellsToMoveTo.add(currentCell.getOpposantNghbr(nghbr));
+                else if(currentCell.isNeutral() && nghbr.isAttracting(this.data)) 
+                    cellsToMoveTo.add(nghbr);
+            }
         }
         
         //Si la liste est non vide, choisir une des cellules
         if(!cellsToMoveTo.isEmpty()){
             CellGauss chosenCell = chooseRandomCell(cellsToMoveTo);
             //Mettre à jour la liste des agents se deplaçant vers cette cellule
-            chosenCell.addDeltaAgent(this);
+            chosenCell.addComingAgent(this);
         }
         //Sinon, il peut générer une vague
-        else if(!currentCell.isExcited()){
+        else if(currentCell.isNeutral()){
             //Si il veut générer on l'ajoute à la liste
-            if(iWantToFire()) currentCell.addFiringAgent(this);
+            if(iWantToFire()) {
+//                System.out.println("(" + getI() +","+ getJ() + ") this agent want to fire");
+                currentCell.addFiringAgent(this);
+            }
         }
     }
     
-    @Override
-    public Agent move(Params param, int s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Point move(Params param, Cell new_cell) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     private CellGauss chooseRandomCell(ArrayList<CellGauss> cellsToMoveTo) {
+        int size = cellsToMoveTo.size();
+        int key = RAND.nextInt(size);
+        return cellsToMoveTo.get(key);
+    }
+    
+    //<editor-fold defaultstate="collapsed" desc="Not used">
+    @Override
+    public Agent move(int s) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    private boolean iWantToFire() {
+    
+    @Override
+    public Point move(Cell new_cell) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+//</editor-fold>
 
-    public DataGauss getData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void print() {
+        System.out.println("("+getI()+","+getJ()+") "+getId()+" "+data.getValue());
     }
 
 }

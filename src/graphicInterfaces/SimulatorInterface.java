@@ -18,27 +18,23 @@
 package graphicInterfaces;
 
 import automata.Automaton;
-import automata.AutoLife;
+//import automata.AutoLife;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import misc.Painter;
-import automata.AutoDiffClass;
-import automata.AutoDiffGather;
-import automata.AutoInfClass;
-import automata.AutoInfRepClass;
-import automata.AutoTest;
-import automata.AutoTest2;
-import automata.AutoTurmites;
+//import automata.AutoDiffClass;
+//import automata.AutoDiffGather;
+import automata.AutoGauss;
+//import automata.AutoInfRepClass;
+//import automata.AutoTurmites;
 import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -88,26 +84,26 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         
         //Choosing which automaton to launch
         switch(var){
-            case LIFE:
-                ac = new AutoLife();
-                break;
-            case TURMITES:
-                ac = new AutoTurmites();
-                break;
-            case DIFFUSION_CLASSIFICATION:
-                ac = new AutoDiffClass();
-                break;
-            case DIFFUSION_GATHERING:
-                ac = new AutoDiffGather();
-                break;
-            case INFLUENCE_CLASSIFICATION:
-                ac = new AutoInfClass();
-                break;
-            case INFLUENCE_REPULSION:
-                ac = new AutoInfRepClass();
-                break;
+//            case LIFE:
+//                ac = new AutoLife();
+//                break;
+//            case TURMITES:
+//                ac = new AutoTurmites();
+//                break;
+//            case DIFFUSION_CLASSIFICATION:
+//                ac = new AutoDiffClass();
+//                break;
+//            case DIFFUSION_GATHERING:
+//                ac = new AutoDiffGather();
+//                break;
+//            case INFLUENCE_CLASSIFICATION:
+//                ac = new AutoInfClass();
+//                break;
+//            case INFLUENCE_REPULSION:
+//                ac = new AutoInfRepClass();
+//                break;
             case TEST:
-                ac = new AutoTest();
+                ac = new AutoGauss();
                 break;
             default:
                 break;
@@ -117,6 +113,8 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         ac.init_matrix();
         //Initialize the jPanel_screen with the automaton ac
         initScreen();
+        //Init infoTable
+        ac.setInfoTable(jTable_infoTable);
     }
     
     
@@ -152,16 +150,6 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jLabel1 = new javax.swing.JLabel();
         jTextField_repulsion = new javax.swing.JTextField();
         jButton_repulsion = new javax.swing.JButton();
-        jPanel_screen = new Painter();
-        jPanel1 = new javax.swing.JPanel();
-        jButton_random = new javax.swing.JButton();
-        jButton_start = new javax.swing.JButton();
-        jButton_next = new javax.swing.JButton();
-        jButton_stop = new javax.swing.JButton();
-        jButton_clear = new javax.swing.JButton();
-        jButton_nextPlus = new javax.swing.JButton();
-        jButton_next1000 = new javax.swing.JButton();
-        jLabel_coordinates = new javax.swing.JLabel();
         jPanel_displayOptions = new javax.swing.JPanel();
         jCheckBox_grid = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
@@ -172,6 +160,8 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jButton_color = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         jButton_screenSave = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel_nbrGenerations = new javax.swing.JLabel();
         jPanel_obstacles = new javax.swing.JPanel();
         jTextField_obstaclesNbr = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
@@ -188,13 +178,22 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jButton_ObstaclesReset = new javax.swing.JButton();
         jCheckBox_handDrawObstacles = new javax.swing.JCheckBox();
         jLabel18 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        jPanel_uncover = new javax.swing.JPanel();
         jCheckBox_uncover = new javax.swing.JCheckBox();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel_variante = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel_nbrGenerations = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable_infoTable = new javax.swing.JTable();
+        jPanel_info = new javax.swing.JPanel();
+        jPanel_simulation = new javax.swing.JPanel();
+        jPanel_simulationButtons = new javax.swing.JPanel();
+        jButton_random = new javax.swing.JButton();
+        jButton_start = new javax.swing.JButton();
+        jButton_next = new javax.swing.JButton();
+        jButton_stop = new javax.swing.JButton();
+        jButton_clear = new javax.swing.JButton();
+        jButton_nextPlus = new javax.swing.JButton();
+        jButton_next1000 = new javax.swing.JButton();
+        jLabel_coordinates = new javax.swing.JLabel();
+        jPanel_screen = new Painter();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -224,6 +223,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Automate");
+        setPreferredSize(new java.awt.Dimension(1024, 680));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -482,165 +482,10 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 0.2;
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
         getContentPane().add(jPanel_modelParams, gridBagConstraints);
-
-        jPanel_screen.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel_screen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel_screen.setMaximumSize(new java.awt.Dimension(540, 540));
-        jPanel_screen.setMinimumSize(new java.awt.Dimension(540, 540));
-        jPanel_screen.setPreferredSize(new java.awt.Dimension(540, 540));
-
-        javax.swing.GroupLayout jPanel_screenLayout = new javax.swing.GroupLayout(jPanel_screen);
-        jPanel_screen.setLayout(jPanel_screenLayout);
-        jPanel_screenLayout.setHorizontalGroup(
-            jPanel_screenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
-        );
-        jPanel_screenLayout.setVerticalGroup(
-            jPanel_screenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
-        );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.weightx = 0.8;
-        gridBagConstraints.weighty = 0.8;
-        getContentPane().add(jPanel_screen, gridBagConstraints);
-
-        jPanel1.setLayout(new java.awt.GridBagLayout());
-
-        jButton_random.setText("<html>Rand<br>Config</html>");
-        jButton_random.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_randomActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
-        jPanel1.add(jButton_random, gridBagConstraints);
-
-        jButton_start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/play_30.png"))); // NOI18N
-        jButton_start.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton_start.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_startActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
-        jPanel1.add(jButton_start, gridBagConstraints);
-
-        jButton_next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/next_30.png"))); // NOI18N
-        jButton_next.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton_next.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_nextActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
-        jPanel1.add(jButton_next, gridBagConstraints);
-
-        jButton_stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stop_30.png"))); // NOI18N
-        jButton_stop.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton_stop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_stopActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
-        jPanel1.add(jButton_stop, gridBagConstraints);
-
-        jButton_clear.setText("Clear");
-        jButton_clear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_clearActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        jPanel1.add(jButton_clear, gridBagConstraints);
-
-        jButton_nextPlus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/nextPlus_30.png"))); // NOI18N
-        jButton_nextPlus.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton_nextPlus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_nextPlusActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
-        jPanel1.add(jButton_nextPlus, gridBagConstraints);
-
-        jButton_next1000.setText("x1000");
-        jButton_next1000.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton_next1000.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_next1000ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
-        jPanel1.add(jButton_next1000, gridBagConstraints);
-
-        jLabel_coordinates.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jLabel_coordinates.setText("<html>X=<br>Y=");
-        jLabel_coordinates.setMinimumSize(new java.awt.Dimension(40, 30));
-        jLabel_coordinates.setPreferredSize(new java.awt.Dimension(40, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        jPanel1.add(jLabel_coordinates, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
-        getContentPane().add(jPanel1, gridBagConstraints);
 
         jPanel_displayOptions.setMinimumSize(new java.awt.Dimension(128, 0));
         jPanel_displayOptions.setLayout(new java.awt.GridBagLayout());
@@ -648,7 +493,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jCheckBox_grid.setText("Grid");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
@@ -660,7 +505,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jLabel2.setText("Speed:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.1;
@@ -673,7 +518,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jComboBox_speed.setPreferredSize(new java.awt.Dimension(50, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.1;
@@ -684,7 +529,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jLabel5.setText("Form:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.1;
@@ -697,7 +542,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jComboBox_shape.setPreferredSize(new java.awt.Dimension(60, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.1;
@@ -708,7 +553,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jLabel4.setText("Color:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.1;
@@ -720,7 +565,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jButton_color.setPreferredSize(new java.awt.Dimension(22, 22));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.1;
@@ -731,7 +576,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jLabel19.setText("Display Settings :");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
@@ -748,7 +593,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.1;
@@ -756,12 +601,34 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel_displayOptions.add(jButton_screenSave, gridBagConstraints);
 
+        jLabel3.setText("Générations:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel_displayOptions.add(jLabel3, gridBagConstraints);
+
+        jLabel_nbrGenerations.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel_nbrGenerations.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel_nbrGenerations.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel_displayOptions.add(jLabel_nbrGenerations, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.2;
-        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 0.2;
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
         getContentPane().add(jPanel_displayOptions, gridBagConstraints);
 
@@ -795,7 +662,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
 
         jTextField_obstacleLength.setText("10");
         jTextField_obstacleLength.setEnabled(false);
-        jTextField_obstacleLength.setPreferredSize(new java.awt.Dimension(30, 30));
+        jTextField_obstacleLength.setPreferredSize(new java.awt.Dimension(50, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -904,7 +771,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jButton_okLength.setBorder(null);
         jButton_okLength.setEnabled(false);
         jButton_okLength.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton_okLength.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_okLength.setPreferredSize(new java.awt.Dimension(50, 30));
         jButton_okLength.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_okLengthActionPerformed(evt);
@@ -924,7 +791,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jButton_okNumber.setBorder(null);
         jButton_okNumber.setEnabled(false);
         jButton_okNumber.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton_okNumber.setPreferredSize(new java.awt.Dimension(30, 30));
+        jButton_okNumber.setPreferredSize(new java.awt.Dimension(50, 30));
         jButton_okNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_okNumberActionPerformed(evt);
@@ -989,83 +856,223 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 0.6;
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
         getContentPane().add(jPanel_obstacles, gridBagConstraints);
 
-        jPanel4.setLayout(new java.awt.GridBagLayout());
+        jPanel_uncover.setLayout(new java.awt.GridBagLayout());
 
         jCheckBox_uncover.setText("Uncover");
-        jPanel4.add(jCheckBox_uncover, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        jPanel_uncover.add(jCheckBox_uncover, gridBagConstraints);
+
+        jTable_infoTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Field", "Value"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable_infoTable);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.6;
+        jPanel_uncover.add(jScrollPane1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.2;
-        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 0.6;
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
-        getContentPane().add(jPanel4, gridBagConstraints);
+        getContentPane().add(jPanel_uncover, gridBagConstraints);
 
-        jPanel2.setLayout(new java.awt.GridBagLayout());
-
-        jLabel_variante.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
-        jLabel_variante.setForeground(new java.awt.Color(0, 0, 204));
-        jLabel_variante.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel_variante.setText("Classification");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.8;
-        gridBagConstraints.weighty = 0.1;
-        jPanel2.add(jLabel_variante, gridBagConstraints);
-
-        jLabel3.setText("Générations:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 0.1;
-        jPanel2.add(jLabel3, gridBagConstraints);
-
-        jLabel_nbrGenerations.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel_nbrGenerations.setForeground(new java.awt.Color(0, 0, 204));
-        jLabel_nbrGenerations.setText("0");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 0.1;
-        jPanel2.add(jLabel_nbrGenerations, gridBagConstraints);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        jPanel2.add(jPanel3, gridBagConstraints);
-
+        jPanel_info.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 1);
-        getContentPane().add(jPanel2, gridBagConstraints);
+        getContentPane().add(jPanel_info, gridBagConstraints);
+
+        jPanel_simulation.setLayout(new java.awt.GridBagLayout());
+
+        jPanel_simulationButtons.setLayout(new java.awt.GridBagLayout());
+
+        jButton_random.setText("<html>Rand<br>Config</html>");
+        jButton_random.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_randomActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
+        jPanel_simulationButtons.add(jButton_random, gridBagConstraints);
+
+        jButton_start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/play_30.png"))); // NOI18N
+        jButton_start.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_start.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_startActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
+        jPanel_simulationButtons.add(jButton_start, gridBagConstraints);
+
+        jButton_next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/next_30.png"))); // NOI18N
+        jButton_next.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_next.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_nextActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
+        jPanel_simulationButtons.add(jButton_next, gridBagConstraints);
+
+        jButton_stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stop_30.png"))); // NOI18N
+        jButton_stop.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_stop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_stopActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
+        jPanel_simulationButtons.add(jButton_stop, gridBagConstraints);
+
+        jButton_clear.setText("Clear");
+        jButton_clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_clearActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        jPanel_simulationButtons.add(jButton_clear, gridBagConstraints);
+
+        jButton_nextPlus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/nextPlus_30.png"))); // NOI18N
+        jButton_nextPlus.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_nextPlus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_nextPlusActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
+        jPanel_simulationButtons.add(jButton_nextPlus, gridBagConstraints);
+
+        jButton_next1000.setText("x1000");
+        jButton_next1000.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_next1000.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_next1000ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
+        jPanel_simulationButtons.add(jButton_next1000, gridBagConstraints);
+
+        jLabel_coordinates.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel_coordinates.setText("<html>X=<br>Y=");
+        jLabel_coordinates.setMinimumSize(new java.awt.Dimension(40, 30));
+        jLabel_coordinates.setPreferredSize(new java.awt.Dimension(40, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel_simulationButtons.add(jLabel_coordinates, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.2;
+        jPanel_simulation.add(jPanel_simulationButtons, gridBagConstraints);
+
+        jPanel_screen.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel_screen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel_screen.setMaximumSize(new java.awt.Dimension(540, 540));
+        jPanel_screen.setMinimumSize(new java.awt.Dimension(540, 540));
+        jPanel_screen.setPreferredSize(new java.awt.Dimension(540, 540));
+
+        javax.swing.GroupLayout jPanel_screenLayout = new javax.swing.GroupLayout(jPanel_screen);
+        jPanel_screen.setLayout(jPanel_screenLayout);
+        jPanel_screenLayout.setHorizontalGroup(
+            jPanel_screenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 540, Short.MAX_VALUE)
+        );
+        jPanel_screenLayout.setVerticalGroup(
+            jPanel_screenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 540, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.6;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel_simulation.add(jPanel_screen, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.8;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
+        getContentPane().add(jPanel_simulation, gridBagConstraints);
 
         jMenu1.setText("File");
 
@@ -1109,7 +1116,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jButton_randomActionPerformed
 
     private void jButton_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_stopActionPerformed
-        ac.reInitNBGeneration();
+        ac.param.reInitNBGeneration();
         shutdown();
         jButton_start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/play_30.png")));
     }//GEN-LAST:event_jButton_stopActionPerformed
@@ -1119,15 +1126,15 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jButton_nextActionPerformed
 
     private void jButton_okFireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okFireActionPerformed
-        ac.setLAMBDA(jTextField_fire.getText());
+        ac.param.setLAMBDA(jTextField_fire.getText());
     }//GEN-LAST:event_jButton_okFireActionPerformed
 
     private void jButton_okDensityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okDensityActionPerformed
-        ac.setDENSITY(jTextField_density.getText());
+        ac.param.setDENSITY(jTextField_density.getText());
     }//GEN-LAST:event_jButton_okDensityActionPerformed
 
     private void jButton_okMlevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okMlevelActionPerformed
-       ac.setMLEVEL(jTextField_mlevel.getText());
+       ac.param.setMLEVEL(jTextField_mlevel.getText());
     }//GEN-LAST:event_jButton_okMlevelActionPerformed
 
     private void jButton_nextPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_nextPlusActionPerformed
@@ -1139,11 +1146,11 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jButton_randObstacleActionPerformed
 
     private void jButton_okLengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okLengthActionPerformed
-        ac.setOBSTACLES_LENGTH(jTextField_obstacleLength.getText());
+        ac.param.setOBSTACLES_LENGTH(jTextField_obstacleLength.getText());
     }//GEN-LAST:event_jButton_okLengthActionPerformed
 
     private void jButton_okNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okNumberActionPerformed
-        ac.setOBSTACLES_NBR(jTextField_obstaclesNbr.getText());
+        ac.param.setOBSTACLES_NBR(jTextField_obstaclesNbr.getText());
     }//GEN-LAST:event_jButton_okNumberActionPerformed
 
     private void jButton_ObstaclesResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ObstaclesResetActionPerformed
@@ -1155,7 +1162,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jButton_next1000ActionPerformed
 
     private void jButton_okPAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_okPAActionPerformed
-        ac.setPA(jTextField_pa.getText());
+        ac.param.setPA(jTextField_pa.getText());
     }//GEN-LAST:event_jButton_okPAActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1164,7 +1171,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton_repulsionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_repulsionActionPerformed
-        ac.setREPULSION(jTextField_repulsion.getText());
+        ac.param.setREPULSION(jTextField_repulsion.getText());
     }//GEN-LAST:event_jButton_repulsionActionPerformed
 
     private void jButton_screenSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_screenSaveActionPerformed
@@ -1218,8 +1225,8 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                 
                 //Devide by the CELL_DIM to get the cell (i, j) instead of 
                 //the (x, y) coordinates of the mouse.
-                int x = e.getX()/ac.CELL_DIM;
-                int y = e.getY()/ac.CELL_DIM;
+                int x = e.getX()/ac.param.CELL_DIM;
+                int y = e.getY()/ac.param.CELL_DIM;
                 jLabel_coordinates.setText("<html>X="+x+"<br>Y="+y+"</html>");
             }
         });
@@ -1257,8 +1264,8 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                 
                 ac.step();
                 jPanel_screen.repaint();
-                Thread.sleep(ac.sleepTime());
-                jLabel_nbrGenerations.setText(ac.stringNBGeneration());
+                Thread.sleep(ac.param.sleepTime());
+                jLabel_nbrGenerations.setText(ac.param.stringNBGeneration());
             }
         } catch (InterruptedException e) {
             System.out.println("Thread " +  threadName + " interrupted.");
@@ -1302,21 +1309,21 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         
         //When speed is changed
         jComboBox_speed.addActionListener((ActionEvent e) -> {
-            ac.setCOEF_SPEED(jComboBox_speed.getSelectedItem().toString().substring(1));
+            ac.param.setCOEF_SPEED(jComboBox_speed.getSelectedItem().toString().substring(1));
         });
         
         //when shape is changed
         jComboBox_shape.addActionListener((ActionEvent e) -> {
-            ac.setSHAPE(jComboBox_shape.getSelectedItem().toString());
+            ac.param.setSHAPE(jComboBox_shape.getSelectedItem().toString());
         });
         
         //Color chooser to change color
         jButton_color.addActionListener((ActionEvent arg0) -> {
             Color c = JColorChooser.showDialog(null, "Choose a color", Color.GRAY);
             if (c!=null) {
-                ac.setCOLOR_AGENT1(c);
+                ac.param.setCOLOR_AGENT1(c);
                 Graphics2D g = colorSample.createGraphics();
-                g.setColor(ac.getCOLOR_AGENT1());
+                g.setColor(ac.param.getCOLOR_AGENT1());
                 g.fillRect(0, 0, colorSample.getWidth(), colorSample.getHeight());
                 g.dispose();
                 jButton_color.setIcon(new ImageIcon(colorSample));
@@ -1332,7 +1339,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                     if(c != jCheckBox_obstacles)
                         c.setEnabled(true);
                 }
-                ac.setOBSTACLES(true);
+                ac.param.setOBSTACLES(true);
 //                    _ac.setObstacles();
             }
             else {
@@ -1340,48 +1347,48 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                     if(c != jCheckBox_obstacles)
                         c.setEnabled(false);
                 }
-                ac.setOBSTACLES(false);
+                ac.param.setOBSTACLES(false);
 //                    _ac.removeObstacles();
             }
         });
         
         jCheckBox_grid.addItemListener((ItemEvent e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED)
-                ac.setGRID(true);
+                ac.param.setGRID(true);
             else
-                ac.setGRID(false);
+                ac.param.setGRID(false);
         });
         
         jCheckBox_handDrawObstacles.addItemListener((ItemEvent e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED)
-                ac.setHANDRAW_OBSTACLES(true);
+                ac.param.setHANDRAW_OBSTACLES(true);
             else
-                ac.setHANDRAW_OBSTACLES(false);
+                ac.param.setHANDRAW_OBSTACLES(false);
         });
         
         //When policy is changed
         jComboBox_policy.addActionListener((ActionEvent e) -> {
             switch(jComboBox_policy.getSelectedItem().toString()){
                 case "Synch":
-                    ac.setPOLICY(Policy.SYNCHRO);
+                    ac.param.setPOLICY(Policy.SYNCHRO);
                     break;
                 case "Cyclic":
-                    ac.setPOLICY(Policy.CYCLIC);
+                    ac.param.setPOLICY(Policy.CYCLIC);
                     break;
                 case "Random":
-                    ac.setPOLICY(Policy.RANDOM);
+                    ac.param.setPOLICY(Policy.RANDOM);
                     break;
                 default:
-                    ac.setPOLICY(Policy.DEFAULT);
+                    ac.param.setPOLICY(Policy.DEFAULT);
                     break;
             }
         });
         
         jCheckBox_uncover.addItemListener((ItemEvent e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED)
-                ac.setUNCOVER(true);
+                ac.param.setUNCOVER(true);
             else
-                ac.setUNCOVER(false);
+                ac.param.setUNCOVER(false);
         });
         
     }
@@ -1472,23 +1479,24 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel_coordinates;
     private javax.swing.JLabel jLabel_nbrGenerations;
-    private javax.swing.JLabel jLabel_variante;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel_displayOptions;
+    private javax.swing.JPanel jPanel_info;
     private javax.swing.JPanel jPanel_modelParams;
     private javax.swing.JPanel jPanel_obstacles;
     private javax.swing.JPanel jPanel_screen;
+    private javax.swing.JPanel jPanel_simulation;
+    private javax.swing.JPanel jPanel_simulationButtons;
+    private javax.swing.JPanel jPanel_uncover;
     private javax.swing.JRadioButton jRadioButton_both;
     private javax.swing.JRadioButton jRadioButton_horizontal;
     private javax.swing.JRadioButton jRadioButton_vertical;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable_infoTable;
     private javax.swing.JTextField jTextField_density;
     private javax.swing.JTextField jTextField_fire;
     private javax.swing.JTextField jTextField_mlevel;

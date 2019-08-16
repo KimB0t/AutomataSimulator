@@ -18,6 +18,9 @@
 
 package data;
 
+import static misc.Params.RAND;
+import static misc.Params.bernoulli;
+
 /**
  *
  * @author Karim BOUTAMINE <boutaminekarim06@gmail.com>
@@ -25,4 +28,63 @@ package data;
  */
 public class DataGauss extends Data{
 
+    double value;
+    
+    public DataGauss() {
+        this.value = 0.0;
+    }
+
+    public DataGauss(float value) {
+        this.value = value;
+    }
+
+    public void setValue(float value) {
+        this.value = value;
+    }
+
+    public double getValue() {
+        return value;
+    }
+    
+    public boolean alike(DataGauss data){
+        
+        boolean bol = false;
+        
+        if(data == null){
+            bol = false;
+        }
+        else{
+            if(Math.abs(data.value - this.value) < 0.2)
+                bol = true;
+            else 
+                bol = false;
+        }
+        
+        return bol;
+    }
+
+    public void random() {
+        //I need to generate un random number between min and max so that given 
+        //a mean (m) and a variance (v):
+        //min = m - v/2
+        //max = m + v/2
+        
+        double mean = 0.0, min = 0.0, max = 0.0, variance = 0.2;
+        if (bernoulli(50) == 1){
+            mean = 0.25;
+        }
+        else{
+            mean = 0.75;
+        }
+        min = mean - variance/2;
+        max = mean + variance/2;
+        value = min + (max - min) * RAND.nextDouble();
+        
+//        value = 0.0;
+        
+    }
+
+    public String print() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

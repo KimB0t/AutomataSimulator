@@ -18,7 +18,6 @@
 package agents;
 
 import misc.Neighbours;
-import cells.CellInfClass;
 import misc.Params.Directions;
 import misc.Params;
 import cells.Cell;
@@ -46,7 +45,6 @@ public class AgentTurmite extends Agent{
         this.orientation = d;
     }
     
-    @Override
     public AgentTurmite move(Params param, int s){
         
         // d_: means delta -> movement -> the amout of movement to be added
@@ -123,8 +121,17 @@ public class AgentTurmite extends Agent{
         return new AgentTurmite(new_i, new_j, d_Direction, this.getId());
     }
 
-    @Override
     public Point move(Params param, Cell new_cell) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Agent move(int s) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Point move(Cell new_cell) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

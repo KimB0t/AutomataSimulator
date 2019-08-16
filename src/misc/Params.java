@@ -19,6 +19,8 @@ package misc;
 
 import data.DataGauss;
 import java.awt.Color;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 
 /**
@@ -84,8 +86,12 @@ public class Params {
      */
     public static boolean MAIN_RAND_COLORS;
 
-    public Color getCOLOR(DataGauss data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Color getCOLOR(DataGauss data, int opacity) {
+        int r = (int)(255 - data.getValue() * 100);
+        int g = (int)(0 + (100 - data.getValue() * 100));
+        int b = (int)(100 + data.getValue() * 100);
+        Color c = new Color(r, g, b, opacity);
+        return c;
     }
     
     /**
@@ -800,4 +806,12 @@ public class Params {
         this.UNCOVER = b;
     }
 //</editor-fold>
+    
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 }

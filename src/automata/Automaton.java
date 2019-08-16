@@ -20,20 +20,29 @@ package automata;
 import misc.Params;
 import cells.Cell;
 import java.awt.Color;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * An automaton is a matrix of cells
  * the automata matrix (matrix of cells)
  * @author Karim BOUTAMINE <boutaminekarim06@gmail.com>
  */
-public abstract class Automaton extends Params{
+public abstract class Automaton{
+    
+    
+    //InfoTable
+    public JTable infoTable;
+    //Params
+    public Params param;
     
     /**
      *
      */
     public Automaton() {
-        initParamsGlobal();
-        printToScreen("===============INITIALIZATION========================");
+        param = new Params();
+        param.initParamsGlobal();
+        param.printToScreen("===============INITIALIZATION========================");
     }
     
     /**
@@ -58,13 +67,13 @@ public abstract class Automaton extends Params{
      * Initialize a matrix
      */
     public void init_matrix(){
-        for(int i=0; i<MATRIX_LENGTH; i++) {
-            for(int j=0; j<MATRIX_LENGTH; j++){
+        for(int i=0; i<param.MATRIX_LENGTH; i++) {
+            for(int j=0; j<param.MATRIX_LENGTH; j++){
                 makeCellAt(i, j);
             }
         }
         //applay boundaries if they are enabled
-        if(isBOUNDARIESequalTo("Free")) makeBoundaries();
+        if(param.isBOUNDARIESequalTo("Free")) makeBoundaries();
     }
     
     /**
@@ -85,11 +94,11 @@ public abstract class Automaton extends Params{
      * Creates borders (of wall cells) to the matrix.
      */
     public void makeBoundaries(){
-        for (int k = 0; k < MATRIX_LENGTH; k++) {
+        for (int k = 0; k < param.MATRIX_LENGTH; k++) {
             makeWallAt(k, 0);
-            makeWallAt(k, MATRIX_LENGTH-1);
+            makeWallAt(k, param.MATRIX_LENGTH-1);
             makeWallAt(0, k);
-            makeWallAt(MATRIX_LENGTH-1, k);
+            makeWallAt(param.MATRIX_LENGTH-1, k);
         }
     }
     
@@ -106,19 +115,19 @@ public abstract class Automaton extends Params{
     public void randomConfig(){
         this.init_matrix();
         int rn_x, rn_y;
-        int nbr_cell = (int)((MATRIX_LENGTH) * (MATRIX_LENGTH) * DENSITY / 100);
+        int nbr_cell = (int)((param.MATRIX_LENGTH) * (param.MATRIX_LENGTH) * param.DENSITY / 100);
         
         System.out.println("nbr_cell (nb agents) = "+nbr_cell);
-        reInitNBGeneration();
+        param.reInitNBGeneration();
         
         for(int i=0; i<nbr_cell; i++){
 
             // Calcul des coordonnées
-            rn_x = getRANDcoordinate();
-            rn_y = getRANDcoordinate();
+            rn_x = param.getRANDcoordinate();
+            rn_y = param.getRANDcoordinate();
             
             // Créer l'agent
-            this.setAgent(rn_x, rn_y, 1, getCOLOR_AGENT1(), false);
+            this.setAgent(rn_x, rn_y, 1, param.getCOLOR_AGENT1(), false);
         }
     }
     
@@ -136,7 +145,20 @@ public abstract class Automaton extends Params{
      */
     public void clear(){
         init_matrix();
-        reInitNBGeneration();
+        param.reInitNBGeneration();
+    }
+
+    public void printCell(int x, int y) {
+        
+    }
+    
+    public void setInfoTable(JTable infTbl) {
+        this.infoTable = infTbl;
+        DefaultTableModel model = (DefaultTableModel) this.infoTable.getModel();
+        model.addRow(new Object[]{"x"});
+        model.addRow(new Object[]{"y"});
+        model.addRow(new Object[]{"Color"});
+        model.addRow(new Object[]{"Type"});
     }
     
 }
