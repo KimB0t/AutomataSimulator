@@ -17,7 +17,7 @@
  */
 package graphicInterfaces;
 
-import json.CreateJson;
+import csv.CreateCSV;
 
 /**
  *
@@ -212,8 +212,9 @@ public class DatasetCreator extends javax.swing.JFrame {
         
         String fileName = jTextField1.getText();
         
-        CreateJson js = new CreateJson();
-        js.createRandUniformJson(convertedMeans, convertedVariances, nbSamples, fileName);
+        CreateCSV js = new CreateCSV();
+        js.createRandUniformCSV(convertedMeans, convertedVariances, nbSamples, fileName);
+        
     }//GEN-LAST:event_jButton_createActionPerformed
 
 

@@ -28,17 +28,25 @@ import static misc.Params.bernoulli;
  */
 public class DataGauss extends Data{
 
+    //Value of data
     double value;
+    //Class of this data
+    private String classe;
     
     public DataGauss() {
         this.value = 0.0;
     }
 
-    public DataGauss(float value) {
+    public DataGauss(double value) {
         this.value = value;
     }
 
-    public void setValue(float value) {
+    public DataGauss(double value, String classe) {
+        this.value = value;
+        this.classe = classe;
+    }
+
+    public void setValue(double value) {
         this.value = value;
     }
 
@@ -86,5 +94,9 @@ public class DataGauss extends Data{
 
     public String print() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String getClasse() {
+        return this.classe;
     }
 }

@@ -41,6 +41,8 @@ public class AutoGauss extends Automaton{
     private CellGauss[][] new_matrix;
     //List of agents
     private ArrayList<AgGauss> agents;
+    //List of agents
+    private ArrayList<DataGauss> dataArray;
     
 //</editor-fold>
     
@@ -174,5 +176,24 @@ public class AutoGauss extends Automaton{
     @Override
     public void printCell(int x, int y){
         matrix[x][y].print(infoTable);
+    }
+    
+    public void randomDataPositioning(){
+        this.init_matrix();
+        int rn_x, rn_y;
+        int nbr_cell = (int)((param.MATRIX_LENGTH) * (param.MATRIX_LENGTH) * param.DENSITY / 100);
+        
+        System.out.println("nbr_cell (nb agents) = "+nbr_cell);
+        param.reInitNBGeneration();
+        
+        for(int i=0; i<nbr_cell; i++){
+
+            // Calcul des coordonnées
+            rn_x = param.getRANDcoordinate();
+            rn_y = param.getRANDcoordinate();
+            
+            // Créer l'agent
+            this.setAgent(rn_x, rn_y, 1, param.getCOLOR_AGENT1(), false);
+        }
     }
 }

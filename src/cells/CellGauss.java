@@ -278,11 +278,10 @@ public class CellGauss extends Cell{
     }
 
     public CellGauss getOpposantNghbr(CellGauss nghbr) {
-        int di = (this.getI() - nghbr.getI()) * -1;
-        int dj = (this.getJ() - nghbr.getJ()) * -1;
-
-        int ii = (this.getI() - di + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
-        int jj = (this.getJ() - dj + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
+        
+        int ii = getOppositeCell(this.getI(), nghbr.getI());
+        int jj = getOppositeCell(this.getJ(), nghbr.getJ());
+        
         for (CellGauss n : nghbrs) {
             if (n.getI() == ii && n.getJ() == jj) {
                 return n;
@@ -309,5 +308,9 @@ public class CellGauss extends Cell{
         else if(nbAgents >= 1) return "Agent";
         else if(state > 0) return "Wave";
         else return "Empty";
+    }
+    
+    public int getOppositeCell(int cell, int wave){
+        return (cell - ((cell - wave) * -1) + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
     }
 }

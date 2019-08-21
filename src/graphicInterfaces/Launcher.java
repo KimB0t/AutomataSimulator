@@ -30,7 +30,8 @@ import static misc.Params.*;
 import java.awt.Component;
 import java.io.File;
 import javax.swing.JFileChooser;
-import json.CreateJson;
+import csv.CreateCSV;
+import csv.ReadCSV;
 
 /**
  *
@@ -551,6 +552,9 @@ public class Launcher extends javax.swing.JFrame {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             System.out.println(selectedFile);
+            ReadCSV rCSV = new ReadCSV();
+            rCSV.readCSVSingleData(selectedFile.toString());
+            rCSV.displayDataArray();
 //            java.awt.Desktop.getDesktop().open(selectedFile);//<-- here
         }
     }//GEN-LAST:event_jButton_selectDataActionPerformed
