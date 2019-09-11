@@ -20,6 +20,7 @@ package misc;
 //import static misc.Params.MAIN_COLORS_ARRAY;
 //import static misc.Params.RAND;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 import static misc.Params.MAIN_COLORS_ARRAY;
 import static misc.Params.RAND;
@@ -64,7 +65,7 @@ public class AllColors {
      *  An array of colors for different agents of different classes
      * as many colors as there are classes
      */
-    public HashMap<Integer, Color> COLOR_TABLE;
+    public ArrayList<Color> COLOR_TABLE;
     
     /**
      *
@@ -75,13 +76,13 @@ public class AllColors {
      * @param COLOR_DEFAULT
      */
     public AllColors(Color COLOR_AGENT1, Color COLOR_AGENT2, Color COLOR_EXCITED, Color COLOR_EXCITED2, Color COLOR_OBSTACLE, Color COLOR_DEFAULT) {
-        this.COLOR_AGENT1   = COLOR_AGENT1;
-        this.COLOR_AGENT2   = COLOR_AGENT2;
-        this.COLOR_EXCITED  = COLOR_EXCITED;
-        this.COLOR_EXCITED2  = COLOR_EXCITED2;
-        this.COLOR_OBSTACLE = COLOR_OBSTACLE;
-        this.COLOR_DEFAULT  = COLOR_DEFAULT;
-        this.COLOR_TABLE    = new HashMap<>();
+        this.COLOR_AGENT1       = COLOR_AGENT1;
+        this.COLOR_AGENT2       = COLOR_AGENT2;
+        this.COLOR_EXCITED      = COLOR_EXCITED;
+        this.COLOR_EXCITED2     = COLOR_EXCITED2;
+        this.COLOR_OBSTACLE     = COLOR_OBSTACLE;
+        this.COLOR_DEFAULT      = COLOR_DEFAULT;
+        this.COLOR_TABLE        = new ArrayList<>();
     }
     
     /**
@@ -93,11 +94,11 @@ public class AllColors {
         //Remplir les couleurs
         if(RAND_COLORS)
             for (int i = 0; i < NB_CLASSES; i++) {
-                COLOR_TABLE.put(i, randomColor(200));
+                COLOR_TABLE.add(randomColor(200));
             }
         else
             for (int i = 0; i < NB_CLASSES; i++) {
-                COLOR_TABLE.put(i, MAIN_COLORS_ARRAY[i]);
+                COLOR_TABLE.add(MAIN_COLORS_ARRAY[i]);
             }
     }
     

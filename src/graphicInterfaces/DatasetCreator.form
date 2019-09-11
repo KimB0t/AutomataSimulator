@@ -39,8 +39,9 @@
         <Component class="javax.swing.JComboBox" name="jComboBox_datasetType">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="1">
-                <StringItem index="0" value="Uniform distrubtions"/>
+              <StringArray count="2">
+                <StringItem index="0" value="Uniform Random Numbers"/>
+                <StringItem index="1" value="Normal Distribution"/>
               </StringArray>
             </Property>
           </Properties>
@@ -70,9 +71,9 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="jLabel_length">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Variances"/>
+            <Property name="text" type="java.lang.String" value="Interval lengths"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

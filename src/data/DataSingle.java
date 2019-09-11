@@ -18,6 +18,7 @@
 
 package data;
 
+import java.awt.Color;
 import static misc.Params.RAND;
 import static misc.Params.bernoulli;
 
@@ -26,24 +27,27 @@ import static misc.Params.bernoulli;
  * @author Karim BOUTAMINE <boutaminekarim06@gmail.com>
  * @version 1.0
  */
-public class DataGauss extends Data{
+public class DataSingle extends Data{
 
     //Value of data
-    double value;
-    //Class of this data
-    private String classe;
+    private double value;
     
-    public DataGauss() {
+    public DataSingle() {
         this.value = 0.0;
     }
 
-    public DataGauss(double value) {
+    public DataSingle(double value, Color couleur, double threshold) {
         this.value = value;
+        this.couleur = couleur;
+        this.threshold = threshold;
     }
 
-    public DataGauss(double value, String classe) {
+    public DataSingle(double value, String classe, int id, Color couleur, double threshold) {
         this.value = value;
         this.classe = classe;
+        this.couleur = couleur;
+        this.threshold = threshold;
+        this.id = id;
     }
 
     public void setValue(double value) {
@@ -54,23 +58,12 @@ public class DataGauss extends Data{
         return value;
     }
     
-    public boolean alike(DataGauss data){
-        
-        boolean bol = false;
-        
-        if(data == null){
-            bol = false;
-        }
-        else{
-            if(Math.abs(data.value - this.value) < 0.2)
-                bol = true;
-            else 
-                bol = false;
-        }
-        
-        return bol;
+    @Override
+    public boolean compare(Data data){
+        return (Math.abs(((DataSingle)data).getValue() - this.value) < threshold);
     }
 
+    @Override
     public void random() {
         //I need to generate un random number between min and max so that given 
         //a mean (m) and a variance (v):
@@ -92,11 +85,13 @@ public class DataGauss extends Data{
         
     }
 
+    @Override
     public String print() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    public String getClasse() {
-        return this.classe;
+    
+    @Override
+    public String getValueString(){
+        return String.valueOf(this.value);
     }
 }

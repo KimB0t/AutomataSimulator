@@ -17,7 +17,8 @@
  */
 package graphicInterfaces;
 
-import csv.CreateCSV;
+import java.awt.event.ActionEvent;
+import misc.CSV;
 
 /**
  *
@@ -25,11 +26,38 @@ import csv.CreateCSV;
  */
 public class DatasetCreator extends javax.swing.JFrame {
 
+    public boolean unif;
+    public boolean gauss;
     /**
      * Creates new form DatasetCreator
      */
     public DatasetCreator() {
         initComponents();
+        
+        int index = jComboBox_datasetType.getSelectedIndex();
+        this.unif = index == 0;
+        this.gauss = index == 1;
+        
+        this.jComboBox_datasetType.addActionListener((ActionEvent e) -> {
+            
+            int indexx = jComboBox_datasetType.getSelectedIndex();
+            this.unif = indexx == 0;
+            this.gauss = indexx == 1;
+            
+//            switch(index){
+//                case 0: 
+//                    jLabel_length.setText("Interval lengths");
+//                    this.unif = true;
+//                    this.gauss = false;
+//                    break;
+//                case 1: 
+//                    jLabel_length.setText("Std deviations");
+//                    this.unif = false;
+//                    this.gauss = true;
+//                    break;
+//                default: break;
+//            }
+        });
     }
 
     /**
@@ -46,7 +74,7 @@ public class DatasetCreator extends javax.swing.JFrame {
         jComboBox_datasetType = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jTextField_means = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel_length = new javax.swing.JLabel();
         jTextField_variances = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jTextField_samples = new javax.swing.JTextField();
@@ -61,7 +89,7 @@ public class DatasetCreator extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jComboBox_datasetType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Uniform distrubtions" }));
+        jComboBox_datasetType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Uniform Random Numbers", "Normal Distribution" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -95,7 +123,7 @@ public class DatasetCreator extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel1.add(jTextField_means, gridBagConstraints);
 
-        jLabel2.setText("Variances");
+        jLabel_length.setText("Interval lengths");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -104,7 +132,7 @@ public class DatasetCreator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        jPanel1.add(jLabel2, gridBagConstraints);
+        jPanel1.add(jLabel_length, gridBagConstraints);
 
         jTextField_variances.setText("0.2");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -211,9 +239,13 @@ public class DatasetCreator extends javax.swing.JFrame {
         int nbSamples = Integer.parseInt(jTextField_samples.getText());
         
         String fileName = jTextField1.getText();
+        String type = "";
         
-        CreateCSV js = new CreateCSV();
-        js.createRandUniformCSV(convertedMeans, convertedVariances, nbSamples, fileName);
+        CSV js = new CSV();
+        if(this.unif) type = "Unif";
+        if(this.gauss) type = "Gauss";
+        
+        js.createRandDataCSV(type, convertedMeans, convertedVariances, nbSamples, fileName);
         
     }//GEN-LAST:event_jButton_createActionPerformed
 
@@ -222,9 +254,9 @@ public class DatasetCreator extends javax.swing.JFrame {
     private javax.swing.JButton jButton_create;
     private javax.swing.JComboBox jComboBox_datasetType;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel_length;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField_means;

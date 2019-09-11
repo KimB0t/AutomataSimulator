@@ -17,10 +17,13 @@
  */
 package cells;
 
+import agents.Agent;
 import misc.Params;
 import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import static misc.Params.RAND;
 
 /**
  * A cell is a component of an Automaton.
@@ -43,6 +46,9 @@ public abstract class Cell{
      */
     protected int excited_free_cells_count;
     
+    //Neighbours of the cell
+    protected ArrayList<Cell> nghbrs;
+    
     protected Params param;
     
     /**
@@ -58,6 +64,7 @@ public abstract class Cell{
         this.wall = false;
         this.couleur = Color.WHITE;
         this.param = p;
+        this.nghbrs = new ArrayList<>();
     }
     
     /**
@@ -73,6 +80,7 @@ public abstract class Cell{
         this.wall = false;
         this.couleur = Color.WHITE;
         this.param = p;
+        this.nghbrs = new ArrayList<>();
     }
     
     /**
@@ -88,6 +96,7 @@ public abstract class Cell{
         this.wall = wall;
         this.couleur = co;
         this.param = p;
+        this.nghbrs = new ArrayList<>();
     }
     
     //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
@@ -166,7 +175,7 @@ public abstract class Cell{
      * Compute the next state of this cell.
      * @param param The simulation parameters.
      */
-    public abstract void nextState();
+//    public abstract void nextState();
 //    public abstract Cell nextState(Params param, int k);
     
     /**
@@ -176,13 +185,15 @@ public abstract class Cell{
      */
     public abstract Cell getCopy();
     
-    public abstract int getNbAgents();
+//    public abstract int getState();
     
-    public abstract int getNbAgents(int k);
+//    public abstract void countNeighbours();
     
-    public abstract void countNeighbours();
+//    public abstract void countNeighbours(int k);
     
-    public abstract void countNeighbours(int k);
+    public ArrayList<Cell> getNeighbours() {
+        return this.nghbrs;
+    }
     
     public void setExcited_free_cells_count(int excited_free_cells_count) {
         this.excited_free_cells_count = excited_free_cells_count;
@@ -211,4 +222,55 @@ public abstract class Cell{
         String hexColor = "#"+Integer.toHexString(this.couleur.getRGB()).substring(2);
         model.setValueAt(hexColor, 2, 1);
     }
+    
+    public int getOppositeCell(int cell, int wave){
+        return (cell - ((cell - wave) * -1) + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
+    }
+    
+    public String getCellType(){
+        
+        if(this.isWall()) return "Wall";
+        else if(this.isAgent()) return "Agent";
+        else if(this.isWave()) return "Wave";
+        else return "Empty";
+    }
+
+    public Cell getOpposantNghbr(Cell nghbr) {
+        
+        int ii = getOppositeCell(this.getI(), nghbr.getI());
+        int jj = getOppositeCell(this.getJ(), nghbr.getJ());
+        
+        for (Cell n : nghbrs) {
+            if (n.getI() == ii && n.getJ() == jj) {
+                return (Cell) n;
+            }
+        }
+        return null;
+    }
+    
+    public abstract void addComingAgent(Agent agent);
+    
+    public abstract void addFiringAgent(Agent agent);
+    
+    public Agent chooseRandAgent(ArrayList<Agent> agents) {
+        int size = agents.size();
+        int key = RAND.nextInt(size);
+        return agents.get(key);
+    }
+    
+    public Cell chooseRandCell(ArrayList<Cell> cells) {
+        int size = cells.size();
+        int key = RAND.nextInt(size);
+        return cells.get(key);
+    }
+
+    public abstract boolean isAgent();
+
+    public abstract boolean isWave();
+    
+    public void addNeighbour(Cell cell) {
+        this.nghbrs.add(cell);
+    }
+    
+    public abstract void colorier();
 }

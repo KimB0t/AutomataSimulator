@@ -18,44 +18,56 @@
 
 package automata;
 
-import agents.AgGauss;
-import cells.Cell;
-import cells.CellGauss;
-import data.DataGauss;
+import agents.AgInfRepClassData;
+import cells.CellInfRepClassData;
+import data.Data;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import misc.CSV;
+import static misc.Params.arrayToString;
 
 /**
  *
  * @author Karim BOUTAMINE <boutaminekarim06@gmail.com>
  * @version 1.0
  */
-public class AutoGauss extends Automaton{
+public class AutoInfRepClassData extends Automaton{
 
     //<editor-fold defaultstate="collapsed" desc="Declarations">
     //Matrix of cells
-    private CellGauss[][] matrix;
+    private CellInfRepClassData[][] matrix;
     //Matrix of cells - Copy
-    private CellGauss[][] new_matrix;
+    private CellInfRepClassData[][] newMatrix;
     //List of agents
-    private ArrayList<AgGauss> agents;
+    private ArrayList<AgInfRepClassData> agents;
     //List of agents
-    private ArrayList<DataGauss> dataArray;
+    private ArrayList<Data> dataArray;
     
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
+    public AutoInfRepClassData(CSV dataset) {
+        super();
+        this.matrix = new CellInfRepClassData[param.MATRIX_LENGTH][param.MATRIX_LENGTH];
+        this.agents = new ArrayList<>();
+        this.dataArray = dataset.dataArray;
+    }
 //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Setters & Getters">
     @Override
     public void setAgent(int i, int j, int nb, Color cellColor, boolean wl) {
-        DataGauss data = new DataGauss();
-        data.random();
+        System.out.println("NO AGENT CAN BE SET");
+    }
+    
+    public void setAgent(int i, int j, int nb, Color cellColor, boolean wl, Data data) {
         //Make a cell with an agent
-        this.matrix[i][j].makeAgent(nb, param.getCOLOR(data, 255), wl);
+        this.matrix[i][j].makeAgent(nb, data.getCouleur(), wl);
         //Add and agent to the list
         int id = agents.size();
-        agents.add(id, new AgGauss(param, i, j, id, data));
+        agents.add(id, new AgInfRepClassData(param, i, j, id, data));
     }
     
     @Override
@@ -69,53 +81,35 @@ public class AutoGauss extends Automaton{
         DefaultTableModel model = (DefaultTableModel) infoTable.getModel();
         model.addRow(new Object[]{"State"});
         model.addRow(new Object[]{"Agents"});
-        model.addRow(new Object[]{"Data"});
+        model.addRow(new Object[]{"DataValue"});
+        model.addRow(new Object[]{"DataClass"});
     }
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Makers">
     @Override
     public void makeWallAt(int i, int j) {
-        this.matrix[i][j] = new CellGauss(param, param.getCOLOR_OBSTACLE(), i, j, true);
+        this.matrix[i][j] = new CellInfRepClassData(param, param.getCOLOR_OBSTACLE(), i, j, true);
         this.matrix[i][j].setParam(param);
     }
     
     @Override
     public void makeCellAt(int i, int j) {
-        this.matrix[i][j] = new CellGauss(param, param.getCOLOR_DEFAULT(), i, j, false);
+        this.matrix[i][j] = new CellInfRepClassData(param, param.getCOLOR_DEFAULT(), i, j, false);
         this.matrix[i][j].setParam(param);
     }
 //</editor-fold>
     
-    public AutoGauss() {
-        super();
-        this.matrix = new CellGauss[param.MATRIX_LENGTH][param.MATRIX_LENGTH];
-        this.agents = new ArrayList<>();
-    }
-    
     @Override
     public void init_matrix() {
         super.init_matrix();
-        putNeighboors();
         //Restart agent list
         this.agents = new ArrayList<>();
     }
     
-    public void putNeighboors(){
-        //Do it inside initMatrix
-        for (int i = 0; i < param.MATRIX_LENGTH; i++) {
-            for (int j = 0; j < param.MATRIX_LENGTH; j++) {
-                for(int di=-1; di<=1; di++) {
-                    for(int dj=-1; dj<=1; dj++){
-                        int ii = (i + di + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
-                        int jj = (j + dj + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
-                        if(!(i==ii && j==jj)){
-                            matrix[i][j].addNeighbour(this.matrix[ii][jj]);
-                        }
-                    }
-                }
-            }
-        }
+    @Override
+    public void addNeighbour(int i, int j , int ii, int jj){
+        matrix[i][j].addNeighbour(this.matrix[ii][jj]);
     }
     
     @Override
@@ -125,17 +119,16 @@ public class AutoGauss extends Automaton{
         //Then we choose which action to take
         
         //Agent precieve + decide
-        for (AgGauss agent : agents) {
+        for (AgInfRepClassData agent : agents) {
             int i = agent.getI();
             int j = agent.getJ();
-            CellGauss currentCell = matrix[i][j];
+            CellInfRepClassData currentCell = matrix[i][j];
             
             agent.perceive(currentCell);
-//            matrix[3][3].printFiringAgents();
         }
         
         //Cell update + agents' internal state update
-        CellGauss[][] newMatrix = new CellGauss[param.MATRIX_LENGTH][param.MATRIX_LENGTH];
+        newMatrix = new CellInfRepClassData[param.MATRIX_LENGTH][param.MATRIX_LENGTH];
         for (int i = 0; i < param.MATRIX_LENGTH; i++) {
             for (int j = 0; j < param.MATRIX_LENGTH; j++) {
                 //We take a copy to achieve synchronism
@@ -152,13 +145,15 @@ public class AutoGauss extends Automaton{
         }
         
         //Agents evolve (Setting Colors)
-        for (AgGauss agent : agents) {
+        for (AgInfRepClassData agent : agents) {
             int i = agent.getI();
             int j = agent.getJ();
-            CellGauss currentCell = matrix[i][j];
-            currentCell.setCouleur(param.getCOLOR(agent.getData(), 255));
+            CellInfRepClassData currentCell = matrix[i][j];
             currentCell.increaseNbAgent(1);
+            this.colorier(currentCell, agent);
         }
+        
+        param.increaseNBGeneration(1);
     }
 
     //<editor-fold defaultstate="collapsed" desc="Not used">    
@@ -166,22 +161,35 @@ public class AutoGauss extends Automaton{
     public void deleteAgent(int i, int j) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    @Override
-    public Cell[] getListOfNeighbours(int i, int j, int nbNghbrs) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 //</editor-fold>
 
     @Override
     public void printCell(int x, int y){
+        String values;
+        String classes;
+        
         matrix[x][y].print(infoTable);
+        
+        if (matrix[x][y].getNbAgents() > 0) {
+            values = "";
+            classes = "";
+            for (AgInfRepClassData agent : agents) {
+                if (agent.getI() == x && agent.getJ() == y) {
+                    values += agent.getData().getValueString() + "; ";
+                    classes += agent.getData().getClasse() + "; ";
+                }
+            }
+            DefaultTableModel model = (DefaultTableModel) infoTable.getModel();
+            model.setValueAt(values, 6, 1);
+            model.setValueAt(classes, 7, 1);
+        }
     }
     
-    public void randomDataPositioning(){
+    @Override
+    public void randomConfig(){
         this.init_matrix();
         int rn_x, rn_y;
-        int nbr_cell = (int)((param.MATRIX_LENGTH) * (param.MATRIX_LENGTH) * param.DENSITY / 100);
+        int nbr_cell = this.dataArray.size();
         
         System.out.println("nbr_cell (nb agents) = "+nbr_cell);
         param.reInitNBGeneration();
@@ -193,7 +201,18 @@ public class AutoGauss extends Automaton{
             rn_y = param.getRANDcoordinate();
             
             // Créer l'agent
-            this.setAgent(rn_x, rn_y, 1, param.getCOLOR_AGENT1(), false);
+            this.setAgent(rn_x, rn_y, 1, param.getCOLOR_AGENT1(), false, dataArray.get(i));
         }
+    }
+
+    private void colorier(CellInfRepClassData currentCell, AgInfRepClassData agent) {
+        
+//        if(currentCell.getNbAgents() > 1)
+//            currentCell.setCouleur(Color.BLACK);
+//        else 
+        if(param.SWITCH)
+            currentCell.setCouleur(param.getCOLOR_at(agent.getData().getID(), 255));
+        else
+            currentCell.setCouleur(agent.getData().getCouleur());
     }
 }

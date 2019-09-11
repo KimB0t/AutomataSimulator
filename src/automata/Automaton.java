@@ -18,7 +18,6 @@
 package automata;
 
 import misc.Params;
-import cells.Cell;
 import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -74,6 +73,7 @@ public abstract class Automaton{
         }
         //applay boundaries if they are enabled
         if(param.isBOUNDARIESequalTo("Free")) makeBoundaries();
+        this.setNeighboors();
     }
     
     /**
@@ -132,15 +132,6 @@ public abstract class Automaton{
     }
     
     /**
-     * Create a random Configuration
-     * @param i
-     * @param j
-     * @param nbNghbrs
-     * @return 
-     */
-    public abstract Cell[] getListOfNeighbours(int i, int j, int nbNghbrs);
-    
-    /**
      *
      */
     public void clear(){
@@ -148,9 +139,7 @@ public abstract class Automaton{
         param.reInitNBGeneration();
     }
 
-    public void printCell(int x, int y) {
-        
-    }
+    public abstract void printCell(int x, int y);
     
     public void setInfoTable(JTable infTbl) {
         this.infoTable = infTbl;
@@ -161,4 +150,22 @@ public abstract class Automaton{
         model.addRow(new Object[]{"Type"});
     }
     
+    public void setNeighboors(){
+        //Do it inside initMatrix
+        for (int i = 0; i < param.MATRIX_LENGTH; i++) {
+            for (int j = 0; j < param.MATRIX_LENGTH; j++) {
+                for(int di=-1; di<=1; di++) {
+                    for(int dj=-1; dj<=1; dj++){
+                        int ii = (i + di + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
+                        int jj = (j + dj + param.MATRIX_LENGTH) % param.MATRIX_LENGTH;
+                        if(!(i==ii && j==jj)){
+                            this.addNeighbour(i, j, ii, jj);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public abstract void addNeighbour(int i, int j, int ii, int jj);
 }

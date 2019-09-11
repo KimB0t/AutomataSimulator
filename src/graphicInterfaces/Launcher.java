@@ -30,8 +30,8 @@ import static misc.Params.*;
 import java.awt.Component;
 import java.io.File;
 import javax.swing.JFileChooser;
-import csv.CreateCSV;
-import csv.ReadCSV;
+import misc.CSV;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -39,6 +39,7 @@ import csv.ReadCSV;
  */
 public class Launcher extends javax.swing.JFrame {
     
+    public CSV csv;
     /**
      * Creates new form Main
      */
@@ -74,8 +75,6 @@ public class Launcher extends javax.swing.JFrame {
         jComboBox_tailleCell = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         jComboBox_shape = new javax.swing.JComboBox();
-        jLabel4 = new javax.swing.JLabel();
-        jButton_color = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jComboBox_boundaries = new javax.swing.JComboBox();
         jLabel10 = new javax.swing.JLabel();
@@ -97,9 +96,11 @@ public class Launcher extends javax.swing.JFrame {
         jButton_color8 = new javax.swing.JButton();
         jPanel_dataLoader = new javax.swing.JPanel();
         jButton_selectData = new javax.swing.JButton();
-        jRadioButton_singleValue = new javax.swing.JRadioButton();
-        jRadioButton_1xmValues = new javax.swing.JRadioButton();
-        jRadioButton_nxmValues = new javax.swing.JRadioButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable_displayLoadedDataInfo = new javax.swing.JTable();
+        jPanel_color = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jButton_color = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem_createData = new javax.swing.JMenuItem();
@@ -159,7 +160,7 @@ public class Launcher extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
@@ -171,7 +172,7 @@ public class Launcher extends javax.swing.JFrame {
         jCheckBox_grid.setText("Grid");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
@@ -227,30 +228,6 @@ public class Launcher extends javax.swing.JFrame {
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel2.add(jComboBox_shape, gridBagConstraints);
-
-        jLabel4.setText("Agents' color:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        jPanel2.add(jLabel4, gridBagConstraints);
-
-        jButton_color.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton_color.setPreferredSize(new java.awt.Dimension(22, 22));
-        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.GRAY)));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.2;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        jPanel2.add(jButton_color, gridBagConstraints);
 
         jLabel9.setText("Boundaries:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -441,7 +418,7 @@ public class Launcher extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.3;
@@ -466,48 +443,67 @@ public class Launcher extends javax.swing.JFrame {
         gridBagConstraints.weighty = 0.1;
         jPanel_dataLoader.add(jButton_selectData, gridBagConstraints);
 
-        buttonGroup2.add(jRadioButton_singleValue);
-        jRadioButton_singleValue.setText("Single value");
+        jTable_displayLoadedDataInfo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Rows", "Columns", "Data Length", "Classes"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable_displayLoadedDataInfo);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.4;
         gridBagConstraints.weighty = 0.1;
-        jPanel_dataLoader.add(jRadioButton_singleValue, gridBagConstraints);
-
-        buttonGroup2.add(jRadioButton_1xmValues);
-        jRadioButton_1xmValues.setText("[1xm] Values");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        jPanel_dataLoader.add(jRadioButton_1xmValues, gridBagConstraints);
-
-        buttonGroup2.add(jRadioButton_nxmValues);
-        jRadioButton_nxmValues.setText("[nxm] Values");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        jPanel_dataLoader.add(jRadioButton_nxmValues, gridBagConstraints);
+        jPanel_dataLoader.add(jScrollPane1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.3;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel2.add(jPanel_dataLoader, gridBagConstraints);
+
+        jPanel_color.setLayout(new java.awt.GridBagLayout());
+
+        jLabel4.setText("Agents' color:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        jPanel_color.add(jLabel4, gridBagConstraints);
+
+        jButton_color.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton_color.setPreferredSize(new java.awt.Dimension(22, 22));
+        jButton_color.setIcon(new ImageIcon(getColorIcon(Color.GRAY)));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 0.1;
+        jPanel_color.add(jButton_color, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel2.add(jPanel_color, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -548,13 +544,17 @@ public class Launcher extends javax.swing.JFrame {
 
     private void jButton_selectDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_selectDataActionPerformed
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("./datasets"));
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             System.out.println(selectedFile);
-            ReadCSV rCSV = new ReadCSV();
-            rCSV.readCSVSingleData(selectedFile.toString());
-            rCSV.displayDataArray();
+            this.csv = new CSV();
+            this.csv.readCSVData(selectedFile.toString());
+            this.csv.getInfoData(jTable_displayLoadedDataInfo);
+            MAIN_NB_CLASSES = this.csv.classes;
+            System.out.println("aeferfregegg  :  " + MAIN_NB_CLASSES);
+//            displayInfoData(dataInfo);
 //            java.awt.Desktop.getDesktop().open(selectedFile);//<-- here
         }
     }//GEN-LAST:event_jButton_selectDataActionPerformed
@@ -577,6 +577,7 @@ public class Launcher extends javax.swing.JFrame {
         MAIN_NEIGHBOURHOOD = this.jComboBox_neighbourhood.getSelectedItem().toString();
         RAND = new Random();
         switchVariante(this.jComboBox_variante.getSelectedItem().toString());
+        displayPanels();
         
         MAIN_COLORS_ARRAY = new Color[8];
         MAIN_COLORS_ARRAY[0] = Color.GREEN;
@@ -651,16 +652,7 @@ public class Launcher extends javax.swing.JFrame {
         this.jComboBox_variante.addActionListener((ActionEvent e) -> {
             
             switchVariante(this.jComboBox_variante.getSelectedItem().toString());
-            
-            boolean colorPanelAdditonal= 
-                    (VARIANTE == Variante.DIFFUSION_CLASSIFICATION 
-                    || VARIANTE == Variante.INFLUENCE_CLASSIFICATION
-                    || VARIANTE == Variante.INFLUENCE_REPULSION);
-            boolean dataLoader=  VARIANTE == Variante.TEST;
-            
-            jPanel_classes.setVisible(colorPanelAdditonal);
-            jPanel_dataLoader.setVisible(dataLoader);
-            
+            displayPanels();
         });
     }
     
@@ -694,7 +686,24 @@ public class Launcher extends javax.swing.JFrame {
         }
     }
     
+    public void displayPanels(){
+        boolean multiColorPanel = 
+                (VARIANTE == Variante.DIFFUSION_CLASSIFICATION 
+                || VARIANTE == Variante.INFLUENCE_CLASSIFICATION
+                || VARIANTE == Variante.INFLUENCE_REPULSION);
+        boolean singleColorPanel = 
+                (VARIANTE == Variante.LIFE 
+                || VARIANTE == Variante.TURMITES
+                || VARIANTE == Variante.DIFFUSION_GATHERING);
+        boolean dataLoaderPanel =  VARIANTE == Variante.TEST;
+
+        jPanel_classes.setVisible(multiColorPanel);
+        jPanel_color.setVisible(singleColorPanel);
+        jPanel_dataLoader.setVisible(dataLoaderPanel);
+    }
+    
     private BufferedImage getColorIcon(Color c){
+        
         BufferedImage colorSample = new BufferedImage(16,16,BufferedImage.TYPE_INT_RGB);
         Graphics2D g = colorSample.createGraphics();
         
@@ -703,6 +712,15 @@ public class Launcher extends javax.swing.JFrame {
         g.dispose();
         
         return colorSample;
+    }
+
+    private void displayInfoData(String[] dataInfo) {
+        int i = 0;
+        for (String value : dataInfo) {
+            DefaultTableModel model = (DefaultTableModel) jTable_displayLoadedDataInfo.getModel();
+            model.setValueAt(value, 0, i);
+            i++;
+        }
     }
    
     /**
@@ -728,7 +746,7 @@ public class Launcher extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new SimulatorInterface(VARIANTE).setVisible(true);
+            new SimulatorInterface(VARIANTE, this.csv).setVisible(true);
         });
     }
     
@@ -770,13 +788,12 @@ public class Launcher extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem_createData;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel_classes;
+    private javax.swing.JPanel jPanel_color;
     private javax.swing.JPanel jPanel_colors;
     private javax.swing.JPanel jPanel_dataLoader;
-    private javax.swing.JRadioButton jRadioButton_1xmValues;
-    private javax.swing.JRadioButton jRadioButton_nxmValues;
-    private javax.swing.JRadioButton jRadioButton_singleValue;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable_displayLoadedDataInfo;
     private javax.swing.JTextField jTextField_classes;
     // End of variables declaration//GEN-END:variables
 //</editor-fold>
-    
 }

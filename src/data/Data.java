@@ -18,12 +18,56 @@
 
 package data;
 
+import java.awt.Color;
+
 /**
  *
  * @author Karim BOUTAMINE <boutaminekarim06@gmail.com>
  * @version 1.0
  */
 public abstract class Data {
-
     
+    //Class of this data
+    protected String classe;
+    //Color
+    protected Color couleur;
+    //Seuil
+    protected double threshold;
+    //ID 
+    protected int id;
+    
+    public boolean alike(Data data){
+        if(data == null){
+            return false;
+        }
+        return (compare(data));
+    }
+
+    public abstract boolean compare(Data data);
+    
+    public abstract void random();
+
+    public abstract String print();
+    
+    public Color getCouleur() {
+        return couleur;
+    }
+
+    public String getClasse() {
+        return this.classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public void setCouleur(Color couleur) {
+        this.couleur = couleur;
+    }
+
+    public abstract String getValueString();
+
+    public int getID() {
+        return this.id;
+    }
 }

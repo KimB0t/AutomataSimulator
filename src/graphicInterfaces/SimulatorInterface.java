@@ -23,10 +23,10 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import misc.Painter;
-//import automata.AutoDiffClass;
+import automata.AutoDiffClass;
 //import automata.AutoDiffGather;
-import automata.AutoGauss;
-//import automata.AutoInfRepClass;
+import automata.AutoInfRepClassData;
+import automata.AutoInfRepClass;
 //import automata.AutoTurmites;
 import java.awt.AWTException;
 import java.awt.Component;
@@ -47,6 +47,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
+import misc.CSV;
 import static misc.Params.*;
 
 /**
@@ -73,7 +74,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
      * 
      * @param var Variante of the automaton
      */
-    public SimulatorInterface(Variante var) {
+    public SimulatorInterface(Variante var, CSV dataset) {
         
         //Init interface components
         initComponents();
@@ -90,20 +91,20 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
 //            case TURMITES:
 //                ac = new AutoTurmites();
 //                break;
-//            case DIFFUSION_CLASSIFICATION:
-//                ac = new AutoDiffClass();
-//                break;
+            case DIFFUSION_CLASSIFICATION:
+                ac = new AutoDiffClass();
+                break;
 //            case DIFFUSION_GATHERING:
 //                ac = new AutoDiffGather();
 //                break;
 //            case INFLUENCE_CLASSIFICATION:
 //                ac = new AutoInfClass();
 //                break;
-//            case INFLUENCE_REPULSION:
-//                ac = new AutoInfRepClass();
-//                break;
+            case INFLUENCE_REPULSION:
+                ac = new AutoInfRepClass();
+                break;
             case TEST:
-                ac = new AutoGauss();
+                ac = new AutoInfRepClassData(dataset);
                 break;
             default:
                 break;
@@ -162,6 +163,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         jButton_screenSave = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel_nbrGenerations = new javax.swing.JLabel();
+        jCheckBox_switchColors = new javax.swing.JCheckBox();
         jPanel_obstacles = new javax.swing.JPanel();
         jTextField_obstaclesNbr = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
@@ -494,10 +496,9 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel_displayOptions.add(jCheckBox_grid, gridBagConstraints);
@@ -513,8 +514,9 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel_displayOptions.add(jLabel2, gridBagConstraints);
 
-        jComboBox_speed.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "x0.25", "x0.5", "x0.75", "x1", "x1.5", "x2", "x4" }));
-        jComboBox_speed.setSelectedIndex(3);
+        jComboBox_speed.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "x0.25", "x0.5", "x0.75", "x1", "x1.5", "x2", "x4", "x8", "x16", "x32" }));
+        jComboBox_speed.setSelectedIndex(9);
+        jComboBox_speed.setToolTipText("");
         jComboBox_speed.setPreferredSize(new java.awt.Dimension(50, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -622,6 +624,16 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel_displayOptions.add(jLabel_nbrGenerations, gridBagConstraints);
+
+        jCheckBox_switchColors.setText("Switch colors");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel_displayOptions.add(jCheckBox_switchColors, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1359,6 +1371,13 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                 ac.param.setGRID(false);
         });
         
+        jCheckBox_switchColors.addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+                ac.param.setSWITCH(true);
+            else
+                ac.param.setSWITCH(false);
+        });
+        
         jCheckBox_handDrawObstacles.addItemListener((ItemEvent e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED)
                 ac.param.setHANDRAW_OBSTACLES(true);
@@ -1405,7 +1424,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
          jPanel_screen.paint(graphics2D);
          try {
             JFileChooser chooser = new JFileChooser(); 
-            chooser.setCurrentDirectory(new java.io.File("."));
+            chooser.setCurrentDirectory(new java.io.File("./screenSaves"));
             chooser.setDialogTitle("Choisir l'emplacement pour sauvegarder");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             // disable the "All files" option.
@@ -1416,8 +1435,12 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
                 Date date = new Date();
                 String uniqueID = dateFormat.format(date);
                 uniqueID = uniqueID.replaceAll("[/,:, ]", "");
-                String outputPathFilename = chooser.getSelectedFile().toString()
-                        +"\\Save_"+VARIANTE.toString()+"_"+uniqueID+".png";
+                
+                String path = chooser.getSelectedFile().toString();
+                String namePart1 = getVarianteCode()+"_"+ac.param.LAMBDA
+                        +"_"+ac.param.NB_GENERATIONS;
+                String namePart2 = uniqueID;
+                String outputPathFilename = path+"/"+namePart1+"_"+namePart2+".png";
                 ImageIO.write(imagebuf,"png", new File(outputPathFilename));
                 System.out.println("SAved in : " + outputPathFilename);
             }
@@ -1455,6 +1478,7 @@ public class SimulatorInterface extends javax.swing.JFrame implements Runnable {
     private javax.swing.JCheckBox jCheckBox_grid;
     private javax.swing.JCheckBox jCheckBox_handDrawObstacles;
     private javax.swing.JCheckBox jCheckBox_obstacles;
+    private javax.swing.JCheckBox jCheckBox_switchColors;
     private javax.swing.JCheckBox jCheckBox_uncover;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JComboBox jComboBox_policy;

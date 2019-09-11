@@ -17,10 +17,11 @@
  */
 package agents;
 
-import misc.Neighbours;
 import misc.Params;
 import cells.Cell;
-import java.awt.Point;
+import java.util.ArrayList;
+import static misc.Params.RAND;
+import static misc.Params.bernoulli;
 
 /**
  *
@@ -35,22 +36,8 @@ public abstract class Agent{
     // Unique ID for this Agent.
     private int id = 0;
     
-    
+    //Parameters of the model
     protected Params param;
-    
-    /**
-     *
-     * @param i
-     * @param j
-     * @param p
-     * @param id
-     */
-    public Agent(int i, int j, int id) {
-        this.i = i;
-        this.j = j;
-        this.id = id;
-    }
-    
     
     public Agent(Params p, int i, int j, int id) {
         this.i = i;
@@ -79,14 +66,6 @@ public abstract class Agent{
 
     /**
      *
-     * @param position
-     */
-//    public void setPosition(Point p) {
-//        this.location = p;
-//    }
-
-    /**
-     *
      * @param id
      */
     public void setId(int id) {
@@ -111,9 +90,9 @@ public abstract class Agent{
 
     /**
      *
-     * @return
+     * @param param
      */
-    public void setParam() {
+    public void setParam(Params param) {
         this.param = param;
     }
 
@@ -126,18 +105,60 @@ public abstract class Agent{
     }
     //</editor-fold>
     
-    /**
-     * When an agent moves on the matrix.
-     * @param s
-     * @return
-     */
-    public abstract Agent move(int s);
+    public void perceive(Cell currentCell){
+        //Need neighbours : pour verifier si y'a excitation et qu'on doit bouger
+        //+ current cell : to check it's state and decide whether to fire or not
+                        // + to check nb of agents on neighbooring cells to see whether it can move or not
+        //returns nothing: applies influences directly on cells (where he wants to move or if he wants to fire)
+        //L'objet ne retourne rien mais se rajoute directement dans les 
+        //liste de fire pour cette cellule ou deplacement pour ces voisins
+        ArrayList<Cell> cellsToMoveTo = new ArrayList<>();
+        ArrayList<Cell> nghbrs = currentCell.getNeighbours();
+        
+        if(bernoulli(param.PA) == 1){
+            //Pour toutes les cellules voisines
+            for (Cell nghbr : nghbrs) {
+                //Si cette cellule contient moins de 2 agents
+                //alors l'ajouter à la liste
+                if(this.isFreeCell(nghbr))
+                    cellsToMoveTo.add(nghbr);
+            }
+        }
+        else {
+            //Pour toutes les cellules voisines
+            for (Cell nghbr : nghbrs) {
+                //Verifier si cette cellule voisine attire ou repousse
+                this.checkRepulsionAttraction(currentCell, nghbr, cellsToMoveTo);
+            }
+        }
+        
+        //Si la liste est non vide, choisir une des cellules
+        if(!cellsToMoveTo.isEmpty()){
+            Cell chosenCell = chooseRandomCell(cellsToMoveTo);
+            //Mettre à jour la liste des agents se deplaçant vers cette cellule
+            chosenCell.addComingAgent(this);
+        }
+        
+        //Sinon, il peut générer une vague
+        else if(this.isNeutralCell(currentCell) && iWantToFire()){
+            //Si il veut générer on l'ajoute à la liste
+            currentCell.addFiringAgent(this);
+        }
+    }
+    
+    public Cell chooseRandomCell(ArrayList<Cell> cellsToMoveTo){
+        int size = cellsToMoveTo.size();
+        int key = RAND.nextInt(size);
+        return cellsToMoveTo.get(key);
+    }
+    
+    public boolean iWantToFire() {
+        return (bernoulli(param.LAMBDA) == 1);
+    }
+    
+    public abstract void checkRepulsionAttraction(Cell currentCell, Cell nghbr, ArrayList<Cell> cellsToMoveTo);
 
-    /**
-     * Another moving fct for AgentInfluenceClass
-     * @param nghbrs
-     * @param new_cell
-     * @return
-     */
-    public abstract Point move(Cell new_cell);
+    public abstract boolean isFreeCell(Cell c);
+    
+    public abstract boolean isNeutralCell(Cell c);
 }

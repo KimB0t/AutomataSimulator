@@ -17,10 +17,11 @@
  */
 package misc;
 
-import data.DataGauss;
+import data.Data;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -86,10 +87,34 @@ public class Params {
      */
     public static boolean MAIN_RAND_COLORS;
 
-    public Color getCOLOR(DataGauss data, int opacity) {
-        int r = (int)(255 - data.getValue() * 100);
-        int g = (int)(0 + (100 - data.getValue() * 100));
-        int b = (int)(100 + data.getValue() * 100);
+    public static Color getCOLOR(ArrayList<Double> values, double min, double max, int opacity) {
+        
+        double addedValues = 0.0;
+        for (double value : values) {
+            addedValues += value;
+        }
+        
+        int a = (int) ((addedValues - min) * (255 - 0) / (max - min));
+        
+        int r = (int)(Math.abs(255 - a) % 255);
+        int g = (int)(a % 255);
+        int b = (int)((a - 100 + 255) % 255);
+//        int r = (int)(255 - data.getValue() * 100);
+//        int g = (int)(0 + (100 - data.getValue() * 100));
+//        int b = (int)(100 + data.getValue() * 100);
+        Color c = new Color(r, g, b, opacity);
+        return c;
+    }
+    
+    public Color getCOLOR(Data data, int opacity) {
+        
+        int r = data.getCouleur().getRed();
+        int g = data.getCouleur().getGreen();
+        int b = data.getCouleur().getBlue();
+        
+//        int r = (int)(255 - data.getValue() * 100);
+//        int g = (int)(0 + (100 - data.getValue() * 100));
+//        int b = (int)(100 + data.getValue() * 100);
         Color c = new Color(r, g, b, opacity);
         return c;
     }
@@ -309,6 +334,37 @@ public class Params {
         }
     }
     
+    public static String arrayToString(ArrayList array){
+        String str = "[";
+        for (Object element : array) {
+            str += element + ", ";
+        }
+        str = str.substring(0, str.length() - 2);
+        str += "]";
+        return str;
+    }
+    
+    public static String getVarianteCode(){
+        switch(VARIANTE){
+            case LIFE:
+                return "LIF";
+            case TURMITES:
+                return "TUR";
+            case DIFFUSION_CLASSIFICATION:
+                return "DIFC";
+            case DIFFUSION_GATHERING:
+                return "DIFG";
+            case INFLUENCE_CLASSIFICATION:
+                return "INFC";
+            case INFLUENCE_REPULSION:
+                return "INFR";
+            case TEST:
+                return "INFD";
+            default:
+                return "NULL";
+        }
+    }
+    
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Non-static fields">
@@ -417,6 +473,11 @@ public class Params {
     public boolean GRID;
     
     /**
+     * true/false: switch displayed colors
+     */
+    public boolean SWITCH;
+    
+    /**
      * true: when drawing an obstacle
      * false: otherwise
      */
@@ -494,6 +555,7 @@ public class Params {
         this.UNCOVER            = false;
         this.VAGUE              = false;
         this.FIRST_TO_FIRE      = true;
+        this.SWITCH             = false;
         
         this.NB_GENERATIONS     = 0;
         this.SPEED              = 100;
@@ -780,6 +842,14 @@ public class Params {
      */
     public void setGRID(boolean b) {
         this.GRID = b;
+    }
+
+    /**
+     *
+     * @param b
+     */
+    public void setSWITCH(boolean b) {
+        this.SWITCH = b;
     }
 
     /**
